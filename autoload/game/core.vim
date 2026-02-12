@@ -1,15 +1,34 @@
 " autoload/game/core.vim - Quadar Micro-MUD Functional Core
 
-" === PURE DATA: ROOMS ===
-let s:nexus = {'name': 'Merchandise Store Room', 'desc': 'A bunker-like emporium in Quadar Tower. Shadows dance with archaic electronic goth echoes.', 'exits': {'north': 'hallway'}}
-let s:hallway = {'name': 'Dark Corridor', 'desc': 'A narrow passage of obsidian stone. The air hums with chthonic frequencies.', 'exits': {'south': 'nexus', 'north': 'spire_base'}}
-let s:spire_base = {'name': 'Base of Quadar Tower', 'desc': 'A colossal structure vibrating with low magic. Neon lights flicker in the Abyssal Murk.', 'exits': {'south': 'hallway'}}
+" === PURE DATA: ROOMS (Cyber Grimdark Refactor) ===
+let s:nexus = {
+      \ 'name': 'ᚠ MERCHANDISE_STORE_ROOM ᚠ',
+      \ 'desc': "A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts amid shadowed corridors.",
+      \ 'exits': {'north': 'hallway'}
+      \ }
+let s:hallway = {
+      \ 'name': 'ᚢ UMBRAL_REACH_CORRIDOR ᚢ',
+      \ 'desc': "A narrow passage of obsidian stone, crystallized in extraterrestrial resonance. The air hums with chthonic frequencies pulsating from the core. Shadows meld slitheringly against the rain-slicked walls.",
+      \ 'exits': {'south': 'nexus', 'north': 'spire_base'}
+      \ }
+let s:spire_base = {
+      \ 'name': 'ᚦ BASTION_OF_THE_SPIRE ᚦ',
+      \ 'desc': "The indomitable tower stands as a testament to long-ago awakening. Colossal structure vibrating with low magic of corrupt watchers. Neon blurs in the Abyssal Murk, a world scorched by armageddon's fiery breath.",
+      \ 'exits': {'south': 'hallway'}
+      \ }
 
 let s:rooms = {'nexus': s:nexus, 'hallway': s:hallway, 'spire_base': s:spire_base}
 
 " === PURE LOGIC: INITIAL STATE ===
 function! game#core#init() abort
-  return {'view': 'game', 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear']}, 'loc': 'nexus', 'surge': 0, 'log': ['*** WELCOME TO QUA''DAR ***', 'You materialize in the Merchandise Store Room.']}
+  let l:s = {
+        \ 'view': 'game',
+        \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear']},
+        \ 'loc': 'nexus',
+        \ 'surge': 0,
+        \ 'log': []
+        \ }
+  return s:add_log(l:s, ['NEURAL_LINK_ESTABLISHED', 'SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ', 'You materialize in the Merchandise Store Room.'])
 endfunction
 
 " === PURE LOGIC: COMMAND PROCESSING ===
@@ -28,15 +47,22 @@ function! game#core#process(state, input) abort
     return s:cmd_scavenge(a:state)
   endif
 
-  return s:add_log(a:state, "Unknown command: " . l:action)
+  return s:add_log(a:state, "LOG_ERR_CRITICAL: Unknown input_vector '" . l:action . "'")
 endfunction
 
 " === INTERNAL PURE HELPERS ===
 
 function! s:cmd_look(state) abort
   let l:room = s:rooms[a:state.loc]
-  let l:msg = [l:room.name, l:room.desc, "Exits: " . join(keys(l:room.exits), ', ')]
-  return s:add_log(a:state, l:msg)
+  let l:lines = [
+        \ '---',
+        \ l:room.name,
+        \ l:room.desc,
+        \ 'ᚱ ENTRANCES: ' . join(keys(l:room.exits), ', '),
+        \ '[HP: ' . a:state.player.hp . '/' . a:state.player.max_hp . ']',
+        \ '--'
+        \ ]
+  return s:add_log(a:state, l:lines)
 endfunction
 
 function! s:cmd_go(state, dir) abort
@@ -48,14 +74,13 @@ function! s:cmd_go(state, dir) abort
     let l:new_loc = l:room.exits[l:target_dir]
     let l:next_state = copy(a:state)
     let l:next_state.loc = l:new_loc
-    let l:next_state = s:add_log(l:next_state, "You travel " . l:target_dir . " to " . s:rooms[l:new_loc].name)
+    let l:next_state = s:add_log(l:next_state, "NEURAL_TRACKING: Shifting coordinates to " . l:target_dir)
     return s:cmd_look(l:next_state)
   endif
-  return s:add_log(a:state, "You cannot go " . l:target_dir)
+  return s:add_log(a:state, "PHYSICS_LOGIC_ERR: Cannot penetrate " . l:target_dir)
 endfunction
 
 function! s:cmd_scavenge(state) abort
-  " Simple pseudo-random using frame counter if available, or just reltime
   let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
   let l:roll = (l:val % 100) + 1
   let l:surge = a:state.surge
@@ -63,17 +88,17 @@ function! s:cmd_scavenge(state) abort
   
   let l:res = ""
   let l:new_surge = l:surge
-  if l:modified_roll >= 81
-    let l:res = "Success! You found a Relic Shard."
+  if l:modified_roll >= 96
+    let l:res = "SYSTEM_UPDATE: Yes, and unexpectedly... A GIBSONIAN RELIC SHARD FOUND ᚠ."
     let l:new_surge = 0
   elseif l:modified_roll >= 51
-    let l:res = "Yes, you find some zinc scrap."
+    let l:res = "LOG_RECO: YES. Scrap iron secured for the Order."
     let l:new_surge += 2
   elseif l:modified_roll >= 21
-    let l:res = "No, the area is picked clean."
+    let l:res = "LOG_RECO: NO. The void yields nothing but static."
     let l:new_surge += 2
   else
-    let l:res = "Unexpectedly! A Voidwraith emerges from the murk!"
+    let l:res = "LOG_ERR_CRITICAL: UNEXPECTED VOIDWRAITH MANIFESTATION."
     let l:new_surge = 0
   endif
 
@@ -89,13 +114,18 @@ function! s:add_log(state, msg) abort
   else
     let l:next_state.log += [a:msg]
   endif
-  " Keep last 50 lines
-  if len(l:next_state.log) > 50
-    let l:next_state.log = l:next_state.log[-50:]
+  if len(l:next_state.log) > 100
+    let l:next_state.log = l:next_state.log[-100:]
   endif
   return l:next_state
 endfunction
 
 function! game#core#render(state) abort
-  return a:state.log
+  let l:header = [
+        \ "ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ",
+        \ "== QUA'DAR NEURAL LINK ==",
+        \ "Surge Count: " . a:state.surge,
+        \ ""
+        \ ]
+  return l:header + a:state.log
 endfunction
