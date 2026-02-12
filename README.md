@@ -5,10 +5,11 @@ A minimal, functional-style game built entirely in Vimscript.
 ## Installation
 
 ### Manual Loading
-To try the game immediately without installing it permanently:
+To try the game immediately without installing it permanently, you must add the folder to your Vim `runtimepath` so it can find the `autoload` scripts:
 1. Open Vim.
-2. Run the following command:
+2. Run the following commands:
    ```vim
+   :set runtimepath+=~/GitHub/vim-game
    :source ~/GitHub/vim-game/plugin/game.vim
    ```
 
