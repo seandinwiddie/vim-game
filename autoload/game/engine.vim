@@ -2,11 +2,11 @@
 
 function! game#engine#start() abort
   let l:state = game#core#init()
-  call b:set_up_buffer()
+  call s:set_up_buffer()
   call s:draw(l:state)
 endfunction
 
-function! b:set_up_buffer() abort
+function! s:set_up_buffer() abort
   enew
   setlocal buftype=nofile
   setlocal bufhidden=wipe

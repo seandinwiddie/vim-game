@@ -2,12 +2,7 @@
 
 " Pure: returns initial state
 function! game#core#init() abort
-  return {
-        \ 'view': 'title',
-        \ 'frame': 0,
-        \ 'width': 40,
-        \ 'height': 15,
-        \ }
+  return {'view': 'title', 'frame': 0, 'width': 40, 'height': 15}
 endfunction
 
 " Pure: maps state to a list of strings (lines)
