@@ -1,0 +1,16 @@
+# Vim swap files
+*.swp
+*.swo
+*.swn
+*.swm
+
+# Vim undo/backup files
+*~
+*.un~
+*.bak
+
+# Neovim shada
+shada/
+
+# OS generated files
+.DS_Store
