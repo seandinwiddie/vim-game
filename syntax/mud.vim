@@ -29,4 +29,8 @@ highlight default link mudLoomResult Comment
 syntax match mudStats /\[HP: [0-9]*\/[150]*\]/
 highlight default link mudStats Directory
 
+" Guidance & Hints
+syntax match mudHint /DIRECTIVE:.*\|SYSTEM_INIT:.*\|WARNING:.*/
+highlight default link mudHint Type
+
 let b:current_syntax = "mud"

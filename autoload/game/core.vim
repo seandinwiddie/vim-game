@@ -26,7 +26,8 @@ function! game#core#init() abort
         \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear']},
         \ 'loc': 'nexus',
         \ 'surge': 0,
-        \ 'log': []
+        \ 'log': [],
+        \ 'hint': 'SYSTEM_INIT: Type "look" to scan your surroundings.',
         \ }
   return s:add_log(l:s, ['NEURAL_LINK_ESTABLISHED', 'SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ', 'You materialize in the Merchandise Store Room.'])
 endfunction
@@ -54,6 +55,8 @@ endfunction
 
 function! s:cmd_look(state) abort
   let l:room = s:rooms[a:state.loc]
+  let l:next_state = copy(a:state)
+  let l:next_state.hint = 'DIRECTIVE: Use "go north" to explore the corridor, or "scavenge" for resources.'
   let l:lines = [
         \ '---',
         \ l:room.name,
@@ -62,7 +65,7 @@ function! s:cmd_look(state) abort
         \ '[HP: ' . a:state.player.hp . '/' . a:state.player.max_hp . ']',
         \ '--'
         \ ]
-  return s:add_log(a:state, l:lines)
+  return s:add_log(l:next_state, l:lines)
 endfunction
 
 function! s:cmd_go(state, dir) abort
@@ -74,6 +77,7 @@ function! s:cmd_go(state, dir) abort
     let l:new_loc = l:room.exits[l:target_dir]
     let l:next_state = copy(a:state)
     let l:next_state.loc = l:new_loc
+    let l:next_state.hint = 'DIRECTIVE: Area change detected. "look" to update sensor data.'
     let l:next_state = s:add_log(l:next_state, "NEURAL_TRACKING: Shifting coordinates to " . l:target_dir)
     return s:cmd_look(l:next_state)
   endif
@@ -88,6 +92,7 @@ function! s:cmd_scavenge(state) abort
   
   let l:res = ""
   let l:new_surge = l:surge
+  let l:hint = 'DIRECTIVE: Loom of Fate resolved. "scavenge" again or "look" for exits.'
   if l:modified_roll >= 96
     let l:res = "SYSTEM_UPDATE: Yes, and unexpectedly... A GIBSONIAN RELIC SHARD FOUND ᚠ."
     let l:new_surge = 0
@@ -100,10 +105,12 @@ function! s:cmd_scavenge(state) abort
   else
     let l:res = "LOG_ERR_CRITICAL: UNEXPECTED VOIDWRAITH MANIFESTATION."
     let l:new_surge = 0
+    let l:hint = 'WARNING: Hostile entity confirmed. (Combat logic pending - suggest relocation via "go")'
   endif
 
   let l:next_state = copy(a:state)
   let l:next_state.surge = l:new_surge
+  let l:next_state.hint = l:hint
   return s:add_log(l:next_state, "[Loom of Fate: " . l:modified_roll . "] " . l:res)
 endfunction
 
@@ -125,6 +132,7 @@ function! game#core#render(state) abort
         \ "ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ",
         \ "== QUA'DAR NEURAL LINK ==",
         \ "Surge Count: " . a:state.surge,
+        \ a:state.hint,
         \ ""
         \ ]
   return l:header + a:state.log
