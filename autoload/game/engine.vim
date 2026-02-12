@@ -50,9 +50,14 @@ endfunction
 
 function! s:draw() abort
   let l:lines = game#core#render(s:state)
+  if empty(l:lines)
+    let l:lines = ['DEBUG: No lines returned from render()']
+  endif
+
   setlocal modifiable
-  silent 1,$delete _
+  silent %delete _
   call setline(1, l:lines)
   setlocal nomodifiable
   normal! G
+  redraw!
 endfunction
