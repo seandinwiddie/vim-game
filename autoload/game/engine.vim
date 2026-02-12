@@ -1,9 +1,11 @@
-" autoload/game/engine.vim - Side Effect Layer
+" autoload/game/engine.vim - Quadar MUD Engine
+
+let s:state = {}
 
 function! game#engine#start() abort
-  let l:state = game#core#init()
+  let s:state = game#core#init()
   call s:set_up_buffer()
-  call s:draw(l:state)
+  call s:draw()
 endfunction
 
 function! s:set_up_buffer() abort
@@ -13,22 +15,44 @@ function! s:set_up_buffer() abort
   setlocal noswapfile
   setlocal nonumber
   setlocal norelativenumber
-  setlocal cursorline
+  setlocal nocursorline
   setlocal nomodifiable
-  file VIM_QUEST
+  setlocal wrap
+  setlocal filetype=mud
+  file QUA_DAR_MUD
   
-  nnoremap <buffer> <silent> <nowait> <Space> :call <SID>on_start_press()<CR>
+  " UI Mappings
+  nnoremap <buffer> <silent> <nowait> : :call <SID>prompt_cmd()<CR>
+  nnoremap <buffer> <silent> <nowait> i :call <SID>prompt_cmd()<CR>
   nnoremap <buffer> <silent> <nowait> q :bwipe!<CR>
+  
+  " Quick game commands
+  nnoremap <buffer> <silent> l :call <SID>run('look')<CR>
+  nnoremap <buffer> <silent> n :call <SID>run('go north')<CR>
+  nnoremap <buffer> <silent> s :call <SID>run('go south')<CR>
+  nnoremap <buffer> <silent> e :call <SID>run('go east')<CR>
+  nnoremap <buffer> <silent> w :call <SID>run('go west')<CR>
+  
+  echo "Press 'i' or ':' to type a command. 'q' to quit."
 endfunction
 
-function! s:on_start_press() abort
-  echo "Game start logic goes here!"
+function! s:prompt_cmd() abort
+  let l:input = input('Command > ')
+  if !empty(l:input)
+    call s:run(l:input)
+  endif
 endfunction
 
-function! s:draw(state) abort
-  let l:lines = game#core#render(a:state)
+function! s:run(input) abort
+  let s:state = game#core#process(s:state, a:input)
+  call s:draw()
+endfunction
+
+function! s:draw() abort
+  let l:lines = game#core#render(s:state)
   setlocal modifiable
   silent 1,$delete _
   call setline(1, l:lines)
   setlocal nomodifiable
+  normal! G
 endfunction
