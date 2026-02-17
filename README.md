@@ -33,3 +33,6 @@ This project follows functional programming principles:
 - **Immutable State**: Game logic operates on a state dictionary.
 - **Pure Views**: The UI is a pure function of the current state.
 - **Side-Effect Isolation**: All buffer manipulations are sequestered in the engine layer.
+
+## License
+All rights reserved. © 2026 ForbocAI. See [LICENSE](./LICENSE) for full details.
