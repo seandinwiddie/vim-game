@@ -32,8 +32,16 @@ function! s:set_up_buffer() abort
   nnoremap <buffer> <silent> s :call <SID>run('go south')<CR>
   nnoremap <buffer> <silent> e :call <SID>run('go east')<CR>
   nnoremap <buffer> <silent> w :call <SID>run('go west')<CR>
+  nnoremap <buffer> a :call <SID>prompt_ask()<CR>
   
-  echo "Press 'i' or ':' to type a command. 'q' to quit."
+  echo "Press 'a' to ask the Loom. 'q' to quit. 'n/s/e/w' to move."
+endfunction
+
+function! s:prompt_ask() abort
+  let l:input = input('Ask the Loom: ')
+  if !empty(l:input)
+    call s:run('ask ' . l:input)
+  endif
 endfunction
 
 function! s:prompt_cmd() abort

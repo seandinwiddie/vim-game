@@ -46,6 +46,9 @@ function! game#core#process(state, input) abort
     return s:cmd_go(a:state, l:dir)
   elseif l:action ==# 'scavenge'
     return s:cmd_scavenge(a:state)
+  elseif l:action ==# 'ask'
+    let l:question = join(l:parts[1:], ' ')
+    return s:cmd_ask(a:state, l:question)
   endif
 
   return s:add_log(a:state, "LOG_ERR_CRITICAL: Unknown input_vector '" . l:action . "'")
@@ -85,6 +88,16 @@ function! s:cmd_go(state, dir) abort
 endfunction
 
 function! s:cmd_scavenge(state) abort
+  let l:next_state = copy(a:state)
+  let l:next_state.hint = 'DIRECTIVE: Scavenging implemented via "ask is there loot here?" now.'
+  return s:add_log(l:next_state, "Scavenge command deprecated. Use 'ask' for Loom of Fate.")
+endfunction
+
+function! s:cmd_ask(state, question) abort
+  if empty(a:question)
+    return s:add_log(a:state, "LOG_ERR: You must ask a question (e.g., 'ask is the door locked?').")
+  endif
+
   let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
   let l:roll = (l:val % 100) + 1
   let l:surge = a:state.surge
@@ -92,26 +105,53 @@ function! s:cmd_scavenge(state) abort
   
   let l:res = ""
   let l:new_surge = l:surge
-  let l:hint = 'DIRECTIVE: Loom of Fate resolved. "scavenge" again or "look" for exits.'
+  let l:hint = 'DIRECTIVE: Loom of Fate resolved. "ask" again or explore.'
+  let l:is_unexpected = 0
+
+  " To Knowledge Table
   if l:modified_roll >= 96
-    let l:res = "SYSTEM_UPDATE: Yes, and unexpectedly... A GIBSONIAN RELIC SHARD FOUND ᚠ."
+    let l:res = "YES, AND UNEXPECTEDLY"
+    let l:new_surge = 0
+    let l:is_unexpected = 1
+  elseif l:modified_roll >= 86
+    let l:res = "YES, BUT"
+    let l:new_surge = 0
+  elseif l:modified_roll >= 81
+    let l:res = "YES, AND"
     let l:new_surge = 0
   elseif l:modified_roll >= 51
-    let l:res = "LOG_RECO: YES. Scrap iron secured for the Order."
+    let l:res = "YES"
     let l:new_surge += 2
   elseif l:modified_roll >= 21
-    let l:res = "LOG_RECO: NO. The void yields nothing but static."
+    let l:res = "NO"
     let l:new_surge += 2
-  else
-    let l:res = "LOG_ERR_CRITICAL: UNEXPECTED VOIDWRAITH MANIFESTATION."
+  elseif l:modified_roll >= 16
+    let l:res = "NO, AND"
     let l:new_surge = 0
-    let l:hint = 'WARNING: Hostile entity confirmed. (Combat logic pending - suggest relocation via "go")'
+  elseif l:modified_roll >= 6
+    let l:res = "NO, BUT"
+    let l:new_surge = 0
+  else
+    let l:res = "NO, AND UNEXPECTEDLY"
+    let l:new_surge = 0
+    let l:is_unexpected = 1
   endif
 
   let l:next_state = copy(a:state)
   let l:next_state.surge = l:new_surge
   let l:next_state.hint = l:hint
-  return s:add_log(l:next_state, "[Loom of Fate: " . l:modified_roll . "] " . l:res)
+  
+  let l:log_lines = ["Q: " . a:question, "[Loom of Fate: " . l:modified_roll . "] " . l:res]
+
+  if l:is_unexpected
+    let l:val2 = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:d20 = (l:val2 % 20) + 1
+    let l:table2 = ['foreshadowing', 'tying off', 'to conflict', 'costume change', 'key grip', 'to knowledge', 'framing', 'set change', 'upstaged', 'pattern change', 'limelit', 'entering the red', 'to endings', 'montage', 'enter stage left', 'cross-stitch', 'six degrees', 're-roll/reserved', 're-roll/reserved', 're-roll/reserved']
+    let l:modifier = l:table2[l:d20 - 1]
+    call add(l:log_lines, "UNEXPECTED MODIFIER: " . toupper(l:modifier))
+  endif
+
+  return s:add_log(l:next_state, l:log_lines)
 endfunction
 
 function! s:add_log(state, msg) abort

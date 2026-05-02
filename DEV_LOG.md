@@ -8,9 +8,10 @@
 - **Immutable State**: Single Dictionary state management ensures predictable transitions and debuggability.
 
 ## ᚢ THE LOOM OF FATE (GAME MECHANICS)
-- **d100 Oracle**: Implemented the "Loom of Fate" narrative engine.
-- **Surge Count**: Procedural modifier system that tracks world tension and influences scavenging outcomes.
-- **Scavenging Loop**: Players can scavenge for relics; results are determined by the Loom (Success/Yes/No/Unexpected).
+- **d100 Oracle**: Implemented the "Loom of Fate" narrative engine via the `ask` command.
+- **Surge Count**: Procedural modifier system that tracks world tension. Plain "yes/no" results increment the surge count by 2, while nuanced results reset it to 0. Surge count is dynamically added/subtracted from the d100.
+- **To Knowledge Table**: Maps d100 rolls (adjusted by surge) to full spectrum responses: YES, AND UNEXPECTEDLY / YES, BUT / YES, AND / YES / NO / NO, AND / NO, BUT / NO, AND UNEXPECTEDLY.
+- **Unexpected Modifiers**: Rolls d20 on Table 2 (foreshadowing, set change, limelit, etc.) when an "unexpectedly" result triggers.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -29,7 +30,7 @@
 ## ᚱ COMMAND SYSTEM
 - `look` / `l`: Scan the immediate vicinity.
 - `go [dir]` / `n`/`s`/`e`/`w`: Coordinate shifting between nodes.
-- `scavenge`: Initiate the Loom of Fate protocol.
+- `ask [question]` / `a`: Consult the Loom of Fate oracle (e.g. `ask is the door locked?`).
 - `q`: Terminate the Neural Link.
 
 ---
