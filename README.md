@@ -28,10 +28,11 @@ Then run `:PlugInstall`.
 2. **Move**: Press `n`, `s`, `e`, or `w` to navigate the spatial nodes of the Quadar Tower.
 3. **Engage**: Press `c` to initiate combat with any hostile entities detected in your current node.
 4. **Inventory**: Press `i` to view the relics and artifacts you've scavenged and looted.
-5. **Ask the Oracle**: Press `a` to consult the Loom of Fate (e.g. "is the door locked?"). The system will roll a `d100`, apply your current Surge Count, and generate an outcome.
-6. **Shift Stage**: Press `1` (To Knowledge), `2` (To Conflict), or `3` (To Endings) to alter the oracle's probability matrix based on the scene's tension.
-7. **Manage Threads**: In command mode, type `:call s:run('thread add Rescue the MIA Marine')` to track narrative goals.
-8. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
+5. **Profile & Rest**: Press `p` to view your character stats, or `r` to rest and recover HP (warning: resting increases your Surge Count!).
+6. **Ask the Oracle**: Press `a` to consult the Loom of Fate (e.g. "is the door locked?"). The system will roll a `d100`, apply your current Surge Count, and generate an outcome.
+7. **Shift Stage**: Press `1` (To Knowledge), `2` (To Conflict), or `3` (To Endings) to alter the oracle's probability matrix based on the scene's tension.
+8. **Manage Threads**: In command mode, type `:call s:run('thread add Rescue the MIA Marine')` to track narrative goals.
+9. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 
 ## Architecture
 This project follows functional programming principles:

@@ -2,10 +2,15 @@
 
 `Státus: MVP_v1.0 // Protocol: CYBER_GRIMDARK`
 
-## ᚠ FUNCTIONAL ARCHITECTURE
-- **Stateless Core**: All game logic resides in pure functions within `autoload/game/core.vim`.
-- **Side-Effect Isolation**: Buffer manipulation and Vim-specific events are isolated in `autoload/game/engine.vim`.
-- **Immutable State**: Single Dictionary state management ensures predictable transitions and debuggability.
+## ᚠ PURE VIMSCRIPT LOGIC
+- **Functional Core, Imperative Shell**: Implemented `game#core` purely via pure functions that map `State + Input -> State`.
+- **Architectural Subdomains**: Split the engine out of `core.vim` and into localized functional domains:
+  - `data.vim`: Room instantiation
+  - `explore.vim`: Navigational algorithms (`go`, `look`)
+  - `combat.vim`: Tactical matrix (`attack`)
+  - `player.vim`: Character persistence (`inventory`, `profile`, `rest`)
+  - `oracle.vim`: Loom of Fate (`ask`, `stage`, `thread`)
+- **Imperative Shell**: The `game#engine` handles rendering the state via `:echo` or appending to a unified `ScratchBuffer` via standard Vim mechanisms (`append()`, `setline()`).
 
 ## ᚢ THE LOOM OF FATE (GAME MECHANICS)
 - **d100 Oracle**: Implemented the "Loom of Fate" narrative engine via the `ask` command.
@@ -37,6 +42,8 @@
 - `go [dir]` / `n`/`s`/`e`/`w`: Coordinate shifting between nodes.
 - `attack` / `c`: Engage the primary hostile entity in the current node.
 - `inventory` / `i`: Review accumulated relics.
+- `profile` / `p`: Run neural diagnostics to view level, class, and HP.
+- `rest` / `r`: Rest in the shadows to recover +30 HP (increases Surge Count by +5).
 - `ask [question]` / `a`: Consult the Loom of Fate oracle (e.g. `ask is the door locked?`).
 - `stage [name]` / `1`, `2`, `3`: Shift stage to Knowledge (1), Conflict (2), or Endings (3).
 - `thread [add/rm] [arg]`: Track narrative threads.
