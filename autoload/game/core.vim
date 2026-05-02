@@ -26,6 +26,8 @@ function! game#core#init() abort
         \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear']},
         \ 'loc': 'nexus',
         \ 'surge': 0,
+        \ 'stage': 'knowledge',
+        \ 'threads': ['Find Missing Rangers'],
         \ 'log': [],
         \ 'hint': 'SYSTEM_INIT: Type "look" to scan your surroundings.',
         \ }
@@ -49,6 +51,16 @@ function! game#core#process(state, input) abort
   elseif l:action ==# 'ask'
     let l:question = join(l:parts[1:], ' ')
     return s:cmd_ask(a:state, l:question)
+  elseif l:action ==# 'stage'
+    let l:new_stage = (len(l:parts) > 1) ? tolower(l:parts[1]) : ''
+    return s:cmd_stage(a:state, l:new_stage)
+  elseif l:action ==# 'thread'
+    if len(l:parts) < 2
+      return s:add_log(a:state, "LOG_ERR: 'thread add <desc>' or 'thread rm <idx>'.")
+    endif
+    let l:subcmd = tolower(l:parts[1])
+    let l:args = join(l:parts[2:], ' ')
+    return s:cmd_thread(a:state, l:subcmd, l:args)
   endif
 
   return s:add_log(a:state, "LOG_ERR_CRITICAL: Unknown input_vector '" . l:action . "'")
@@ -93,6 +105,33 @@ function! s:cmd_scavenge(state) abort
   return s:add_log(l:next_state, "Scavenge command deprecated. Use 'ask' for Loom of Fate.")
 endfunction
 
+function! s:cmd_stage(state, stage_name) abort
+  let l:valid = ['knowledge', 'conflict', 'endings']
+  if index(l:valid, a:stage_name) == -1
+    return s:add_log(a:state, "LOG_ERR: Invalid stage. Use: stage knowledge, stage conflict, or stage endings.")
+  endif
+  let l:next_state = copy(a:state)
+  let l:next_state.stage = a:stage_name
+  let l:next_state.hint = 'DIRECTIVE: Stage of the Scene shifted to ' . toupper(a:stage_name) . '.'
+  return s:add_log(l:next_state, "NARRATIVE_SHIFT: Loom of Fate probabilities calibrated to " . toupper(a:stage_name) . ".")
+endfunction
+
+function! s:cmd_thread(state, subcmd, args) abort
+  let l:next_state = copy(a:state)
+  if a:subcmd ==# 'add'
+    call add(l:next_state.threads, a:args)
+    return s:add_log(l:next_state, "THREAD ADDED: " . a:args)
+  elseif a:subcmd ==# 'rm' || a:subcmd ==# 'del'
+    let l:idx = str2nr(a:args) - 1
+    if l:idx >= 0 && l:idx < len(l:next_state.threads)
+      let l:removed = remove(l:next_state.threads, l:idx)
+      return s:add_log(l:next_state, "THREAD RESOLVED: " . l:removed)
+    endif
+    return s:add_log(a:state, "LOG_ERR: Invalid thread index.")
+  endif
+  return s:add_log(a:state, "LOG_ERR: Unknown thread subcommand.")
+endfunction
+
 function! s:cmd_ask(state, question) abort
   if empty(a:question)
     return s:add_log(a:state, "LOG_ERR: You must ask a question (e.g., 'ask is the door locked?').")
@@ -108,27 +147,36 @@ function! s:cmd_ask(state, question) abort
   let l:hint = 'DIRECTIVE: Loom of Fate resolved. "ask" again or explore.'
   let l:is_unexpected = 0
 
-  " To Knowledge Table
-  if l:modified_roll >= 96
+  " Define boundaries based on current stage
+  let l:b = {}
+  if a:state.stage ==# 'endings'
+    let l:b = {'y_un': 100, 'y_but': 99, 'y_and': 81, 'y': 51, 'n': 21, 'n_and': 3, 'n_but': 2, 'n_un': 1}
+  elseif a:state.stage ==# 'conflict'
+    let l:b = {'y_un': 99, 'y_but': 95, 'y_and': 85, 'y': 51, 'n': 17, 'n_and': 7, 'n_but': 3, 'n_un': 1}
+  else " knowledge is default
+    let l:b = {'y_un': 96, 'y_but': 86, 'y_and': 81, 'y': 51, 'n': 21, 'n_and': 16, 'n_but': 6, 'n_un': 1}
+  endif
+
+  if l:modified_roll >= l:b.y_un
     let l:res = "YES, AND UNEXPECTEDLY"
     let l:new_surge = 0
     let l:is_unexpected = 1
-  elseif l:modified_roll >= 86
+  elseif l:modified_roll >= l:b.y_but
     let l:res = "YES, BUT"
     let l:new_surge = 0
-  elseif l:modified_roll >= 81
+  elseif l:modified_roll >= l:b.y_and
     let l:res = "YES, AND"
     let l:new_surge = 0
-  elseif l:modified_roll >= 51
+  elseif l:modified_roll >= l:b.y
     let l:res = "YES"
     let l:new_surge += 2
-  elseif l:modified_roll >= 21
+  elseif l:modified_roll >= l:b.n
     let l:res = "NO"
     let l:new_surge += 2
-  elseif l:modified_roll >= 16
+  elseif l:modified_roll >= l:b.n_and
     let l:res = "NO, AND"
     let l:new_surge = 0
-  elseif l:modified_roll >= 6
+  elseif l:modified_roll >= l:b.n_but
     let l:res = "NO, BUT"
     let l:new_surge = 0
   else
@@ -171,9 +219,15 @@ function! game#core#render(state) abort
   let l:header = [
         \ "ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ",
         \ "== QUA'DAR NEURAL LINK ==",
-        \ "Surge Count: " . a:state.surge,
+        \ "Stage: TO " . toupper(a:state.stage) . " | Surge Count: " . a:state.surge,
         \ a:state.hint,
-        \ ""
+        \ "--- ACTIVE THREADS ---"
         \ ]
+  let l:idx = 1
+  for l:th in a:state.threads
+    call add(l:header, l:idx . ". " . l:th)
+    let l:idx += 1
+  endfor
+  call add(l:header, "")
   return l:header + a:state.log
 endfunction

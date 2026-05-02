@@ -10,8 +10,9 @@
 ## ᚢ THE LOOM OF FATE (GAME MECHANICS)
 - **d100 Oracle**: Implemented the "Loom of Fate" narrative engine via the `ask` command.
 - **Surge Count**: Procedural modifier system that tracks world tension. Plain "yes/no" results increment the surge count by 2, while nuanced results reset it to 0. Surge count is dynamically added/subtracted from the d100.
-- **To Knowledge Table**: Maps d100 rolls (adjusted by surge) to full spectrum responses: YES, AND UNEXPECTEDLY / YES, BUT / YES, AND / YES / NO / NO, AND / NO, BUT / NO, AND UNEXPECTEDLY.
+- **Scene Stages**: Three matrices (To Knowledge, To Conflict, To Endings) map d100 rolls (adjusted by surge) to full spectrum responses: YES, AND UNEXPECTEDLY / YES, BUT / YES, AND / YES / NO / NO, AND / NO, BUT / NO, AND UNEXPECTEDLY.
 - **Unexpected Modifiers**: Rolls d20 on Table 2 (foreshadowing, set change, limelit, etc.) when an "unexpectedly" result triggers.
+- **Narrative Threads**: Integrated a state array for active storylines. Threads are rendered in the Neural Link header to track active goals (e.g. "Find Missing Rangers").
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -31,6 +32,8 @@
 - `look` / `l`: Scan the immediate vicinity.
 - `go [dir]` / `n`/`s`/`e`/`w`: Coordinate shifting between nodes.
 - `ask [question]` / `a`: Consult the Loom of Fate oracle (e.g. `ask is the door locked?`).
+- `stage [name]` / `1`, `2`, `3`: Shift stage to Knowledge (1), Conflict (2), or Endings (3).
+- `thread [add/rm] [arg]`: Track narrative threads.
 - `q`: Terminate the Neural Link.
 
 ---
