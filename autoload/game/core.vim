@@ -51,6 +51,10 @@ function! game#core#process(state, input) abort
     return game#player#cmd_profile(a:state)
   elseif l:action ==# 'rest' || l:action ==# 'r'
     return game#player#cmd_rest(a:state)
+  elseif l:action ==# 'save'
+    return game#player#cmd_save(a:state)
+  elseif l:action ==# 'load'
+    return game#player#cmd_load(a:state)
   endif
 
   return game#core#add_log(a:state, "LOG_ERR_CRITICAL: Unknown input_vector '" . l:action . "'")

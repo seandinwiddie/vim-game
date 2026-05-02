@@ -44,6 +44,8 @@
 - `inventory` / `i`: Review accumulated relics.
 - `profile` / `p`: Run neural diagnostics to view level, class, and HP.
 - `rest` / `r`: Rest in the shadows to recover +30 HP (increases Surge Count by +5).
+- `save`: Serialize current game state matrix to `~/.quadar_save.json`.
+- `load`: Restore game state from neural backup.
 - `ask [question]` / `a`: Consult the Loom of Fate oracle (e.g. `ask is the door locked?`).
 - `stage [name]` / `1`, `2`, `3`: Shift stage to Knowledge (1), Conflict (2), or Endings (3).
 - `thread [add/rm] [arg]`: Track narrative threads.

@@ -43,3 +43,25 @@ function! game#player#cmd_rest(state) abort
   let l:next_state.hint = 'WARNING: Resting increases the Surge Count!'
   return game#core#add_log(l:next_state, ["You rest in the shadows...", "HEALED: +" . l:heal . " HP.", "TENSION RISING: Surge Count increased by 5."])
 endfunction
+
+function! game#player#cmd_save(state) abort
+  let l:json = json_encode(a:state)
+  let l:save_path = expand('~/.quadar_save.json')
+  call writefile([l:json], l:save_path)
+  return game#core#add_log(a:state, "SYSTEM_LOG: State matrix serialized and saved to " . l:save_path)
+endfunction
+
+function! game#player#cmd_load(state) abort
+  let l:save_path = expand('~/.quadar_save.json')
+  if !filereadable(l:save_path)
+    return game#core#add_log(a:state, "LOG_ERR_CRITICAL: No neural backup detected at " . l:save_path)
+  endif
+  
+  try
+    let l:json = readfile(l:save_path)[0]
+    let l:next_state = json_decode(l:json)
+    return game#core#add_log(l:next_state, "SYSTEM_LOG: State matrix restored from neural backup.")
+  catch
+    return game#core#add_log(a:state, "LOG_ERR_CRITICAL: Neural backup corrupted.")
+  endtry
+endfunction
