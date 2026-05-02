@@ -23,7 +23,6 @@ function! s:set_up_buffer() abort
   
   " UI Mappings
   nnoremap <buffer> <silent> <nowait> : :call <SID>prompt_cmd()<CR>
-  nnoremap <buffer> <silent> <nowait> i :call <SID>prompt_cmd()<CR>
   nnoremap <buffer> <silent> <nowait> q :bwipe!<CR>
   
   " Quick game commands
@@ -32,12 +31,14 @@ function! s:set_up_buffer() abort
   nnoremap <buffer> <silent> s :call <SID>run('go south')<CR>
   nnoremap <buffer> <silent> e :call <SID>run('go east')<CR>
   nnoremap <buffer> <silent> w :call <SID>run('go west')<CR>
+  nnoremap <buffer> <silent> c :call <SID>run('attack')<CR>
+  nnoremap <buffer> <silent> i :call <SID>run('inventory')<CR>
   nnoremap <buffer> a :call <SID>prompt_ask()<CR>
   nnoremap <buffer> <silent> 1 :call <SID>run('stage knowledge')<CR>
   nnoremap <buffer> <silent> 2 :call <SID>run('stage conflict')<CR>
   nnoremap <buffer> <silent> 3 :call <SID>run('stage endings')<CR>
   
-  echo "Press 'a' to ask. '1/2/3' to change stage. 'q' to quit. 'n/s/e/w' to move."
+  echo "Press 'a' to ask, 'c' to combat, 'i' for inventory. '1/2/3' stages. 'q' to quit. 'n/s/e/w' to move."
 endfunction
 
 function! s:prompt_ask() abort

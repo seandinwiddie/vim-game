@@ -1,26 +1,40 @@
 " autoload/game/core.vim - Quadar Micro-MUD Functional Core
 
-" === PURE DATA: ROOMS (Cyber Grimdark Refactor) ===
-let s:nexus = {
-      \ 'name': 'ᚠ MERCHANDISE_STORE_ROOM ᚠ',
-      \ 'desc': "A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts amid shadowed corridors.",
-      \ 'exits': {'north': 'hallway'}
-      \ }
-let s:hallway = {
-      \ 'name': 'ᚢ UMBRAL_REACH_CORRIDOR ᚢ',
-      \ 'desc': "A narrow passage of obsidian stone, crystallized in extraterrestrial resonance. The air hums with chthonic frequencies pulsating from the core. Shadows meld slitheringly against the rain-slicked walls.",
-      \ 'exits': {'south': 'nexus', 'north': 'spire_base'}
-      \ }
-let s:spire_base = {
-      \ 'name': 'ᚦ BASTION_OF_THE_SPIRE ᚦ',
-      \ 'desc': "The indomitable tower stands as a testament to long-ago awakening. Colossal structure vibrating with low magic of corrupt watchers. Neon blurs in the Abyssal Murk, a world scorched by armageddon's fiery breath.",
-      \ 'exits': {'south': 'hallway'}
-      \ }
-
-let s:rooms = {'nexus': s:nexus, 'hallway': s:hallway, 'spire_base': s:spire_base}
-
 " === PURE LOGIC: INITIAL STATE ===
 function! game#core#init() abort
+  let l:rooms = {
+        \ 'nexus': {
+        \   'name': 'ᚠ MERCHANDISE_STORE_ROOM ᚠ',
+        \   'desc': "A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.",
+        \   'exits': {'north': 'hallway'},
+        \   'entities': []
+        \ },
+        \ 'hallway': {
+        \   'name': 'ᚢ UMBRAL_REACH_CORRIDOR ᚢ',
+        \   'desc': "A narrow passage of obsidian stone, crystallized in extraterrestrial resonance. The air hums with chthonic frequencies pulsating from the core.",
+        \   'exits': {'south': 'nexus', 'north': 'spire_base'},
+        \   'entities': ['Ashwalker (Renegade Wanderer)']
+        \ },
+        \ 'spire_base': {
+        \   'name': 'ᚦ BASTION_OF_THE_SPIRE ᚦ',
+        \   'desc': "The indomitable tower stands as a testament to long-ago awakening. Colossal structure vibrating with low magic of corrupt watchers. Neon blurs in the Abyssal Murk.",
+        \   'exits': {'south': 'hallway', 'east': 'marshes'},
+        \   'entities': ['Obsidian Warden (Sentinel of Terror)']
+        \ },
+        \ 'marshes': {
+        \   'name': 'ᚨ ETHEREAL_MARSHES ᚨ',
+        \   'desc': "Once lush landscapes now enveloped by poisonous Abyssal Murk. Great furrowing depths of endless ooze and medieval torture.",
+        \   'exits': {'west': 'spire_base', 'north': 'abyssal_void'},
+        \   'entities': ['Ashwalker Junkie']
+        \ },
+        \ 'abyssal_void': {
+        \   'name': 'ᛟ ABYSSAL_VOID ᛟ',
+        \   'desc': "The void that invaded once-holy grounds. The sacredness of the Ethereal Towerlands has given way to the blackness of heavenly damnation.",
+        \   'exits': {'south': 'marshes'},
+        \   'entities': ['Doomguard (Armored Blood Knight)']
+        \ }
+        \ }
+
   let l:s = {
         \ 'view': 'game',
         \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear']},
@@ -28,6 +42,7 @@ function! game#core#init() abort
         \ 'surge': 0,
         \ 'stage': 'knowledge',
         \ 'threads': ['Find Missing Rangers'],
+        \ 'rooms': l:rooms,
         \ 'log': [],
         \ 'hint': 'SYSTEM_INIT: Type "look" to scan your surroundings.',
         \ }
@@ -61,6 +76,10 @@ function! game#core#process(state, input) abort
     let l:subcmd = tolower(l:parts[1])
     let l:args = join(l:parts[2:], ' ')
     return s:cmd_thread(a:state, l:subcmd, l:args)
+  elseif l:action ==# 'attack' || l:action ==# 'fight'
+    return s:cmd_attack(a:state)
+  elseif l:action ==# 'inventory' || l:action ==# 'i'
+    return s:cmd_inventory(a:state)
   endif
 
   return s:add_log(a:state, "LOG_ERR_CRITICAL: Unknown input_vector '" . l:action . "'")
@@ -69,22 +88,31 @@ endfunction
 " === INTERNAL PURE HELPERS ===
 
 function! s:cmd_look(state) abort
-  let l:room = s:rooms[a:state.loc]
+  let l:room = a:state.rooms[a:state.loc]
   let l:next_state = copy(a:state)
-  let l:next_state.hint = 'DIRECTIVE: Use "go north" to explore the corridor, or "scavenge" for resources.'
+  let l:next_state.hint = 'DIRECTIVE: Use "go [dir]" to explore, or "ask" the oracle.'
   let l:lines = [
         \ '---',
         \ l:room.name,
-        \ l:room.desc,
-        \ 'ᚱ ENTRANCES: ' . join(keys(l:room.exits), ', '),
-        \ '[HP: ' . a:state.player.hp . '/' . a:state.player.max_hp . ']',
-        \ '--'
+        \ l:room.desc
         \ ]
+        
+  if !empty(l:room.entities)
+    call add(l:lines, 'DETECTED ENTITIES:')
+    for l:ent in l:room.entities
+      call add(l:lines, '  > [!!] ' . l:ent)
+    endfor
+    let l:next_state.hint = 'DIRECTIVE: Hostiles detected! Type "attack" to engage!'
+  endif
+  
+  call add(l:lines, 'ᚱ ENTRANCES: ' . join(keys(l:room.exits), ', '))
+  call add(l:lines, '[HP: ' . a:state.player.hp . '/' . a:state.player.max_hp . ']')
+  call add(l:lines, '--')
   return s:add_log(l:next_state, l:lines)
 endfunction
 
 function! s:cmd_go(state, dir) abort
-  let l:room = s:rooms[a:state.loc]
+  let l:room = a:state.rooms[a:state.loc]
   let l:dir_map = {'n': 'north', 's': 'south', 'e': 'east', 'w': 'west'}
   let l:target_dir = get(l:dir_map, a:dir, a:dir)
   
@@ -98,6 +126,18 @@ function! s:cmd_go(state, dir) abort
   endif
   return s:add_log(a:state, "PHYSICS_LOGIC_ERR: Cannot penetrate " . l:target_dir)
 endfunction
+
+function! s:cmd_inventory(state) abort
+  let l:next_state = copy(a:state)
+  let l:next_state.hint = 'DIRECTIVE: Local inventory cache accessed.'
+  let l:lines = ['--- SECURED RELICS ---']
+  for l:item in a:state.player.inv
+    call add(l:lines, ' [ᛟ] ' . l:item)
+  endfor
+  call add(l:lines, '----------------------')
+  return s:add_log(l:next_state, l:lines)
+endfunction
+
 
 function! s:cmd_scavenge(state) abort
   let l:next_state = copy(a:state)
@@ -197,6 +237,57 @@ function! s:cmd_ask(state, question) abort
     let l:table2 = ['foreshadowing', 'tying off', 'to conflict', 'costume change', 'key grip', 'to knowledge', 'framing', 'set change', 'upstaged', 'pattern change', 'limelit', 'entering the red', 'to endings', 'montage', 'enter stage left', 'cross-stitch', 'six degrees', 're-roll/reserved', 're-roll/reserved', 're-roll/reserved']
     let l:modifier = l:table2[l:d20 - 1]
     call add(l:log_lines, "UNEXPECTED MODIFIER: " . toupper(l:modifier))
+  endif
+
+  return s:add_log(l:next_state, l:log_lines)
+endfunction
+
+function! s:cmd_attack(state) abort
+  let l:room = a:state.rooms[a:state.loc]
+  if empty(l:room.entities)
+    return s:add_log(a:state, "COMBAT_LOG: Target vector empty. No hostiles found.")
+  endif
+
+  let l:target = l:room.entities[0]
+  let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+  let l:roll = (l:val % 100) + 1
+  
+  let l:next_state = copy(a:state)
+  let l:next_state.rooms = copy(a:state.rooms)
+  let l:next_state.rooms[a:state.loc] = copy(l:room)
+  let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
+  let l:next_state.player = copy(a:state.player)
+
+  let l:log_lines = ["COMBAT_INITIATED: Engaging " . l:target . "...", "TACTICAL_ROLL: " . l:roll]
+  
+  if l:roll >= 40
+    let l:dmg = (l:val % 15) + 5
+    let l:next_state.player.hp -= l:dmg
+    call remove(l:next_state.rooms[a:state.loc].entities, 0)
+    call add(l:log_lines, "SUCCESS: You execute a flurry of strikes! " . l:target . " is annihilated.")
+    call add(l:log_lines, "SUSTAINED DAMAGE: -" . l:dmg . " HP.")
+    
+    let l:loot_roll = (l:val % 100)
+    if l:loot_roll > 30
+      let l:relics = ['Gibsonian Shard', 'Eldritch Medallion', 'Zinc Plating', 'Obsidian Fragment', 'Abyssal Ash', 'Corrupt Watcher Core', 'Pollen Vial']
+      let l:loot = l:relics[l:val % len(l:relics)]
+      call add(l:next_state.player.inv, l:loot)
+      call add(l:log_lines, "LOOT RECOVERED: " . l:loot)
+    endif
+    
+    let l:next_state.hint = 'DIRECTIVE: Hostile neutralized. Sector secure.'
+  else
+    let l:dmg = (l:val % 30) + 20
+    let l:next_state.player.hp -= l:dmg
+    call add(l:log_lines, "CRITICAL FAILURE: The " . l:target . " retaliates with lethal force!")
+    call add(l:log_lines, "SUSTAINED DAMAGE: -" . l:dmg . " HP.")
+    let l:next_state.hint = 'WARNING: Vital signs dropping. Consider retreat!'
+  endif
+
+  if l:next_state.player.hp <= 0
+    let l:next_state.player.hp = 0
+    call add(l:log_lines, "FATAL_ERROR: NEURAL LINK SEVERED. YOU HAVE DIED.")
+    let l:next_state.hint = 'GAME OVER: Type "q" to quit.'
   endif
 
   return s:add_log(l:next_state, l:log_lines)
