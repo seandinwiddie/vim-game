@@ -1,6 +1,6 @@
-# VIM QUEST
+# Qua'dar MUD (Vim Edition)
 
-A minimal, functional-style game built entirely in Vimscript.
+A cyber noir, grimdark Multi-User Dungeon built entirely in Vimscript. This engine integrates the "Loom of Fate" TTRPG oracle system, allowing for offline, locally generated narrative play within a pure functional programming architecture.
 
 ## Installation
 
@@ -9,8 +9,8 @@ To try the game immediately without installing it permanently, you must add the 
 1. Open Vim.
 2. Run the following commands:
    ```vim
-   :set runtimepath+=~/GitHub/vim-game
-   :source ~/GitHub/vim-game/plugin/game.vim
+   :set runtimepath+=~/path/to/vim-game
+   :source ~/path/to/vim-game/plugin/game.vim
    ```
 
 ### Using a Plugin Manager
@@ -25,8 +25,11 @@ Then run `:PlugInstall`.
    ```vim
    :GameQuestStart
    ```
-2. Press **`<Space>`** to start from the title screen.
-3. Press **`q`** at any time to quit the game buffer.
+2. **Move**: Press `n`, `s`, `e`, or `w` to navigate the spatial nodes of the Quadar Tower.
+3. **Ask the Oracle**: Press `a` to consult the Loom of Fate (e.g. "is the door locked?"). The system will roll a `d100`, apply your current Surge Count, and generate an outcome.
+4. **Shift Stage**: Press `1` (To Knowledge), `2` (To Conflict), or `3` (To Endings) to alter the oracle's probability matrix based on the scene's tension.
+5. **Manage Threads**: In command mode, type `:call s:run('thread add Rescue the MIA Marine')` to track narrative goals.
+6. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 
 ## Architecture
 This project follows functional programming principles:
