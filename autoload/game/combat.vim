@@ -175,11 +175,22 @@ function! game#combat#cmd_cast(state, spell_name) abort
     return game#core#add_log(l:next_state, l:log_lines)
   endif
 
-  let l:roll = (l:val % 20) + 1 + l:p_arc + l:mark_bonus
+  let l:kind_str = 'ARCANE'
+  let l:bonus = l:p_arc
+  let l:low = tolower(l:matched_spell)
+  if l:low =~# 'strike\|slam\|sword\|blade\|slash\|charge\|melee\|edge'
+    let l:kind_str = 'MELEE'
+    let l:bonus = l:p_str
+  elseif l:low =~# 'shot\|ranged\|explosive\|grenade\|barrage\|gun\|blaster\|projectile\|launch'
+    let l:kind_str = 'RANGED'
+    let l:bonus = l:p_agi
+  endif
+
+  let l:roll = (l:val % 20) + 1 + l:bonus + l:mark_bonus
   
   let l:log_lines = [
         \ "CASTING: " . l:matched_spell . " on " . l:target_name . "...",
-        \ "ARCANE_ROLL: " . l:roll
+        \ l:kind_str . "_ROLL: " . l:roll
         \ ]
 
   if l:roll >= 15

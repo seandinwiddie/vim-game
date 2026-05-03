@@ -6,14 +6,13 @@ Scene #1: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 Focus: decode the return codex relay
 Objectives: 1 active / 1 complete
 Notes: 2 scenes / 3 NPCs
-Trade Cache: 17 | Guard: 14 | Mark: none
+Trade Cache: 36 | Guard: 14 | Mark: none
 DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
 2. decode the return codex relay
 3. secure the tower shell extraction route
 
-SIDEBAR FACT: another recon team was seen near the tower shell
 INTERACT: You examine the Bound Ranger.
 A shackled recruit calls for extraction.
 EXTRACTION: You cut a stranded ranger free and fold them back into the recon circuit.
@@ -50,12 +49,12 @@ DETECTED ENTITIES:
 --
 CASTING: Hunter's Mark on Ashwalker...
 TARGET LOCK: +4 to the next strike against this hostile.
-CASTING: Ethereal Dagger Assault on Ashwalker...
-ARCANE_ROLL: 27
+CASTING: Explosive Barrage on Ashwalker...
+RANGED_ROLL: 28
 CRITICAL HIT: The spell overwhelms the Ashwalker!
 HUNTER'S MARK: Target lock collapses with the kill.
 SALVAGE BANKED: +4 trade from Ashwalker.
-LOOT RECOVERED: Pollen Vial
+CAST_LOG: You channel Shatterstrike Slam, but the energy dissipates in the empty air.
 FADE OUT: ashwalker resistance confirms the spire approach is still contested
 BOOKKEEPING: Review thread changes, new facts, and scene fallout before the next transition.
 THREAD SPLIT: Find Missing Rangers -> track the tower shell recon cell
@@ -68,13 +67,12 @@ THREAD MODIFIED: track the tower shell recon cell -> secure the tower shell extr
  - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay
 ---------------------
 --- SECURED RELICS ---
-Trade Cache: 17 | Guard: 14 | Mark: none
+Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Basic Dagger
  [ᛟ] Scout Gear
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Pollen Vial
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -82,13 +80,15 @@ Class: Rogue/Ranger
 Level: 12
 HP:    150 / 150
 STR: 5 | AGI: 9 | ARC: 4
-Trade: 17 | Guard: 14
+Trade: 36 | Guard: 14
 Mark: none
 Spells:
  - Ethereal Dagger Assault
  - Cloak of Shadows
  - Dark Crystal Shielding
  - Hunter's Mark
+ - Explosive Barrage
+ - Shatterstrike Slam
 Upgrades:
  + Zinc Weave Cloak
 ----------------------

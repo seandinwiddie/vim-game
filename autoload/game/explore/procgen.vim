@@ -78,27 +78,31 @@ function! s:enemy_pool(rank) abort
           \ {'name': 'Storm Titan', 'str': 10, 'agi': 3, 'arc': 8},
           \ {'name': 'Shadowhorn Juggernaut', 'str': 11, 'agi': 3, 'arc': 5},
           \ {'name': 'Magma Leviathan', 'str': 11, 'agi': 2, 'arc': 8},
-          \ {'name': 'Abyssal Overfiend', 'str': 10, 'agi': 4, 'arc': 9}
+          \ {'name': 'Abyssal Overfiend', 'str': 10, 'agi': 4, 'arc': 9},
+          \ {'name': 'Aksov Hexe-Spinne', 'str': 8, 'agi': 10, 'arc': 10}
           \ ]
   elseif a:rank == 3
     return [
           \ {'name': 'Byssalspawn', 'str': 9, 'agi': 2, 'arc': 7},
           \ {'name': 'Twilight Weaver', 'str': 4, 'agi': 9, 'arc': 6},
           \ {'name': 'Gravewalker', 'str': 7, 'agi': 4, 'arc': 6},
-          \ {'name': 'Flame Corps', 'str': 8, 'agi': 4, 'arc': 5}
+          \ {'name': 'Flame Corps', 'str': 8, 'agi': 4, 'arc': 5},
+          \ {'name': 'Aetherwing Herald', 'str': 5, 'agi': 9, 'arc': 8}
           \ ]
   elseif a:rank == 2
     return [
           \ {'name': 'Obsidian Warden', 'str': 7, 'agi': 2, 'arc': 6},
           \ {'name': 'Doomguard', 'str': 8, 'agi': 3, 'arc': 3},
           \ {'name': 'Voidwraith', 'str': 3, 'agi': 6, 'arc': 9},
-          \ {'name': 'Cyberflux Guardian', 'str': 6, 'agi': 6, 'arc': 5}
+          \ {'name': 'Cyberflux Guardian', 'str': 6, 'agi': 6, 'arc': 5},
+          \ {'name': 'Sentinel of Terror', 'str': 8, 'agi': 5, 'arc': 4}
           \ ]
   endif
   return [
         \ {'name': 'Ashwalker', 'str': 4, 'agi': 7, 'arc': 4},
         \ {'name': 'Aether Spirit', 'str': 2, 'agi': 8, 'arc': 8},
-        \ {'name': 'Thunder Trooper', 'str': 5, 'agi': 5, 'arc': 4}
+        \ {'name': 'Thunder Trooper', 'str': 5, 'agi': 5, 'arc': 4},
+        \ {'name': 'Iron Armored Guardian', 'str': 6, 'agi': 2, 'arc': 2}
         \ ]
 endfunction
 

@@ -164,6 +164,10 @@ function! s:catalog() abort
         \ {'id': 'dark-crystal-shielding', 'name': 'Dark Crystal Shielding', 'kind': 'spell', 'price': 14, 'desc': 'A defensive grimoire that raises a crystalline ward around the neural link.'},
         \ {'id': 'precision-shot', 'name': 'Precision Shot', 'kind': 'spell', 'price': 12, 'desc': 'A targeted ranged technique keyed to the ranger''s agility.'},
         \ {'id': 'hunters-mark', 'name': "Hunter's Mark", 'kind': 'spell', 'price': 12, 'desc': 'Locks a hostile into the tactical lattice for the next strike.'},
+        \ {'id': 'shatterstrike-slam', 'name': 'Shatterstrike Slam', 'kind': 'spell', 'price': 15, 'desc': 'A devastating melee spell that scales with physical strength.'},
+        \ {'id': 'explosive-barrage', 'name': 'Explosive Barrage', 'kind': 'spell', 'price': 16, 'desc': 'A rapid-fire ranged technique covering a wide impact zone.'},
+        \ {'id': 'ethereal-siren-imprisonment', 'name': 'Ethereal Siren Imprisonment', 'kind': 'spell', 'price': 18, 'desc': 'A binding arcane ritual that targets the soul.'},
+        \ {'id': 'plasma-charge-launchers', 'name': 'Plasma Charge Launchers', 'kind': 'spell', 'price': 22, 'desc': 'High-tech ranged payload linked via neural circuitry.'},
         \ {'id': 'zinc-weave-cloak', 'name': 'Zinc Weave Cloak', 'kind': 'upgrade', 'price': 18, 'desc': 'Reactive scout gear that sharpens your evasive edge.'},
         \ {'id': 'obsidian-edge', 'name': 'Obsidian Edge', 'kind': 'upgrade', 'price': 18, 'desc': 'A serrated weapons retrofit that adds brutal striking power.'},
         \ {'id': 'signal-booster-rig', 'name': 'Signal Booster Rig', 'kind': 'upgrade', 'price': 20, 'desc': 'An uplink rig that strengthens your vital envelope and field resilience.'}
