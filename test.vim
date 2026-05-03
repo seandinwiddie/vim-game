@@ -142,6 +142,7 @@ let s:store_file = expand('autoload/game/store.vim')
 let s:reducer_file = expand('autoload/game/reducer.vim')
 let s:engine_file = expand('autoload/game/engine.vim')
 let s:core_file = expand('autoload/game/core.vim')
+let s:rng_file = expand('autoload/game/rng.vim')
 let s:framework_file = expand('autoload/game/story/framework.vim')
 let s:meeting_file = expand('autoload/game/story/meeting.vim')
 let s:party_file = expand('autoload/game/party.vim')
@@ -175,11 +176,17 @@ call s:assert_file_contains(s:party_file, 'function! game#party#group_bonus', 'p
 
 call s:assert_file_contains(s:core_file, "return game#reducer#reduce(a:state, game#action#command(a:input))", 'core.vim must delegate command processing through the action/reducer pipeline.')
 call s:assert_file_not_contains(s:core_file, "elseif l:action ==#", 'core.vim should not keep the legacy command router.')
+call s:assert_file_contains(s:core_file, "'rng_seed': game#rng#default_seed()", 'core.vim should seed new runs through the shared RNG helper.')
+call s:assert_file_contains(s:rng_file, 'function! game#rng#next', 'rng.vim must define the shared RNG step helper.')
+call s:assert_file_contains(s:rng_file, 'function! game#rng#draw', 'rng.vim must define bounded draws for command handlers.')
 
 call s:assert_file_contains(s:engine_file, 'game#store#create(game#core#init())', 'engine.vim must bootstrap the store from initial state.')
 call s:assert_file_contains(s:engine_file, 'game#store#subscribe', 'engine.vim must subscribe redraws to store changes.')
 call s:assert_file_contains(s:engine_file, 'game#store#dispatch_input', 'engine.vim must dispatch user input through the store.')
 call s:assert_file_not_contains(s:engine_file, 'let s:state = game#core#process', 'engine.vim should not mutate local state directly anymore.')
+for s:file in sort(globpath('autoload/game', '**/*.vim', 0, 1))
+  call s:assert_true(stridx(join(readfile(s:file), "\n"), 'reltime') == -1, s:file . ' should not depend on reltime()-based randomness.')
+endfor
 
 let s:find_thread = game#story#threads#get_thread_card(s:state.notes.thread_cards, 'Find Missing Rangers')
 let s:decode_thread = game#story#threads#get_thread_card(s:state.notes.thread_cards, 'decode the return codex relay')
@@ -259,12 +266,6 @@ endfor
 let s:state.loc = 'nexus'
 let s:state.rooms.nexus.objects = [{'name': 'Arcane Terminal', 'desc': 'A flickering terminal.', 'effect': 'briefing'}]
 let s:state.flags.terminal_briefed = 1
-" Boost stats so the boss-defeat test path is deterministic regardless of d20 rolls.
-let s:state.player.str = 30
-let s:state.player.agi = 30
-let s:state.player.arc = 30
-let s:state.player.hp = 500
-let s:state.player.max_hp = 500
 let s:state = game#core#process(s:state, 'interact Arcane Terminal')
 call s:assert_true(get(s:state.flags, 'climax_unveiled', 0) == 1, 'Re-examining the terminal with all three quests done should unveil the climax.')
 let s:nexus_objects = s:state.rooms.nexus.objects
@@ -277,6 +278,7 @@ endfor
 call s:assert_true(s:has_sigil, 'Climax unveil should spawn an Abyssal Sigil interactable in the Merchandise Store Room.')
 let s:state = game#core#process(s:state, 'interact Abyssal Sigil')
 call s:assert_true(s:state.loc ==# 'abyssal_throne', 'Abyssal Sigil should descend the player onto the Abyssal Throne.')
+let s:state.rng_seed = 2578
 let s:state = game#core#process(s:state, 'attack')
 let s:boss_room = s:state.rooms[s:state.loc]
 call s:assert_true(!empty(s:boss_room.entities), 'After phase 1, the Abyssal Overfiend should still occupy the throne room.')
@@ -312,6 +314,13 @@ let s:upstage_state = deepcopy(s:state)
 let s:upstage_state.surge = 1
 let s:mod_result = game#oracle#apply_modifier(s:upstage_state, 'upstaged')
 call s:assert_true(s:mod_result.state.surge == 5, 'Upstaged modifier should bump Surge Count by 4.')
+let s:oracle_state = game#core#init()
+let s:oracle_state.surge = 7
+let s:oracle_state.rng_seed = 245
+let s:oracle_state = game#core#process(s:oracle_state, 'ask does the tower yield?')
+call s:assert_true(s:oracle_state.surge == 0, 'Deterministic oracle asks should apply the seeded modifier result.')
+call s:assert_contains(s:oracle_state.log, '[Loom of Fate: 103] YES, AND UNEXPECTEDLY')
+call s:assert_contains(s:oracle_state.log, 'UNEXPECTED MODIFIER: LIMELIT')
 
 " Montage should advance the scene index, reset Surge, and append a montage carry-fact to every active thread.
 let s:montage_state = deepcopy(s:state)

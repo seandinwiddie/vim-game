@@ -9,7 +9,6 @@ function! game#combat#cmd_attack(state) abort
   let l:target = l:room.entities[0]
   let l:target_name = type(l:target) == v:t_dict ? get(l:target, 'name', 'Unknown Entity') : l:target
   
-  " Shadows of Fate Technique: Attributes Assessment
   let l:p_str = get(a:state.player, 'str', 5)
   let l:p_agi = get(a:state.player, 'agi', 8)
   let l:p_arc = get(a:state.player, 'arc', 4)
@@ -18,7 +17,6 @@ function! game#combat#cmd_attack(state) abort
   let l:e_agi = type(l:target) == v:t_dict ? get(l:target, 'agi', 4) : 4
   let l:e_arc = type(l:target) == v:t_dict ? get(l:target, 'arc', 3) : 3
 
-  " Group Dynamics Calculation
   let l:e_group_score = 0
   if len(l:room.entities) > 1
     for l:i in range(1, len(l:room.entities) - 1)
@@ -26,11 +24,12 @@ function! game#combat#cmd_attack(state) abort
       let l:m_str = type(l:m) == v:t_dict ? get(l:m, 'str', 5) : 5
       let l:m_agi = type(l:m) == v:t_dict ? get(l:m, 'agi', 4) : 4
       let l:m_arc = type(l:m) == v:t_dict ? get(l:m, 'arc', 3) : 3
-      let l:e_group_score += float2nr(ceil((l:m_str + l:m_agi + l:m_arc) / 6.0)) " Halved for balance
+      let l:e_group_score += float2nr(ceil((l:m_str + l:m_agi + l:m_arc) / 6.0))
     endfor
   endif
 
-  let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+  let l:rng = game#rng#next(a:state)
+  let l:val = l:rng.value
   let l:p_roll = (l:val % 20) + 1
   let l:e_roll = ((l:val / 10) % 20) + 1
   let l:mark_bonus = s:mark_bonus(a:state, l:target_name)
@@ -40,6 +39,7 @@ function! game#combat#cmd_attack(state) abort
   let l:e_score = l:e_roll + l:e_str + l:e_agi + l:e_arc + l:e_group_score
 
   let l:next_state = copy(a:state)
+  let l:next_state.rng_seed = l:rng.state.rng_seed
   let l:next_state.rooms = copy(a:state.rooms)
   let l:next_state.rooms[a:state.loc] = copy(l:room)
   let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
@@ -112,11 +112,9 @@ function! game#combat#cmd_cast(state, spell_name) abort
     return game#core#add_log(a:state, "SPELL_ERR: You do not know the spell '" . a:spell_name . "'.")
   endif
 
-  let l:next_state = copy(a:state)
-  let l:next_state.player = copy(a:state.player)
+  let l:next_state = copy(a:state) | let l:next_state.player = copy(a:state.player)
   let l:p_arc = get(a:state.player, 'arc', 4)
   let l:p_agi = get(a:state.player, 'agi', 8)
-  let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
 
   if l:matched_spell ==# 'Dark Crystal Shielding'
     let l:next_state.guard = 10 + l:p_arc
@@ -165,6 +163,9 @@ function! game#combat#cmd_cast(state, spell_name) abort
           \ 'TARGET LOCK: +' . s:mark_bonus_value() . ' to the next strike against this hostile.'
           \ ])
   endif
+  let l:rng = game#rng#next(l:next_state)
+  let l:next_state = l:rng.state
+  let l:val = l:rng.value
 
   if l:matched_spell ==# 'Precision Shot'
     let l:roll = (l:val % 20) + 1 + l:p_agi + l:mark_bonus

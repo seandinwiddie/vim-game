@@ -16,8 +16,8 @@ function! game#oracle#cmd_ask(state, question) abort
     return game#core#add_log(a:state, "LOG_ERR: You must ask a question (e.g., 'ask is the door locked?').")
   endif
 
-  let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
-  let l:roll = (l:val % 100) + 1
+  let l:rng = game#rng#draw(a:state, 100)
+  let l:roll = l:rng.value
   let l:surge = a:state.surge
   let l:modified_roll = (l:roll > 50) ? (l:roll + l:surge) : (l:roll - l:surge)
   
@@ -64,7 +64,7 @@ function! game#oracle#cmd_ask(state, question) abort
     let l:is_unexpected = 1
   endif
 
-  let l:next_state = copy(a:state)
+  let l:next_state = copy(l:rng.state)
   let l:next_state.surge = l:new_surge
   let l:next_state.hint = l:hint
   
@@ -72,8 +72,9 @@ function! game#oracle#cmd_ask(state, question) abort
   let l:oracle_note = 'Oracle: ' . a:question . ' -> ' . l:res
 
   if l:is_unexpected
-    let l:val2 = str2nr(split(reltimestr(reltime()), '\.')[1])
-    let l:d20 = (l:val2 % 20) + 1
+    let l:table2_roll = game#rng#draw(l:next_state, 20)
+    let l:next_state = l:table2_roll.state
+    let l:d20 = l:table2_roll.value
     let l:table2 = ['foreshadowing', 'tying off', 'to conflict', 'costume change', 'key grip', 'to knowledge', 'framing', 'set change', 'upstaged', 'pattern change', 'limelit', 'entering the red', 'to endings', 'montage', 'enter stage left', 'cross-stitch', 'six degrees', 're-roll/reserved', 're-roll/reserved', 're-roll/reserved']
     let l:modifier = l:table2[l:d20 - 1]
     call add(l:log_lines, "UNEXPECTED MODIFIER: " . toupper(l:modifier))
@@ -99,7 +100,9 @@ function! s:apply_table2_modifier(state, modifier, log_lines) abort
   elseif a:modifier ==# 'entering the red'
     let l:room = get(get(l:next_state, 'rooms', {}), get(l:next_state, 'loc', ''), {})
     if !empty(l:room)
-      let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+      let l:rng = game#rng#next(l:next_state)
+      let l:next_state = l:rng.state
+      let l:val = l:rng.value
       let l:pool = [
             \ {'name': 'Ashwalker', 'str': 4, 'agi': 7, 'arc': 4},
             \ {'name': 'Voidwraith', 'str': 3, 'agi': 6, 'arc': 9},
@@ -113,7 +116,9 @@ function! s:apply_table2_modifier(state, modifier, log_lines) abort
       call add(a:log_lines, 'ENTERING THE RED: A ' . l:spawn.name . ' enters the scene. Surge Count +3.')
     endif
   elseif a:modifier ==# 'enter stage left'
-    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:rng = game#rng#next(l:next_state)
+    let l:next_state = l:rng.state
+    let l:val = l:rng.value
     let l:names = ['Strider Velari', 'Twilightrider Onn', 'Emberogue Kresh', 'Gloamstrider Theb']
     let l:npc = l:names[l:val % len(l:names)]
     let l:next_state = game#story#records#assign_scene_npc(l:next_state, l:next_state.loc, l:npc)

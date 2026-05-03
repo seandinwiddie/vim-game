@@ -9,6 +9,7 @@ function! game#core#init() abort
         \ 'view': 'game',
         \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear'], 'spells': ['Ethereal Dagger Assault', 'Cloak of Shadows'], 'str': 5, 'agi': 8, 'arc': 4},
         \ 'loc': 'nexus',
+        \ 'rng_seed': game#rng#default_seed(),
         \ 'surge': 0,
         \ 'stage': 'knowledge',
         \ 'threads': ['Find Missing Rangers'],
@@ -74,6 +75,7 @@ endfunction
 
 function! game#core#normalize(state) abort
   let l:next_state = deepcopy(a:state)
+  let l:next_state = game#rng#hydrate(l:next_state)
   if !has_key(l:next_state, 'threads') || empty(l:next_state.threads)
     let l:next_state.threads = ['Find Missing Rangers']
   endif

@@ -108,8 +108,9 @@ function! game#player#cmd_rest(state) abort
   let l:next_state.hint = 'WARNING: Resting increases the Surge Count!'
   let l:log_lines = ["You rest in the shadows...", "HEALED: +" . l:heal . " HP.", "TENSION RISING: Surge Count increased by 5."]
 
-  " Dynamic Spawning: Time interval / player action encounter
-  let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+  let l:rng = game#rng#next(l:next_state)
+  let l:next_state = l:rng.state
+  let l:val = l:rng.value
   if (l:val % 100) > 60
     if !has_key(l:next_state, 'rooms')
       let l:next_state.rooms = copy(a:state.rooms)

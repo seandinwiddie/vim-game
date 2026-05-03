@@ -15,7 +15,9 @@ function! game#explore#travel#cmd_go(state, dir) abort
   let l:is_new_room = 0
 
   if l:room.exits[l:target_dir] ==# 'unexplored'
-    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:rng = game#rng#next(l:next_state)
+    let l:next_state = l:rng.state
+    let l:val = l:rng.value
     let l:room_id = 'proc_room_' . l:val
     let l:next_state.rooms[a:state.loc].exits[l:target_dir] = l:room_id
 
@@ -33,7 +35,9 @@ function! game#explore#travel#cmd_go(state, dir) abort
   
   let l:target_room = l:next_state.rooms[l:new_loc]
   if l:target_room.name =~# 'TOXIC_WASTES' || l:target_room.name =~# 'ABYSSAL_PIT'
-    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:rng = game#rng#next(l:next_state)
+    let l:next_state = l:rng.state
+    let l:val = l:rng.value
     let l:dmg = (l:val % 10) + 5
     let l:next_state.player.hp -= l:dmg
     let l:next_state = game#core#add_log(l:next_state, 'ENVIRONMENTAL HAZARD: The perilous terrain inflicts ' . l:dmg . ' damage.')

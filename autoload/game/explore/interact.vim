@@ -97,7 +97,9 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:log_lines += l:quest_progress.log
   elseif l:effect ==# 'recruit_ranger'
     let l:consume_object = 1
-    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:rng = game#rng#next(l:next_state)
+    let l:next_state = l:rng.state
+    let l:val = l:rng.value
     let l:names = ['Ranger Halver', 'Ranger Sigrun', 'Ranger Mostwick', 'Ranger Velint', 'Ranger Astric']
     let l:companion = game#party#create(l:names[l:val % len(l:names)], 5, 5, 3)
     let l:next_state = game#party#add_companion(l:next_state, l:companion)
@@ -119,7 +121,9 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
           \ "The missing rangers were not captured; they surrendered willingly to the whispers.",
           \ "The Loom of Fate weaves with strands of pure dark matter from the Dimensional Nexus."
           \ ]
-    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:rng = game#rng#next(l:next_state)
+    let l:next_state = l:rng.state
+    let l:val = l:rng.value
     let l:lore = l:lore_list[l:val % len(l:lore_list)]
     call add(l:log_lines, 'HIDDEN LORE DISCOVERED: ' . l:lore)
     let l:focus_name = game#story#focus_label(l:next_state)
@@ -135,7 +139,9 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:log_lines += l:portal_result.log
     return game#explore#view#cmd_look(game#core#add_log(l:next_state, l:log_lines))
   else
-    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:rng = game#rng#next(l:next_state)
+    let l:next_state = l:rng.state
+    let l:val = l:rng.value
     if (l:val % 100) > 70
       call add(l:log_lines, 'EVENT TRIGGERED: A hidden compartment opens!')
       call add(l:next_state.player.inv, 'Lost Tomes')
@@ -267,7 +273,9 @@ function! s:traverse_portal(state, source_loc, object_index) abort
   let l:log_lines = []
 
   if empty(l:target_room)
-    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:rng = game#rng#next(l:next_state)
+    let l:next_state = l:rng.state
+    let l:val = l:rng.value
     let l:target_room = 'portal_room_' . l:val
     let l:next_state.rooms[l:target_room] = game#explore#procgen#generate_portal_room(l:val, a:source_loc, l:next_state)
     let l:next_state.rooms[a:source_loc].objects[a:object_index].target_room = l:target_room
