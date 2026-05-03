@@ -34,8 +34,9 @@ function! game#combat#cmd_attack(state) abort
   let l:p_roll = (l:val % 20) + 1
   let l:e_roll = ((l:val / 10) % 20) + 1
   let l:mark_bonus = s:mark_bonus(a:state, l:target_name)
+  let l:p_group_score = game#party#group_bonus(a:state)
   
-  let l:p_score = l:p_roll + l:p_str + l:p_agi + l:p_arc + l:mark_bonus
+  let l:p_score = l:p_roll + l:p_str + l:p_agi + l:p_arc + l:mark_bonus + l:p_group_score
   let l:e_score = l:e_roll + l:e_str + l:e_agi + l:e_arc + l:e_group_score
 
   let l:next_state = copy(a:state)
@@ -46,7 +47,7 @@ function! game#combat#cmd_attack(state) abort
 
   let l:log_lines = [
         \ "COMBAT_INITIATED: Engaging " . l:target_name . " (Shadows of Fate Duel)",
-        \ "PLAYER: Roll[d20]=" . l:p_roll . " + STR(" . l:p_str . ")+AGI(" . l:p_agi . ")+ARC(" . l:p_arc . ")" . (l:mark_bonus > 0 ? "+MARK(" . l:mark_bonus . ")" : '') . " = " . l:p_score,
+        \ "PLAYER: Roll[d20]=" . l:p_roll . " + STR(" . l:p_str . ")+AGI(" . l:p_agi . ")+ARC(" . l:p_arc . ")" . (l:mark_bonus > 0 ? "+MARK(" . l:mark_bonus . ")" : '') . (l:p_group_score > 0 ? "+PARTY(" . l:p_group_score . ")" : '') . " = " . l:p_score,
         \ "ENEMY : Roll[d20]=" . l:e_roll . " + STR(" . l:e_str . ")+AGI(" . l:e_agi . ")+ARC(" . l:e_arc . ")" . (l:e_group_score > 0 ? "+GROUP(" . l:e_group_score . ")" : '') . " = " . l:e_score
         \ ]
   
@@ -186,12 +187,7 @@ function! game#combat#cmd_cast(state, spell_name) abort
     let l:bonus = l:p_agi
   endif
 
-  let l:p_group_score = 0
-  if has_key(l:next_state.player, 'companions') && len(l:next_state.player.companions) > 0
-    for l:c in l:next_state.player.companions
-      let l:p_group_score += float2nr(ceil((get(l:c, 'str', 4) + get(l:c, 'agi', 4) + get(l:c, 'arc', 4)) / 6.0))
-    endfor
-  endif
+  let l:p_group_score = game#party#group_bonus(a:state)
 
   let l:roll = (l:val % 20) + 1 + l:bonus + l:mark_bonus + l:p_group_score
   

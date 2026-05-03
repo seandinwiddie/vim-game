@@ -66,6 +66,7 @@ function! game#player#cmd_profile(state) abort
         \ 'STR: ' . a:state.player.str . ' | AGI: ' . a:state.player.agi . ' | ARC: ' . a:state.player.arc,
         \ 'Trade: ' . get(a:state.player, 'trade', 0) . ' | Guard: ' . get(a:state, 'guard', 0),
         \ 'Mark: ' . (empty(get(a:state, 'mark', '')) ? 'none' : a:state.mark),
+        \ 'Party Dynamics: +' . game#party#group_bonus(a:state),
         \ 'Spells:'
         \ ]
   for l:sp in a:state.player.spells
@@ -80,7 +81,9 @@ function! game#player#cmd_profile(state) abort
   if !empty(get(a:state.player, 'companions', []))
     call add(l:lines, 'Companions (Party):')
     for l:c in a:state.player.companions
-      call add(l:lines, ' * ' . l:c.name . ' [STR:' . get(l:c, 'str', 4) . ' AGI:' . get(l:c, 'agi', 4) . ' ARC:' . get(l:c, 'arc', 4) . ']')
+      let l:status = toupper(get(l:c, 'status', 'active'))
+      let l:suffix = get(l:c, 'status', 'active') ==# 'elsewhere' && !empty(get(l:c, 'assignment', '')) ? ' | thread: ' . l:c.assignment : ''
+      call add(l:lines, ' * ' . l:c.name . ' [' . l:status . '] [STR:' . get(l:c, 'str', 4) . ' AGI:' . get(l:c, 'agi', 4) . ' ARC:' . get(l:c, 'arc', 4) . ']' . l:suffix)
     endfor
   endif
   call add(l:lines, '----------------------')

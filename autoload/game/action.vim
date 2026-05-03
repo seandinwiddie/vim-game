@@ -41,6 +41,8 @@ function! game#action#command(input) abort
     return game#action#make('story/questsRequested', {'raw': l:cmd})
   elseif l:head ==# 'notes' || l:head ==# 'journal' || l:head ==# 'facts' || l:head ==# 'j'
     return game#action#make('story/notesRequested', {'raw': l:cmd})
+  elseif l:head ==# 'party' || l:head ==# 'companions'
+    return game#action#make('party/commandRequested', {'raw': l:cmd, 'subcmd': len(l:parts) > 1 ? l:parts[1] : 'show', 'args': len(l:parts) > 2 ? join(l:parts[2:], ' ') : ''})
   elseif l:head ==# 'shop' || l:head ==# 'wares' || l:head ==# 'trade' || l:head ==# 't'
     return game#action#make('economy/shopRequested', {'raw': l:cmd})
   elseif l:head ==# 'buy'

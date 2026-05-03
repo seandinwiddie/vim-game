@@ -49,6 +49,10 @@ let s:state.rooms[s:state.loc].objects = [
       \ {'name': 'Sealed Reliquary', 'desc': 'An archive reliquary full of return codices.', 'effect': 'recover_tome', 'quest_id': 'recover-lost-tomes'}
       \ ]
 let s:state = game#core#process(s:state, 'interact Bound Ranger')
+let s:state = game#core#process(s:state, 'party')
+let s:state = game#core#process(s:state, 'party fade ranger operative')
+let s:state = game#core#process(s:state, 'party send ranger operative 1')
+let s:state = game#core#process(s:state, 'party rally ranger operative')
 let s:state = game#core#process(s:state, 'interact Sealed Reliquary')
 let s:state = game#core#process(s:state, 'quests')
 let s:state = game#core#process(s:state, 'cast Dark Crystal Shielding')
@@ -135,11 +139,13 @@ let s:reducer_file = expand('autoload/game/reducer.vim')
 let s:engine_file = expand('autoload/game/engine.vim')
 let s:core_file = expand('autoload/game/core.vim')
 let s:framework_file = expand('autoload/game/story/framework.vim')
+let s:party_file = expand('autoload/game/party.vim')
 
 call s:assert_file_contains(s:action_file, 'function! game#action#make', 'action.vim must define the action factory.')
 call s:assert_file_contains(s:action_file, 'function! game#action#command', 'action.vim must define the command-to-action mapper.')
 call s:assert_file_contains(s:action_file, 'explore/travelRequested', 'action.vim must centralize event-style action types.')
 call s:assert_file_contains(s:action_file, 'story/frameworkRequested', 'action.vim must route framework commands through typed story actions.')
+call s:assert_file_contains(s:action_file, 'party/commandRequested', 'action.vim must route party commands through typed actions.')
 call s:assert_file_not_contains(s:action_file, '/set', 'action.vim should use event-style action names instead of setter-style names.')
 
 call s:assert_file_contains(s:store_file, 'function! game#store#create', 'store.vim must define create().')
@@ -151,9 +157,12 @@ call s:assert_file_contains(s:store_file, 'game#reducer#reduce', 'store.vim disp
 call s:assert_file_contains(s:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
 call s:assert_file_contains(s:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
 call s:assert_file_contains(s:reducer_file, "l:type ==# 'story/frameworkRequested'", 'reducer.vim must route framework story actions.')
+call s:assert_file_contains(s:reducer_file, "l:type ==# 'party/commandRequested'", 'reducer.vim must route party actions.')
 call s:assert_file_contains(s:reducer_file, "Unknown action_vector", 'reducer.vim must surface unknown actions explicitly.')
 call s:assert_file_contains(s:framework_file, 'function! game#story#framework#cmd_framework', 'framework.vim must define the vignette framework command handler.')
 call s:assert_file_contains(s:framework_file, 'framework theme', 'framework.vim must expose theme-setting guidance.')
+call s:assert_file_contains(s:party_file, 'function! game#party#cmd_party', 'party.vim must define the party command handler.')
+call s:assert_file_contains(s:party_file, 'function! game#party#group_bonus', 'party.vim must centralize active companion bonuses.')
 
 call s:assert_file_contains(s:core_file, "return game#reducer#reduce(a:state, game#action#command(a:input))", 'core.vim must delegate command processing through the action/reducer pipeline.')
 call s:assert_file_not_contains(s:core_file, "elseif l:action ==#", 'core.vim should not keep the legacy command router.')
@@ -165,9 +174,13 @@ call s:assert_file_not_contains(s:engine_file, 'let s:state = game#core#process'
 
 let s:find_thread = game#story#threads#get_thread_card(s:state.notes.thread_cards, 'Find Missing Rangers')
 let s:decode_thread = game#story#threads#get_thread_card(s:state.notes.thread_cards, 'decode the return codex relay')
+let s:ranger_companion = get(get(s:state, 'player', {}), 'companions', [])[0]
 call s:assert_true(index(get(s:find_thread, 'npcs', []), 'iron broker') != -1, 'Iron Broker should be linked to the main thread card.')
 call s:assert_true(index(get(s:find_thread, 'npcs', []), 'Bound Ranger') != -1, 'Bound Ranger should be linked to the rescue thread card.')
+call s:assert_true(index(get(s:find_thread, 'npcs', []), 'Ranger Operative') != -1, 'Active companions should be linked into thread bookkeeping.')
 call s:assert_true(index(get(s:decode_thread, 'npcs', []), 'Bound Ranger') != -1, 'Replacement threads should inherit linked NPCs.')
+call s:assert_true(get(s:ranger_companion, 'status', '') ==# 'active', 'Rallied companions should end in active scene state.')
+call s:assert_true(game#party#group_bonus(s:state) == 3, 'Only active companions should contribute to Group Dynamics.')
 call s:assert_true(get(get(s:state, 'framework', {}), 'phase', '') ==# 'climax', 'Framework phase should be explicitly movable through the vignette arc.')
 call s:assert_true(get(get(s:state, 'framework', {}), 'theme', '') ==# 'learn why the tower is hollowing out recruits', 'Framework theme should persist in story state.')
 call s:assert_true(get(get(s:state, 'framework', {}), 'hook', '') ==# 'meet the architect behind the disappearances', 'Framework hook should persist in story state.')
@@ -180,6 +193,13 @@ let s:travel_action = game#action#command('go north')
 call s:assert_true(get(s:travel_action, 'type', '') ==# 'explore/travelRequested', 'go north should produce a travel action.')
 call s:assert_true(get(get(s:travel_action, 'payload', {}), 'dir', '') ==# 'north', 'travel action should capture the normalized direction.')
 
+let s:party_action = game#action#command('party send ranger operative 1')
+call s:assert_true(get(s:party_action, 'type', '') ==# 'party/commandRequested', 'party commands should produce party actions.')
+call s:assert_true(get(get(s:party_action, 'payload', {}), 'subcmd', '') ==# 'send', 'party action should capture the requested party subcommand.')
+
+let s:faded_state = game#core#process(s:state, 'party fade ranger operative')
+call s:assert_true(game#party#group_bonus(s:faded_state) == 0, 'Faded companions should stop contributing to Group Dynamics.')
+
 let s:store = game#store#create(game#core#init())
 let s:store_notifications = 0
 let s:sub_id = game#store#subscribe(s:store, function(expand('<SID>') . 'count_state_change'))
@@ -190,11 +210,15 @@ call game#store#unsubscribe(s:store, s:sub_id)
 
 let s:rendered = game#core#render(s:state)
 let s:framework_view = game#core#render(game#core#process(s:state, 'framework'))
+let s:party_view = game#core#render(game#core#process(s:state, 'party'))
 call s:assert_contains(s:rendered, 'Arc: CH1 CLIMAX')
+call s:assert_contains(s:rendered, 'Party: 1 active / 0 faded / 0 elsewhere | Group: +3')
 call s:assert_contains(s:framework_view, '--- VIGNETTE FRAMEWORK ---')
 call s:assert_contains(s:framework_view, 'Hook: meet the architect behind the disappearances')
+call s:assert_contains(s:party_view, '--- PARTY TACTICS ---')
+call s:assert_contains(s:party_view, 'Ranger Operative [ACTIVE]')
 call s:assert_contains(s:rendered, '| NPCs: iron broker')
 call s:assert_contains(s:rendered, '| arc: CH1')
 call s:assert_contains(s:rendered, '  NPCs: Bound Ranger')
-call writefile(s:framework_view + [''] + s:rendered, 'test_output.txt', 'a')
+call writefile(s:party_view + [''] + s:framework_view + [''] + s:rendered, 'test_output.txt', 'a')
 qa!

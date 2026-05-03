@@ -57,6 +57,7 @@ function! game#core#render(state) abort
         \ "Focus: " . game#story#focus_label(l:state),
         \ game#story#quest_summary(l:state),
         \ game#story#notes_summary(l:state),
+        \ game#party#status_label(l:state),
         \ game#economy#status_label(l:state),
         \ l:state.hint,
         \ "--- ACTIVE THREADS ---"
@@ -78,6 +79,7 @@ function! game#core#normalize(state) abort
   if !has_key(l:next_state, 'hint')
     let l:next_state.hint = 'SYSTEM_INIT: Type "look" to scan your surroundings.'
   endif
+  let l:next_state = game#party#hydrate(l:next_state)
   let l:next_state = game#story#hydrate(l:next_state)
   return game#economy#hydrate(l:next_state)
 endfunction

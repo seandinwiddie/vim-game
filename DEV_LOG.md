@@ -32,7 +32,7 @@
 - **Unexpected Modifiers**: Rolls d20 on Table 2 (foreshadowing, set change, limelit, etc.) when an "unexpectedly" result triggers.
 - **Narrative Threads**: Integrated a state array for active storylines. Threads are rendered in the Neural Link header to track active goals (e.g. "Find Missing Rangers").
 - **Combat Resolution**: Integrated the *Shadows of Fate* duel system. The `attack` command rolls d20 against the target's STR/AGI/ARC array, factoring in *Group Dynamics* (a collective score from the remaining hostile pack) to calculate damage sustained and entity annihilation. State handles death natively.
-- **Tapestry / Companion System**: Recruited NPCs (like the `Bound Ranger`) now join the player's `party` array. During combat and spellcasting, the player's party calculates its own Group Dynamics score and adds a `+PARTY` bonus to all damage and spell rolls.
+- **Tapestry / Companion System**: Recruited NPCs (like the `Bound Ranger`) now join the player's `party` array. Only companions still active in the main scene contribute `+PARTY` Group Dynamics bonuses, while others can fade or work elsewhere.
 - **Dynamic Spawning**: The `rest` command now evaluates procedural time intervals to occasionally spawn new hostile entities in the current room, creating a persistent threat of ambush.
 - **Environmental Hazards**: Movement through the `go` command now parses the destination's biome properties to apply thematic hazards. For example, `Toxic Wastes` deals corrosive HP damage, `Mud Slides` spikes the Surge Count from exhaustion, and the `Dimensional Nexus` distorts navigational telemetry.
 - **Objective Loop**: The initial missing-rangers thread now drives concrete quest progress, and terminals can surface follow-on objectives for recovering the codices needed to extract survivors.
@@ -97,6 +97,10 @@
 - `framework hook [aspiration]`: Store the obscured hook tugging the chapter forward.
 - `framework phase [name]`: Explicitly set the dramatic phase to exposition, rising, climax, or epilogue.
 - `framework next`: Advance the current framework to the next dramatic phase, rolling to a new chapter after epilogue.
+- `party` / `companions`: Review companion scene state and current Group Dynamics bonus.
+- `party fade [name]`: Pull a companion out of the main scene so others can react.
+- `party send [name] [thread#]`: Put a companion on an elsewhere/sidebar assignment tied to another thread.
+- `party rally [name]`: Bring a companion back into the active scene and combat stack.
 - `scene` / `sc`: Inspect the current scene card and recent scene closings.
 - `npc add [name]` / `npc rm [name]` / `npc`: Manage the current scene's present NPC roster.
 - `fade [summary]`: Close the current scene with a bookkeeping summary.

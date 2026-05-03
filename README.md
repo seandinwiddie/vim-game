@@ -38,11 +38,12 @@ Then run `:PlugInstall`.
 12. **Open Field Notes**: Press `j`, or type `:call s:run('notes')`, to review CRGE-style notecards for scenes, known NPCs, and established thread facts, including which NPCs are tied to each thread.
 13. **Frame Scenes**: Use `:call s:run('frame [thread#] [stage]')` to explicitly set the current scene's main thread and stage before play.
 14. **Guide the Vignette**: Use `:call s:run('framework')` to inspect the current CRGE vignette card, `framework theme [subject]` to set the chapter question, `framework hook [aspiration]` to store the obscured hook, and `framework next` / `framework phase [name]` to move between Exposition, Rising Action, Climax, and Epilogue.
-15. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
-16. **Scene NPCs**: Use `:call s:run('npc add [name]')`, `npc rm [name]`, or `npc` to manage who is instantly present in the current scene.
-17. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
-18. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
-19. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
+15. **Direct the Party**: Use `:call s:run('party')` to inspect your companion roster, `party fade [name]` to pull someone out of the main scene, `party send [name] [thread#]` to put them on an elsewhere/sidebar assignment, and `party rally [name]` to bring them back into the action.
+16. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
+17. **Scene NPCs**: Use `:call s:run('npc add [name]')`, `npc rm [name]`, or `npc` to manage who is instantly present in the current scene.
+18. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
+19. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
+20. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 
 ## Architecture
 This project follows functional programming principles:
@@ -56,7 +57,8 @@ This project follows functional programming principles:
 - **Hidden Lore**: Discovering Holographic Terminals or Eldritch Frescoes will dynamically dispense procedural worldbuilding secrets directly into the active thread's fact ledger.
 - **Portal Realms**: Veiled gates inside Mysterious Portals, Dimensional Nexus chambers, and Outerworldly Realms can branch the run into alien pocket-zones and back again.
 - **Environmental Hazards**: Movement logic parses the procedural biome of the destination (e.g. Toxic Wastes, Mud Slides, Dimensional Nexus) to apply dynamic damage, tension spikes, or navigational warnings.
-- **Companions & Group Dynamics**: Rescuing NPCs from the tower allows them to join your party, applying their own aggregated `Group Dynamics` bonus to all your combat rolls, adapting the *Tapestry* TTRPG mechanics into a solo MUD environment.
+- **Companions & Group Dynamics**: Rescuing NPCs from the tower allows them to join your party, and only companions still active in the main scene contribute their aggregated `Group Dynamics` bonus to combat rolls.
+- **Tapestry Overlay**: Party members can now fade from the scene or be sent elsewhere on another thread, giving the solo MUD a lightweight version of the Familiar's scene-holder / sidebar rhythm.
 - **Economy Loop**: Trade cache, wares, salvage, and persistent upgrades now turn recovered relics into concrete progression.
 
 ## License

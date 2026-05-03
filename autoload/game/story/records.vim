@@ -65,6 +65,7 @@ endfunction
 
 function! game#story#records#record_scene(state, loc) abort
   let l:next_state = s:ensure_scene_card(a:state, a:loc)
+  let l:next_state = game#party#sync_scene(l:next_state)
   let l:scene_idx = game#story#records#scene_card_index(l:next_state.notes.scene_cards, a:loc)
   let l:next_state.notes.scene_cards[l:scene_idx].visits += 1
   let l:title = l:next_state.notes.scene_cards[l:scene_idx].title

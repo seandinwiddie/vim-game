@@ -44,10 +44,9 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
       call add(l:next_state.player.inv, 'Ranger Signal Token')
       call add(l:log_lines, 'RECOVERED: Ranger Signal Token')
     endif
-    if !has_key(l:next_state.player, 'companions')
-      let l:next_state.player.companions = []
-    endif
-    call add(l:next_state.player.companions, {'name': 'Ranger Operative', 'str': 5, 'agi': 5, 'arc': 3})
+    let l:next_state = game#party#add_companion(l:next_state, game#party#create('Ranger Operative', 5, 5, 3))
+    let l:next_state = game#party#sync_scene(l:next_state)
+    let l:next_state = game#story#threads#record_npc_for_thread(l:next_state, 'Find Missing Rangers', 'Ranger Operative')
     call add(l:log_lines, 'PARTY UPDATE: Ranger Operative joins your unit, providing Group Dynamics bonuses in combat.')
     let l:quest_progress = game#story#advance_quest(l:next_state, 'rescue-rangers', 1)
     let l:next_state = l:quest_progress.state

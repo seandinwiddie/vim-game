@@ -34,6 +34,8 @@ function! game#reducer#reduce(state, action) abort
     return game#story#cmd_quests(a:state)
   elseif l:type ==# 'story/notesRequested'
     return game#story#cmd_notes(a:state)
+  elseif l:type ==# 'party/commandRequested'
+    return game#party#cmd_party(a:state, get(l:payload, 'subcmd', 'show'), get(l:payload, 'args', ''))
   elseif l:type ==# 'economy/shopRequested'
     return game#economy#cmd_shop(a:state)
   elseif l:type ==# 'economy/purchaseRequested'
