@@ -117,6 +117,10 @@ function! QuadarTest_RunArchitecture() abort
 
   call QuadarTest_AssertFileContains(l:core_file, "return game#reducer#reduce(a:state, game#action#command(a:input))", 'core.vim must delegate command processing through the action/reducer pipeline.')
   call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#cmd_help', 'core.vim must expose the help command reducer target.')
+  call QuadarTest_AssertFileContains(l:core_file, "'log_cursor': 0", 'core.vim should initialize state with a render cursor.')
+  call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#mark_rendered', 'core.vim must expose a helper to advance the render cursor after drawing.')
+  call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#reset_render_cursor', 'core.vim must expose a helper to force full-log rebuilds when needed.')
+  call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#header', 'core.vim must expose a header helper so engine redraws can preserve buffer log history.')
   call QuadarTest_AssertFileNotContains(l:core_file, "elseif l:action ==#", 'core.vim should not keep the legacy command router.')
   call QuadarTest_AssertFileContains(l:core_file, "'rng_seed': game#rng#default_seed()", 'core.vim should seed new runs through the shared RNG helper.')
   call QuadarTest_AssertFileContains(l:rng_file, 'function! game#rng#next', 'rng.vim must define the shared RNG step helper.')
@@ -126,6 +130,8 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileContains(l:engine_file, 'game#store#subscribe', 'engine.vim must subscribe redraws to store changes.')
   call QuadarTest_AssertFileContains(l:engine_file, 'game#store#dispatch_input', 'engine.vim must dispatch user input through the store.')
   call QuadarTest_AssertFileContains(l:engine_file, "run('undo')", 'engine.vim should expose a quick undo mapping in the game buffer.')
+  call QuadarTest_AssertFileContains(l:engine_file, 'let s:header_line_count = 0', 'engine.vim should track rendered header height separately from the buffer log body.')
+  call QuadarTest_AssertFileContains(l:engine_file, 'game#core#mark_rendered', 'engine.vim should advance the render cursor after drawing.')
   call QuadarTest_AssertFileNotContains(l:engine_file, 'let s:state = game#core#process', 'engine.vim should not mutate local state directly anymore.')
 
   for l:file in sort(globpath('autoload/game', '**/*.vim', 0, 1))

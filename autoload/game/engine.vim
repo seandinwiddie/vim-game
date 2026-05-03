@@ -2,9 +2,11 @@
 
 let s:store = {}
 let s:subscription_id = 0
+let s:header_line_count = 0
 
 function! game#engine#start() abort
   let s:store = game#store#create(game#core#init())
+  let s:header_line_count = 0
   call s:set_up_buffer()
   let s:subscription_id = game#store#subscribe(s:store, function(expand('<SID>') . 'on_state_change'))
   call s:draw(game#store#get_state(s:store))
@@ -74,14 +76,22 @@ endfunction
 function! s:draw(...) abort
   let l:state = a:0 ? a:1 : game#store#get_state(s:store)
   let l:lines = game#core#render(l:state)
+  let l:header = game#core#header(l:state)
+  let l:new_logs = len(l:lines) > len(l:header) ? l:lines[len(l:header):] : []
   if empty(l:lines)
     let l:lines = ['DEBUG: No lines returned from render()']
+  endif
+  let l:existing_logs = []
+  if get(l:state, 'log_cursor', 0) > 0 && s:header_line_count > 0 && line('$') > s:header_line_count
+    let l:existing_logs = getline(s:header_line_count + 1, '$')
   endif
 
   setlocal modifiable
   silent %delete _
-  call setline(1, l:lines)
+  call setline(1, l:header + l:existing_logs + l:new_logs)
   setlocal nomodifiable
+  let s:header_line_count = len(l:header)
+  let s:store.state = game#core#mark_rendered(l:state)
   normal! G
   redraw!
 endfunction

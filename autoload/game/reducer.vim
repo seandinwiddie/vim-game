@@ -7,7 +7,7 @@ function! game#reducer#reduce(state, action) abort
   if l:type ==# 'system/noop'
     return a:state
   elseif l:type ==# 'system/undo'
-    return deepcopy(get(l:payload, 'previous_state', a:state))
+    return game#core#reset_render_cursor(deepcopy(get(l:payload, 'previous_state', a:state)))
   elseif l:type ==# 'system/undoRequested'
     return game#core#add_log(a:state, 'LOG_ERR: No earlier turn is available to undo.')
   elseif l:type ==# 'system/helpRequested'

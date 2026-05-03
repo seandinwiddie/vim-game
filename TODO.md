@@ -296,7 +296,7 @@ items that would unblock the most other items if tackled now.
 
 ## ᚷ UX & Rendering
 
-- [ ] **Track a render cursor instead of re-rendering the whole log.**
+- [x] **Track a render cursor instead of re-rendering the whole log.**
   - **Why:** `render(state)` rebuilds the entire header + log every frame.
     The engine subscribes to the store and redraws on every dispatch, so a
     long session re-emits hundreds of log lines per turn.

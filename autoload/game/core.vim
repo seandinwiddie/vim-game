@@ -19,6 +19,7 @@ function! game#core#init() abort
         \ 'progress': l:story.progress,
         \ 'rooms': l:rooms,
         \ 'log': [],
+        \ 'log_cursor': 0,
         \ 'hint': 'SYSTEM_INIT: Type "look" to scan your surroundings or "help" to review commands.',
         \ }
   let l:s = game#core#normalize(l:s)
@@ -42,18 +43,21 @@ endfunction
 
 function! game#core#add_log(state, msg) abort
   let l:next_state = copy(a:state)
+  let l:next_state.log_cursor = s:log_cursor(a:state)
   if type(a:msg) == v:t_list
     let l:next_state.log += a:msg
   else
     let l:next_state.log += [a:msg]
   endif
   if len(l:next_state.log) > 100
-    let l:next_state.log = l:next_state.log[-100:]
+    let l:overflow = len(l:next_state.log) - 100
+    let l:next_state.log = l:next_state.log[l:overflow:]
+    let l:next_state.log_cursor = max([0, l:next_state.log_cursor - l:overflow])
   endif
   return l:next_state
 endfunction
 
-function! game#core#render(state) abort
+function! game#core#header(state) abort
   let l:state = game#core#normalize(a:state)
   let l:header = [
         \ "ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ",
@@ -76,7 +80,31 @@ function! game#core#render(state) abort
     let l:idx += 1
   endfor
   call add(l:header, "")
-  return l:header + l:state.log
+  return l:header
+endfunction
+
+function! game#core#mark_rendered(state) abort
+  let l:next_state = copy(a:state)
+  let l:next_state.log_cursor = len(get(a:state, 'log', []))
+  return l:next_state
+endfunction
+
+function! game#core#reset_render_cursor(state) abort
+  let l:next_state = copy(a:state)
+  let l:next_state.log_cursor = 0
+  return l:next_state
+endfunction
+
+function! game#core#render(state) abort
+  let l:state = game#core#normalize(a:state)
+  let l:cursor = s:log_cursor(l:state)
+  let l:unread = l:cursor >= len(l:state.log) ? [] : l:state.log[l:cursor:]
+  let l:header = game#core#header(l:state)
+  return l:header + l:unread
+endfunction
+
+function! s:log_cursor(state) abort
+  return min([max([get(a:state, 'log_cursor', 0), 0]), len(get(a:state, 'log', []))])
 endfunction
 
 function! game#core#normalize(state) abort
@@ -88,6 +116,10 @@ function! game#core#normalize(state) abort
   if !has_key(l:next_state, 'hint')
     let l:next_state.hint = 'SYSTEM_INIT: Type "look" to scan your surroundings or "help" to review commands.'
   endif
+  if !has_key(l:next_state, 'log_cursor')
+    let l:next_state.log_cursor = 0
+  endif
+  let l:next_state.log_cursor = s:log_cursor(l:next_state)
   let l:next_state = game#party#hydrate(l:next_state)
   let l:next_state = game#story#hydrate(l:next_state)
   return game#economy#hydrate(l:next_state)
