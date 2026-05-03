@@ -17,6 +17,7 @@ function! game#story#bootstrap() abort
         \     'reward_spell': 'Resurgence Ritual'
         \   }
         \ ],
+        \ 'notes': {'scene_cards': [], 'thread_cards': [], 'npc_cards': []},
         \ 'flags': {'terminal_briefed': 0},
         \ 'progress': {'steps': 0, 'rooms_explored': 1}
         \ }
@@ -42,6 +43,9 @@ function! game#story#hydrate(state) abort
   if !has_key(l:next_state, 'quests')
     let l:next_state.quests = deepcopy(l:defaults.quests)
   endif
+  if !has_key(l:next_state, 'notes')
+    let l:next_state.notes = deepcopy(l:defaults.notes)
+  endif
   if !has_key(l:next_state, 'flags')
     let l:next_state.flags = deepcopy(l:defaults.flags)
   endif
@@ -57,10 +61,25 @@ function! game#story#hydrate(state) abort
   if !has_key(l:next_state.flags, 'terminal_briefed')
     let l:next_state.flags.terminal_briefed = l:defaults.flags.terminal_briefed
   endif
+  if !has_key(l:next_state.notes, 'scene_cards')
+    let l:next_state.notes.scene_cards = []
+  endif
+  if !has_key(l:next_state.notes, 'thread_cards')
+    let l:next_state.notes.thread_cards = []
+  endif
+  if !has_key(l:next_state.notes, 'npc_cards')
+    let l:next_state.notes.npc_cards = []
+  endif
 
   if l:next_state.scene.focus < 1 || l:next_state.scene.focus > len(get(l:next_state, 'threads', []))
     let l:next_state.scene.focus = len(get(l:next_state, 'threads', [])) > 0 ? 1 : 0
   endif
+
+  for l:thread in get(l:next_state, 'threads', [])
+    if s:thread_card_index(l:next_state.notes.thread_cards, l:thread) == -1
+      call add(l:next_state.notes.thread_cards, {'name': l:thread, 'stage': l:next_state.stage, 'scenes': [], 'facts': []})
+    endif
+  endfor
 
   return l:next_state
 endfunction
@@ -99,6 +118,10 @@ function! game#story#quest_summary(state) abort
   return 'Objectives: ' . l:active . ' active / ' . l:complete . ' complete'
 endfunction
 
+function! game#story#notes_summary(state) abort
+  return 'Notes: ' . len(get(get(a:state, 'notes', {}), 'scene_cards', [])) . ' scenes / ' . len(get(get(a:state, 'notes', {}), 'npc_cards', [])) . ' NPCs'
+endfunction
+
 function! game#story#cmd_quests(state) abort
   let l:next_state = deepcopy(a:state)
   let l:next_state.hint = 'DIRECTIVE: Objectives indexed. Adjust scene focus with "focus [thread#]".'
@@ -119,6 +142,52 @@ function! game#story#cmd_quests(state) abort
   endfor
 
   call add(l:lines, '------------------')
+  return game#core#add_log(l:next_state, l:lines)
+endfunction
+
+function! game#story#cmd_notes(state) abort
+  let l:next_state = deepcopy(a:state)
+  let l:next_state.hint = 'DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.'
+  let l:focus = game#story#focus_label(l:next_state)
+  let l:thread_card = s:get_thread_card(l:next_state.notes.thread_cards, l:focus)
+  let l:lines = [
+        \ '--- FIELD NOTES ---',
+        \ game#story#notes_summary(l:next_state),
+        \ 'Focus Thread Card: ' . l:focus
+        \ ]
+
+  if !empty(l:thread_card)
+    call add(l:lines, '  Stage: TO ' . toupper(get(l:thread_card, 'stage', l:next_state.stage)))
+    call add(l:lines, '  Scenes: ' . (empty(get(l:thread_card, 'scenes', [])) ? 'none' : join(l:thread_card.scenes, ' | ')))
+    call add(l:lines, '  Facts:')
+    if empty(get(l:thread_card, 'facts', []))
+      call add(l:lines, '   - No established facts yet.')
+    else
+      for l:fact in l:thread_card.facts
+        call add(l:lines, '   - ' . l:fact)
+      endfor
+    endif
+  endif
+
+  call add(l:lines, 'Scene Cards:')
+  if empty(l:next_state.notes.scene_cards)
+    call add(l:lines, ' * none')
+  else
+    for l:card in l:next_state.notes.scene_cards
+      call add(l:lines, ' * ' . l:card.title . ' | visits: ' . l:card.visits . ' | stage: TO ' . toupper(l:card.stage) . ' | focus: ' . l:card.focus)
+    endfor
+  endif
+
+  call add(l:lines, 'Known NPCs:')
+  if empty(l:next_state.notes.npc_cards)
+    call add(l:lines, ' * none')
+  else
+    for l:npc in l:next_state.notes.npc_cards
+      call add(l:lines, ' * ' . l:npc.name . ' | scenes: ' . join(l:npc.scenes, ', '))
+    endfor
+  endif
+
+  call add(l:lines, '-------------------')
   return game#core#add_log(l:next_state, l:lines)
 endfunction
 
@@ -147,11 +216,16 @@ endfunction
 
 function! game#story#ensure_thread(state, thread_name) abort
   if index(get(a:state, 'threads', []), a:thread_name) != -1
-    return a:state
+    let l:next_state = deepcopy(a:state)
+    if s:thread_card_index(l:next_state.notes.thread_cards, a:thread_name) == -1
+      call add(l:next_state.notes.thread_cards, {'name': a:thread_name, 'stage': l:next_state.stage, 'scenes': [], 'facts': []})
+    endif
+    return l:next_state
   endif
 
   let l:next_state = deepcopy(a:state)
   call add(l:next_state.threads, a:thread_name)
+  call add(l:next_state.notes.thread_cards, {'name': a:thread_name, 'stage': l:next_state.stage, 'scenes': [], 'facts': []})
   if get(l:next_state.scene, 'focus', 0) == 0
     let l:next_state.scene.focus = len(l:next_state.threads)
   endif
@@ -177,7 +251,7 @@ function! game#story#enter_location(state, loc, discovered) abort
     let l:next_state.scene.index += 1
     let l:next_state.progress.rooms_explored += 1
   endif
-  return l:next_state
+  return game#story#record_scene(l:next_state, a:loc)
 endfunction
 
 function! game#story#has_active_quest(state, quest_id) abort
@@ -221,6 +295,76 @@ function! game#story#advance_quest(state, quest_id, amount) abort
   return {'state': l:next_state, 'log': l:log_lines}
 endfunction
 
+function! game#story#record_scene(state, loc) abort
+  let l:next_state = deepcopy(a:state)
+  let l:title = has_key(get(l:next_state, 'rooms', {}), a:loc) ? get(l:next_state.rooms[a:loc], 'name', toupper(a:loc)) : toupper(a:loc)
+  let l:focus = game#story#focus_label(l:next_state)
+  let l:idx = s:scene_card_index(l:next_state.notes.scene_cards, a:loc)
+
+  if l:idx == -1
+    call add(l:next_state.notes.scene_cards, {'loc': a:loc, 'title': l:title, 'visits': 1, 'stage': l:next_state.stage, 'focus': l:focus})
+  else
+    let l:next_state.notes.scene_cards[l:idx].visits += 1
+    let l:next_state.notes.scene_cards[l:idx].stage = l:next_state.stage
+    let l:next_state.notes.scene_cards[l:idx].focus = l:focus
+  endif
+
+  let l:thread_idx = s:thread_card_index(l:next_state.notes.thread_cards, l:focus)
+  if l:thread_idx == -1
+    call add(l:next_state.notes.thread_cards, {'name': l:focus, 'stage': l:next_state.stage, 'scenes': [], 'facts': []})
+    let l:thread_idx = len(l:next_state.notes.thread_cards) - 1
+  endif
+  let l:next_state.notes.thread_cards[l:thread_idx].stage = l:next_state.stage
+  if index(l:next_state.notes.thread_cards[l:thread_idx].scenes, l:title) == -1
+    call add(l:next_state.notes.thread_cards[l:thread_idx].scenes, l:title)
+  endif
+
+  return l:next_state
+endfunction
+
+function! game#story#record_fact(state, fact) abort
+  return game#story#record_fact_for_thread(a:state, game#story#focus_label(a:state), a:fact)
+endfunction
+
+function! game#story#record_fact_for_thread(state, thread_name, fact) abort
+  if empty(a:fact)
+    return a:state
+  endif
+
+  let l:next_state = deepcopy(a:state)
+  let l:next_state = game#story#ensure_thread(l:next_state, a:thread_name)
+  let l:idx = s:thread_card_index(l:next_state.notes.thread_cards, a:thread_name)
+  if l:idx == -1
+    return l:next_state
+  endif
+
+  let l:card = l:next_state.notes.thread_cards[l:idx]
+  let l:card.stage = l:next_state.stage
+  if index(l:card.facts, a:fact) == -1
+    call add(l:card.facts, a:fact)
+    if len(l:card.facts) > 6
+      let l:card.facts = l:card.facts[-6:]
+    endif
+  endif
+  let l:next_state.notes.thread_cards[l:idx] = l:card
+  return l:next_state
+endfunction
+
+function! game#story#record_npc(state, npc_name, scene_name) abort
+  if empty(a:npc_name)
+    return a:state
+  endif
+
+  let l:next_state = deepcopy(a:state)
+  let l:idx = s:npc_card_index(l:next_state.notes.npc_cards, a:npc_name)
+  if l:idx == -1
+    call add(l:next_state.notes.npc_cards, {'name': a:npc_name, 'scenes': empty(a:scene_name) ? [] : [a:scene_name]})
+  elseif !empty(a:scene_name) && index(l:next_state.notes.npc_cards[l:idx].scenes, a:scene_name) == -1
+    call add(l:next_state.notes.npc_cards[l:idx].scenes, a:scene_name)
+  endif
+  return l:next_state
+endfunction
+
 function! s:quest_index(state, quest_id) abort
   let l:idx = 0
   for l:quest in get(a:state, 'quests', [])
@@ -230,4 +374,42 @@ function! s:quest_index(state, quest_id) abort
     let l:idx += 1
   endfor
   return -1
+endfunction
+
+function! s:thread_card_index(cards, thread_name) abort
+  let l:idx = 0
+  for l:card in a:cards
+    if get(l:card, 'name', '') ==# a:thread_name
+      return l:idx
+    endif
+    let l:idx += 1
+  endfor
+  return -1
+endfunction
+
+function! s:scene_card_index(cards, loc) abort
+  let l:idx = 0
+  for l:card in a:cards
+    if get(l:card, 'loc', '') ==# a:loc
+      return l:idx
+    endif
+    let l:idx += 1
+  endfor
+  return -1
+endfunction
+
+function! s:npc_card_index(cards, npc_name) abort
+  let l:idx = 0
+  for l:card in a:cards
+    if get(l:card, 'name', '') ==# a:npc_name
+      return l:idx
+    endif
+    let l:idx += 1
+  endfor
+  return -1
+endfunction
+
+function! s:get_thread_card(cards, thread_name) abort
+  let l:idx = s:thread_card_index(a:cards, a:thread_name)
+  return l:idx == -1 ? {} : a:cards[l:idx]
 endfunction

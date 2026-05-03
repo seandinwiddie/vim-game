@@ -5,29 +5,15 @@ Stage: TO KNOWLEDGE | Surge Count: 0
 Scene #1: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 Focus: Recover the Lost Tomes
 Objectives: 1 active / 1 complete
+Notes: 2 scenes / 2 NPCs
 Trade Cache: 17 | Guard: 14 | Mark: none
-DIRECTIVE: Neural diagnostic complete.
+DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
 2. Recover the Lost Tomes
 
-Trade Cache: 36 | Guard: 0 | Mark: none
-TRANSACTION: Acquired Hunter's Mark for 12 trade.
-SPELL UPLOADED: Hunter's Mark
-Trade Cache: 24 | Guard: 0 | Mark: none
-TRANSACTION: Acquired Zinc Weave Cloak for 18 trade.
-UPGRADE INSTALLED: AGI +1
-Trade Cache: 6 | Guard: 0 | Mark: none
-TRANSACTION: Sold Gibsonian Shard for 7 trade.
-Trade Cache: 13 | Guard: 0 | Mark: none
---- OBJECTIVES ---
-Scene #1: ᚠ MERCHANDISE_STORE_ROOM ᚠ
-Focus Thread: Find Missing Rangers
-Objectives: 1 active / 0 complete
-[ACTIVE] Rescue the Missing Rangers [0/2]
-  > Locate stranded ranger operatives and open a route back through Quadar Tower.
-  > Targeting: Search newly opened sectors for bound recruits, distress beacons, and field caches.
-------------------
+ * none
+-------------------
 ---
 ᚠ MERCHANDISE_STORE_ROOM ᚠ
 A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.
@@ -81,11 +67,11 @@ DETECTED ENTITIES:
 CASTING: Hunter's Mark on Ashwalker...
 TARGET LOCK: +4 to the next strike against this hostile.
 CASTING: Ethereal Dagger Assault on Ashwalker...
-ARCANE_ROLL: 20
+ARCANE_ROLL: 18
 CRITICAL HIT: The spell overwhelms the Ashwalker!
 HUNTER'S MARK: Target lock collapses with the kill.
 SALVAGE BANKED: +4 trade from Ashwalker.
-LOOT RECOVERED: Eldritch Medallion
+LOOT RECOVERED: Obsidian Fragment
 --- SECURED RELICS ---
 Trade Cache: 17 | Guard: 14 | Mark: none
  [ᛟ] Basic Dagger
@@ -93,7 +79,7 @@ Trade Cache: 17 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Eldritch Medallion
+ [ᛟ] Obsidian Fragment
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -111,3 +97,18 @@ Spells:
 Upgrades:
  + Zinc Weave Cloak
 ----------------------
+--- FIELD NOTES ---
+Notes: 2 scenes / 2 NPCs
+Focus Thread Card: Recover the Lost Tomes
+  Stage: TO KNOWLEDGE
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+  Facts:
+   - Archive traces point to codices capable of sending captives home.
+   - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
+Scene Cards:
+ * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | focus: Find Missing Rangers
+ * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes
+Known NPCs:
+ * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
+ * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+-------------------

@@ -12,11 +12,12 @@ function! game#oracle#cmd_stage(state, stage_name) abort
 endfunction
 
 function! game#oracle#cmd_thread(state, subcmd, args) abort
-  let l:next_state = copy(a:state)
   if a:subcmd ==# 'add'
-    call add(l:next_state.threads, a:args)
-    return game#core#add_log(l:next_state, "THREAD ADDED: " . a:args)
+    let l:next_state = game#story#ensure_thread(a:state, a:args)
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, a:args, 'Thread opened for future investigation.')
+    return game#core#add_log(l:next_state, 'THREAD ADDED: ' . a:args)
   elseif a:subcmd ==# 'rm' || a:subcmd ==# 'del'
+    let l:next_state = copy(a:state)
     let l:idx = str2nr(a:args) - 1
     if l:idx >= 0 && l:idx < len(l:next_state.threads)
       let l:removed = remove(l:next_state.threads, l:idx)
@@ -85,6 +86,7 @@ function! game#oracle#cmd_ask(state, question) abort
   let l:next_state.hint = l:hint
   
   let l:log_lines = ["Q: " . a:question, "[Loom of Fate: " . l:modified_roll . "] " . l:res]
+  let l:oracle_note = 'Oracle: ' . a:question . ' -> ' . l:res
 
   if l:is_unexpected
     let l:val2 = str2nr(split(reltimestr(reltime()), '\.')[1])
@@ -92,7 +94,9 @@ function! game#oracle#cmd_ask(state, question) abort
     let l:table2 = ['foreshadowing', 'tying off', 'to conflict', 'costume change', 'key grip', 'to knowledge', 'framing', 'set change', 'upstaged', 'pattern change', 'limelit', 'entering the red', 'to endings', 'montage', 'enter stage left', 'cross-stitch', 'six degrees', 're-roll/reserved', 're-roll/reserved', 're-roll/reserved']
     let l:modifier = l:table2[l:d20 - 1]
     call add(l:log_lines, "UNEXPECTED MODIFIER: " . toupper(l:modifier))
+    let l:oracle_note .= ' [' . toupper(l:modifier) . ']'
   endif
 
+  let l:next_state = game#story#record_fact(l:next_state, l:oracle_note)
   return game#core#add_log(l:next_state, l:log_lines)
 endfunction

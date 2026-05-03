@@ -1,0 +1,135 @@
+" autoload/game/explore/interact.vim - Interactive Objects
+
+function! game#explore#interact#cmd_interact(state, object_name) abort
+  if empty(a:object_name)
+    return game#core#add_log(a:state, "LOG_ERR: Specify an object to interact with (e.g. 'interact Arcane Terminal').")
+  endif
+
+  let l:room = a:state.rooms[a:state.loc]
+  if !has_key(l:room, 'objects') || empty(l:room.objects)
+    return game#core#add_log(a:state, 'LOG_ERR: There is nothing to interact with here.')
+  endif
+
+  let l:match = s:match_object(l:room.objects, a:object_name)
+  if !l:match.found
+    return game#core#add_log(a:state, "LOG_ERR: You don't see a '" . a:object_name . "' here.")
+  endif
+
+  let l:matched_obj = l:match.object
+  let l:desc = type(l:matched_obj) == v:t_dict ? get(l:matched_obj, 'desc', 'It does nothing.') : 'It does nothing.'
+  let l:name = type(l:matched_obj) == v:t_dict ? get(l:matched_obj, 'name', 'Unknown Object') : l:matched_obj
+
+  let l:next_state = deepcopy(a:state)
+  let l:effect = type(l:matched_obj) == v:t_dict ? get(l:matched_obj, 'effect', '') : ''
+  let l:consume_object = 0
+  let l:log_lines = ['INTERACT: You examine the ' . l:name . '.', l:desc]
+
+  if l:effect ==# 'briefing'
+    call s:apply_briefing(l:next_state, l:log_lines)
+  elseif l:effect ==# 'unlock_exit'
+    let l:new_dir = s:first_hidden_exit(l:next_state.rooms[a:state.loc].exits)
+    if empty(l:new_dir)
+      call add(l:log_lines, 'MECHANISM STALL: No additional passage responds to the sigils.')
+    else
+      let l:next_state.rooms[a:state.loc].exits[l:new_dir] = 'unexplored'
+      let l:consume_object = 1
+      call add(l:log_lines, 'MAP SHIFT: Stone plates grind aside, revealing a hidden route to the ' . l:new_dir . '.')
+    endif
+  elseif l:effect ==# 'rescue_ranger'
+    let l:consume_object = 1
+    let l:next_state = game#story#record_npc(l:next_state, 'Bound Ranger', l:next_state.rooms[a:state.loc].name)
+    call add(l:log_lines, 'EXTRACTION: You cut a stranded ranger free and fold them back into the recon circuit.')
+    if index(l:next_state.player.inv, 'Ranger Signal Token') == -1
+      call add(l:next_state.player.inv, 'Ranger Signal Token')
+      call add(l:log_lines, 'RECOVERED: Ranger Signal Token')
+    endif
+    let l:quest_progress = game#story#advance_quest(l:next_state, 'rescue-rangers', 1)
+    let l:next_state = l:quest_progress.state
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', 'A bound ranger was extracted alive from ' . l:next_state.rooms[a:state.loc].name . '.')
+    let l:log_lines += l:quest_progress.log
+  elseif l:effect ==# 'recover_tome'
+    let l:consume_object = 1
+    if index(l:next_state.player.inv, 'Lost Tomes') == -1
+      call add(l:next_state.player.inv, 'Lost Tomes')
+    endif
+    call add(l:log_lines, 'ARCHIVE RECOVERED: The reliquary yields a stack of codices and return sigils.')
+    let l:quest_progress = game#story#advance_quest(l:next_state, 'recover-lost-tomes', 1)
+    let l:next_state = l:quest_progress.state
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Recover the Lost Tomes', 'A sealed reliquary yielded codices and return sigils in ' . l:next_state.rooms[a:state.loc].name . '.')
+    let l:log_lines += l:quest_progress.log
+  elseif l:effect ==# 'field_cache'
+    let l:consume_object = 1
+    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + 20])
+    call add(l:next_state.player.inv, 'Field Rations')
+    call add(l:log_lines, 'CACHE BREACH: You recover field rations and patch your wounds for +20 HP.')
+  elseif l:effect ==# 'surge_rift'
+    let l:consume_object = 1
+    let l:next_state.surge += 3
+    call add(l:log_lines, 'RIFT BACKLASH: The void surges through the link and spikes the Surge Count by 3.')
+  else
+    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    if (l:val % 100) > 70
+      call add(l:log_lines, 'EVENT TRIGGERED: A hidden compartment opens!')
+      call add(l:next_state.player.inv, 'Lost Tomes')
+      call add(l:log_lines, 'LOOT RECOVERED: Lost Tomes')
+    endif
+  endif
+
+  if l:consume_object && l:match.index >= 0
+    call remove(l:next_state.rooms[a:state.loc].objects, l:match.index)
+  endif
+
+  return game#core#add_log(l:next_state, l:log_lines)
+endfunction
+
+function! s:match_object(objects, object_name) abort
+  let l:idx = 0
+  for l:obj in a:objects
+    let l:name = type(l:obj) == v:t_dict ? get(l:obj, 'name', '') : l:obj
+    if tolower(l:name) ==# tolower(a:object_name) || tolower(l:name) =~# '^' . tolower(a:object_name)
+      return {'found': 1, 'object': l:obj, 'index': l:idx}
+    endif
+    let l:idx += 1
+  endfor
+  return {'found': 0, 'object': {}, 'index': -1}
+endfunction
+
+function! s:apply_briefing(state, log_lines) abort
+  if get(a:state.flags, 'terminal_briefed', 0)
+    call add(a:log_lines, 'BRIEFING CACHE: The terminal still points toward the missing rangers and scattered codices.')
+    return
+  endif
+
+  let a:state.flags.terminal_briefed = 1
+  let l:quest_result = game#story#ensure_quest(a:state, {
+        \ 'id': 'recover-lost-tomes',
+        \ 'title': 'Recover the Lost Tomes',
+        \ 'thread': 'Recover the Lost Tomes',
+        \ 'objective': 'Find an intact reliquary and recover the codices used to send captives home.',
+        \ 'target_hint': 'Search consoles, reliquaries, and archive caches in newly generated sectors.',
+        \ 'status': 'active',
+        \ 'progress': 0,
+        \ 'goal': 1,
+        \ 'reward_item': 'Signal Codex',
+        \ 'reward_spell': 'Dark Crystal Shielding'
+        \ })
+  call extend(a:state, l:quest_result.state, 'force')
+  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Find Missing Rangers', 'Terminal telemetry confirms the missing rangers are still alive beyond the tower shell.')
+  call extend(a:state, l:updated_state, 'force')
+  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Recover the Lost Tomes', 'Archive traces point to codices capable of sending captives home.')
+  call extend(a:state, l:updated_state, 'force')
+  call add(a:log_lines, 'MISSION UPDATE: Recon protocol refreshed. Missing rangers are still alive somewhere beyond the tower shell.')
+  call add(a:log_lines, 'MISSION UPDATE: Archive traces reveal codices capable of sending captives home.')
+  if l:quest_result.added
+    call add(a:log_lines, 'OBJECTIVE ADDED: Recover the Lost Tomes')
+  endif
+endfunction
+
+function! s:first_hidden_exit(exits) abort
+  for l:dir in ['north', 'south', 'east', 'west']
+    if !has_key(a:exits, l:dir)
+      return l:dir
+    endif
+  endfor
+  return ''
+endfunction

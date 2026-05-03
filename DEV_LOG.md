@@ -6,7 +6,11 @@
 - **Functional Core, Imperative Shell**: Implemented `game#core` purely via pure functions that map `State + Input -> State`.
 - **Architectural Subdomains**: Split the engine out of `core.vim` and into localized functional domains:
   - `data.vim`: Room instantiation
-  - `explore.vim`: Navigational algorithms (`go`, `look`)
+  - `explore.vim`: Exploration facade
+  - `explore/view.vim`: Room rendering and scan output
+  - `explore/interact.vim`: Object interaction and scene-side effects
+  - `explore/travel.vim`: Navigation and room-to-room transitions
+  - `explore/procgen.vim`: Procedural room synthesis and encounter seeding
   - `combat.vim`: Tactical matrix (`attack`)
   - `economy.vim`: Merchant ledger, wares, and trade-cache transactions
   - `player.vim`: Character persistence (`inventory`, `profile`, `rest`)
@@ -26,6 +30,7 @@
 - **Dynamic Room Content**: Procedural rooms now scale threat tier from player level/progression and can spawn rescue targets, reliquaries, caches, and stronger enemy archetypes from the Qua'dar appendix.
 - **Merchant Economy**: The starting Merchandise Store Room now exposes a real wares ledger with buy/sell commands, trade-cache currency, and progression through weapons-grade upgrades, spells, rations, and supplies.
 - **Combat Progression**: Enemy kills now bank salvage into the trade cache, `Hunter's Mark` boosts follow-up strikes, `Dark Crystal Shielding` absorbs incoming damage, and purchased loadout changes carry through the run.
+- **Bookkeeping Layer**: Added CRGE-style notecards for scenes, thread facts, and known NPCs so discoveries persist as structured story memory instead of only scrollback.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -60,6 +65,7 @@
 - `buy [item]`: Purchase wares, spells, and upgrades from the store room.
 - `sell [item]`: Convert scavenged relics into trade cache.
 - `quests` / `o`: Review active objectives, completion progress, and current scene focus.
+- `notes` / `journal` / `facts` / `j`: Review story notecards, discovered NPCs, and thread facts.
 - `focus [idx]`: Promote one of the active threads as the current scene's main thread.
 - `q`: Terminate the Neural Link.
 
