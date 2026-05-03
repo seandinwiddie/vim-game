@@ -36,8 +36,10 @@ Then run `:PlugInstall`.
 10. **Trade Wares**: Press `t`, or type `:call s:run('shop')`, inside the Merchandise Store Room to inspect wares. Use `buy [ware]` and `sell [item]` to work the Qua'dar trade economy.
 11. **Review Objectives**: Press `o`, or type `:call s:run('quests')`, to inspect current mission progress, focus, and completed objectives.
 12. **Open Field Notes**: Press `j`, or type `:call s:run('notes')`, to review CRGE-style notecards for scenes, known NPCs, and established thread facts.
-13. **Manage Threads**: In command mode, type `:call s:run('thread add Rescue the MIA Marine')` to track narrative goals, then `:call s:run('focus 2')` to promote a thread as the active scene focus.
-14. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
+13. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
+14. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
+15. **Manage Threads**: In command mode, type `:call s:run('thread add Rescue the MIA Marine')` to track narrative goals, then `:call s:run('focus 2')` to promote a thread as the active scene focus.
+16. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 
 ## Architecture
 This project follows functional programming principles:

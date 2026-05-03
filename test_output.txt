@@ -6,15 +6,12 @@ Scene #1: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 Focus: Recover the Lost Tomes
 Objectives: 1 active / 1 complete
 Notes: 2 scenes / 2 NPCs
-Trade Cache: 17 | Guard: 14 | Mark: none
+Trade Cache: 13 | Guard: 8 | Mark: Ashwalker
 DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
 2. Recover the Lost Tomes
 
- * none
--------------------
----
 ᚠ MERCHANDISE_STORE_ROOM ᚠ
 A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.
 INTERACTIVE OBJECTS:
@@ -30,6 +27,8 @@ MISSION UPDATE: Archive traces reveal codices capable of sending captives home.
 OBJECTIVE ADDED: Recover the Lost Tomes
 SCENE_FOCUS: Recover the Lost Tomes
 STAGE LOCK: TO KNOWLEDGE
+ELSEWHERE: Find Missing Rangers
+SIDEBAR FACT: another recon team was seen near the tower shell
 INTERACT: You examine the Bound Ranger.
 A shackled recruit calls for extraction.
 EXTRACTION: You cut a stranded ranger free and fold them back into the recon circuit.
@@ -67,19 +66,19 @@ DETECTED ENTITIES:
 CASTING: Hunter's Mark on Ashwalker...
 TARGET LOCK: +4 to the next strike against this hostile.
 CASTING: Ethereal Dagger Assault on Ashwalker...
-ARCANE_ROLL: 18
-CRITICAL HIT: The spell overwhelms the Ashwalker!
-HUNTER'S MARK: Target lock collapses with the kill.
-SALVAGE BANKED: +4 trade from Ashwalker.
-LOOT RECOVERED: Obsidian Fragment
+ARCANE_ROLL: 10
+RESISTED: The Ashwalker deflects the magic and counterattacks!
+DARK CRYSTAL SHIELDING absorbs 6 damage.
+NO HP LOSS: The barrier carries the impact.
+FADE OUT: ashwalker resistance confirms the spire approach is still contested
+BOOKKEEPING: Review thread changes, new facts, and scene fallout before the next transition.
 --- SECURED RELICS ---
-Trade Cache: 17 | Guard: 14 | Mark: none
+Trade Cache: 13 | Guard: 8 | Mark: Ashwalker
  [ᛟ] Basic Dagger
  [ᛟ] Scout Gear
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Obsidian Fragment
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -87,8 +86,8 @@ Class: Rogue/Ranger
 Level: 12
 HP:    150 / 150
 STR: 5 | AGI: 9 | ARC: 4
-Trade: 17 | Guard: 14
-Mark: none
+Trade: 13 | Guard: 8
+Mark: Ashwalker
 Spells:
  - Ethereal Dagger Assault
  - Cloak of Shadows
@@ -105,9 +104,10 @@ Focus Thread Card: Recover the Lost Tomes
   Facts:
    - Archive traces point to codices capable of sending captives home.
    - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
+   - Fade Out: ashwalker resistance confirms the spire approach is still contested
 Scene Cards:
  * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | focus: Find Missing Rangers
- * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes
+ * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 2 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes
 Known NPCs:
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ

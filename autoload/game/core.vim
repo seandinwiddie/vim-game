@@ -54,6 +54,15 @@ function! game#core#process(state, input) abort
   elseif l:action ==# 'focus'
     let l:focus_arg = len(l:parts) > 1 ? l:parts[1] : ''
     return game#story#cmd_focus(a:state, l:focus_arg)
+  elseif l:action ==# 'scene' || l:action ==# 'sc'
+    return game#story#cmd_scene(a:state)
+  elseif l:action ==# 'fade'
+    let l:summary = join(l:parts[1:], ' ')
+    return game#story#cmd_fade(a:state, l:summary)
+  elseif l:action ==# 'aside'
+    let l:thread_ref = len(l:parts) > 1 ? l:parts[1] : ''
+    let l:fact = join(l:parts[2:], ' ')
+    return game#story#cmd_aside(a:state, l:thread_ref, l:fact)
   elseif l:action ==# 'quests' || l:action ==# 'objectives' || l:action ==# 'o'
     return game#story#cmd_quests(a:state)
   elseif l:action ==# 'notes' || l:action ==# 'journal' || l:action ==# 'facts' || l:action ==# 'j'

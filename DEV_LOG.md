@@ -15,7 +15,11 @@
   - `economy.vim`: Merchant ledger, wares, and trade-cache transactions
   - `player.vim`: Character persistence (`inventory`, `profile`, `rest`)
   - `oracle.vim`: Loom of Fate (`ask`, `stage`, `thread`)
-  - `story.vim`: Scene focus, objective tracking, and quest rewards
+  - `story.vim`: Story facade
+  - `story/state.vim`: Story bootstrap, hydration, and summaries
+  - `story/commands.vim`: Objective, note, and focus commands
+  - `story/records.vim`: Thread, scene, NPC, and fact bookkeeping
+  - `story/scenes.vim`: Scene review, fade-out, and elsewhere/sidebar commands
 - **Imperative Shell**: The `game#engine` handles rendering the state via `:echo` or appending to a unified `ScratchBuffer` via standard Vim mechanisms (`append()`, `setline()`).
 
 ## ᚢ THE LOOM OF FATE (GAME MECHANICS)
@@ -31,6 +35,8 @@
 - **Merchant Economy**: The starting Merchandise Store Room now exposes a real wares ledger with buy/sell commands, trade-cache currency, and progression through weapons-grade upgrades, spells, rations, and supplies.
 - **Combat Progression**: Enemy kills now bank salvage into the trade cache, `Hunter's Mark` boosts follow-up strikes, `Dark Crystal Shielding` absorbs incoming damage, and purchased loadout changes carry through the run.
 - **Bookkeeping Layer**: Added CRGE-style notecards for scenes, thread facts, and known NPCs so discoveries persist as structured story memory instead of only scrollback.
+- **Architecture Guard**: The Vim test harness now fails if a game module grows beyond 300 lines, forcing oversized files to be split into subdomains.
+- **Scene Lifecycle**: Added explicit scene-card review, fade-out summaries, and elsewhere/sidebar facts so the CRGE scene loop is represented directly in play.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -66,6 +72,9 @@
 - `sell [item]`: Convert scavenged relics into trade cache.
 - `quests` / `o`: Review active objectives, completion progress, and current scene focus.
 - `notes` / `journal` / `facts` / `j`: Review story notecards, discovered NPCs, and thread facts.
+- `scene` / `sc`: Inspect the current scene card and recent scene closings.
+- `fade [summary]`: Close the current scene with a bookkeeping summary.
+- `aside [thread#] [fact]`: Record an elsewhere/sidebar fact on another active thread.
 - `focus [idx]`: Promote one of the active threads as the current scene's main thread.
 - `q`: Terminate the Neural Link.
 
