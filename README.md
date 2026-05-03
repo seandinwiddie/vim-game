@@ -25,6 +25,7 @@ Then run `:PlugInstall`.
    ```vim
    :GameQuestStart
    ```
+   Use `:call s:run('help')` (or `commands`) at any point to print the current in-game command reference generated from the action registry.
 2. **Move**: Press `n`, `s`, `e`, or `w` to navigate the spatial nodes of the Quadar Tower.
 3. **Engage**: Press `c` to initiate combat with any hostile entities detected in your current node, or type `:call s:run('cast [spell]')` in command mode to cast a spell. Purchased spells like `Dark Crystal Shielding`, `Explosive Barrage`, and `Shatterstrike Slam` now feed directly into combat. The `attack` command now rolls a `d20` utilizing the *Shadows of Fate* mechanics and calculates against the entire group of hostiles (*Group Dynamics*).
 4. **Interact**: Type `:call s:run('interact [object]')` to investigate and manipulate environmental objects. Consoles can add objectives, levers can expose new exits, portal gates can open surreal side-realms, and special targets can complete missions.

@@ -19,7 +19,7 @@ function! game#core#init() abort
         \ 'progress': l:story.progress,
         \ 'rooms': l:rooms,
         \ 'log': [],
-        \ 'hint': 'SYSTEM_INIT: Type "look" to scan your surroundings.',
+        \ 'hint': 'SYSTEM_INIT: Type "look" to scan your surroundings or "help" to review commands.',
         \ }
   let l:s = game#core#normalize(l:s)
   let l:s = game#story#record_scene(l:s, l:s.loc)
@@ -33,6 +33,12 @@ function! game#core#process(state, input) abort
 endfunction
 
 " === INTERNAL PURE HELPERS ===
+
+function! game#core#cmd_help(state) abort
+  let l:next_state = copy(a:state)
+  let l:next_state.hint = 'DIRECTIVE: Use "help" any time to review the command surface.'
+  return game#core#add_log(l:next_state, game#action#help_lines())
+endfunction
 
 function! game#core#add_log(state, msg) abort
   let l:next_state = copy(a:state)
@@ -80,7 +86,7 @@ function! game#core#normalize(state) abort
     let l:next_state.threads = ['Find Missing Rangers']
   endif
   if !has_key(l:next_state, 'hint')
-    let l:next_state.hint = 'SYSTEM_INIT: Type "look" to scan your surroundings.'
+    let l:next_state.hint = 'SYSTEM_INIT: Type "look" to scan your surroundings or "help" to review commands.'
   endif
   let l:next_state = game#party#hydrate(l:next_state)
   let l:next_state = game#story#hydrate(l:next_state)

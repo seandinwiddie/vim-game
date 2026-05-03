@@ -8,6 +8,53 @@ function! game#action#invalid(raw, message) abort
   return game#action#make('system/invalidInput', {'raw': a:raw, 'message': a:message})
 endfunction
 
+function! game#action#registry() abort
+  return [
+        \ s:command('help', ['commands', '?'], 'show the current command reference.'),
+        \ s:command('look', ['l'], 'scan the current room, exits, entities, and interactables.'),
+        \ s:command('go [dir]', ['n', 's', 'e', 'w'], 'travel to a connected room.'),
+        \ s:command('ask [question]', [], 'consult the Loom of Fate.'),
+        \ s:command('stage [knowledge|conflict|endings]', [], 'shift the oracle stage.'),
+        \ s:command('shop', ['wares', 'trade', 't'], 'inspect available wares.'),
+        \ s:command('buy [ware]', [], 'purchase an item, spell, or upgrade.'),
+        \ s:command('sell [relic]', [], 'liquidate scavenged loot.'),
+        \ s:command('attack', ['fight', 'c'], 'attack the current hostile target.'),
+        \ s:command('cast [spell]', ['m'], 'cast a known spell.'),
+        \ s:command('interact [object]', [], 'examine or activate an environmental object.'),
+        \ s:command('use [item]', ['consume'], 'use an inventory item.'),
+        \ s:command('inventory', ['i'], 'show carried relics and consumables.'),
+        \ s:command('profile', ['p'], 'show player stats, spells, upgrades, and companions.'),
+        \ s:command('rest', ['r'], 'recover HP and advance tension.'),
+        \ s:command('save', [], 'write a backup save to ~/.quadar_save.json.'),
+        \ s:command('load', [], 'restore the latest backup save.'),
+        \ s:command('quests', ['objectives', 'o'], 'show active quest progress and focus.'),
+        \ s:command('notes', ['journal', 'facts', 'j'], 'show scene, thread, and NPC notes.'),
+        \ s:command('scene', ['sc'], 'inspect the current scene card.'),
+        \ s:command('frame [thread#] [stage]', [], 'set the active scene thread and stage.'),
+        \ s:command('framework [show|theme|hook|phase|next]', ['arc'], 'inspect or adjust the vignette framework.'),
+        \ s:command('minds [show|focus|ban|note|rm]', ['meeting', 'accord'], 'inspect or update the Meeting of Minds accord.'),
+        \ s:command('party [show|fade|send|rally]', ['companions'], 'inspect or reposition companions.'),
+        \ s:command('npc [list|add|rm]', [], 'manage scene-present NPCs.'),
+        \ s:command('thread [list|add|mod|split|replace|rm]', [], 'inspect or revise the thread ledger.'),
+        \ s:command('aside [thread#] [fact]', [], 'record a sidebar fact on another thread.'),
+        \ s:command('fade [summary]', [], 'close the current scene with an outcome.'),
+        \ s:command('montage [summary]', [], 'fast-forward through intervening action.')
+        \ ]
+endfunction
+
+function! game#action#help_lines() abort
+  let l:lines = ['--- COMMAND REFERENCE ---']
+  for l:entry in game#action#registry()
+    let l:line = get(l:entry, 'name', '') . ' :: ' . get(l:entry, 'synopsis', '')
+    if !empty(get(l:entry, 'aliases', []))
+      let l:line .= ' | aliases: ' . join(get(l:entry, 'aliases', []), ', ')
+    endif
+    call add(l:lines, l:line)
+  endfor
+  call add(l:lines, '-------------------------')
+  return l:lines
+endfunction
+
 function! game#action#command(input) abort
   let l:cmd = tolower(trim(a:input))
   let l:parts = split(l:cmd)
@@ -16,7 +63,9 @@ function! game#action#command(input) abort
   endif
 
   let l:head = l:parts[0]
-  if l:head ==# 'look' || l:head ==# 'l'
+  if l:head ==# 'help' || l:head ==# 'commands' || l:head ==# '?'
+    return game#action#make('system/helpRequested', {'raw': l:cmd})
+  elseif l:head ==# 'look' || l:head ==# 'l'
     return game#action#make('explore/lookRequested', {'raw': l:cmd})
   elseif l:head ==# 'go' || l:head ==# 'n' || l:head ==# 's' || l:head ==# 'e' || l:head ==# 'w'
     let l:dir = l:head ==# 'go' ? (len(l:parts) > 1 ? l:parts[1] : '') : l:head
@@ -178,4 +227,8 @@ function! game#action#command(input) abort
   endif
 
   return game#action#make('system/unknownCommand', {'raw': l:cmd, 'name': l:head})
+endfunction
+
+function! s:command(name, aliases, synopsis) abort
+  return {'name': a:name, 'aliases': a:aliases, 'synopsis': a:synopsis}
 endfunction

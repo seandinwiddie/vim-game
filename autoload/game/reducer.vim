@@ -6,6 +6,8 @@ function! game#reducer#reduce(state, action) abort
 
   if l:type ==# 'system/noop'
     return a:state
+  elseif l:type ==# 'system/helpRequested'
+    return game#core#cmd_help(a:state)
   elseif l:type ==# 'system/invalidInput'
     return game#core#add_log(a:state, get(l:payload, 'message', 'LOG_ERR: Invalid input.'))
   elseif l:type ==# 'explore/lookRequested'

@@ -1,4 +1,8 @@
 function! QuadarTest_RunStory() abort
+  let l:help_action = game#action#command('help')
+  call QuadarTest_AssertTrue(get(l:help_action, 'type', '') ==# 'system/helpRequested', 'help should produce a typed help action.')
+  let l:commands_action = game#action#command('commands')
+  call QuadarTest_AssertTrue(get(l:commands_action, 'type', '') ==# 'system/helpRequested', 'commands should alias the help action.')
   let l:invalid_focus_action = game#action#command('focus')
   call QuadarTest_AssertTrue(get(l:invalid_focus_action, 'type', '') ==# 'system/invalidInput', 'focus without a thread ref should be rejected at the action boundary.')
   let l:invalid_frame_action = game#action#command('frame 1')
@@ -62,7 +66,14 @@ function! QuadarTest_RunStory() abort
   call QuadarTest_AssertContains(game#core#render(game#store#get_state(l:store)), '--- PLAYER PROFILE ---')
   call game#store#unsubscribe(l:store, l:sub_id)
 
+  let l:help_state = game#core#process(game#core#init(), 'help')
+  call QuadarTest_AssertContains(l:help_state.log, '--- COMMAND REFERENCE ---')
+  call QuadarTest_AssertContains(l:help_state.log, 'help :: show the current command reference.')
+  call QuadarTest_AssertContains(l:help_state.log, 'framework [show|theme|hook|phase|next] :: inspect or adjust the vignette framework.')
+  call QuadarTest_AssertTrue(get(l:help_state, 'hint', '') ==# 'DIRECTIVE: Use "help" any time to review the command surface.', 'help should update the hint toward the command reference.')
+
   let l:rendered = game#core#render(l:state)
+  let l:help_view = game#core#render(l:help_state)
   let l:framework_view = game#core#render(game#core#process(l:state, 'framework'))
   let l:meeting_view = game#core#render(game#core#process(l:state, 'minds'))
   let l:party_view = game#core#render(game#core#process(l:state, 'party'))
@@ -73,6 +84,7 @@ function! QuadarTest_RunStory() abort
   call QuadarTest_AssertContains(l:framework_view, 'Hook: meet the architect behind the disappearances')
   call QuadarTest_AssertContains(l:meeting_view, '--- MEETING OF MINDS ---')
   call QuadarTest_AssertContains(l:meeting_view, 'Focus Themes: survivor rescue and uncanny revelation')
+  call QuadarTest_AssertContains(l:help_view, 'go [dir] :: travel to a connected room.')
   call QuadarTest_AssertContains(l:party_view, '--- PARTY TACTICS ---')
   call QuadarTest_AssertContains(l:party_view, 'Ranger Operative [ACTIVE]')
   call QuadarTest_AssertContains(l:rendered, '| NPCs: iron broker')

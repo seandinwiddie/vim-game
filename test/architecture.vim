@@ -26,7 +26,10 @@ function! QuadarTest_RunArchitecture() abort
 
   call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#make', 'action.vim must define the action factory.')
   call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#invalid', 'action.vim must expose invalid input actions at the parser boundary.')
+  call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#registry', 'action.vim must expose the self-documenting command registry.')
+  call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#help_lines', 'action.vim must expose formatted help lines from the command registry.')
   call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#command', 'action.vim must define the command-to-action mapper.')
+  call QuadarTest_AssertFileContains(l:action_file, 'system/helpRequested', 'action.vim should expose a typed help action.')
   call QuadarTest_AssertFileContains(l:action_file, 'system/invalidInput', 'action.vim should emit invalid-input actions for malformed commands.')
   call QuadarTest_AssertFileContains(l:action_file, 'explore/travelRequested', 'action.vim must centralize event-style action types.')
   call QuadarTest_AssertFileContains(l:action_file, 'story/frameworkRequested', 'action.vim must route framework commands through typed story actions.')
@@ -94,6 +97,7 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileNotContains(l:interact_file, "=~# '^' .", 'interact.vim should not keep ad hoc prefix-matching logic.')
 
   call QuadarTest_AssertFileContains(l:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
+  call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'system/helpRequested'", 'reducer.vim should route help actions through the core help command.')
   call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'system/invalidInput'", 'reducer.vim should render invalid-input actions without reaching reducer handlers.')
   call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
   call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'story/frameworkRequested'", 'reducer.vim must route framework story actions.')
@@ -108,6 +112,7 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileContains(l:party_file, 'function! game#party#group_bonus', 'party.vim must centralize active companion bonuses.')
 
   call QuadarTest_AssertFileContains(l:core_file, "return game#reducer#reduce(a:state, game#action#command(a:input))", 'core.vim must delegate command processing through the action/reducer pipeline.')
+  call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#cmd_help', 'core.vim must expose the help command reducer target.')
   call QuadarTest_AssertFileNotContains(l:core_file, "elseif l:action ==#", 'core.vim should not keep the legacy command router.')
   call QuadarTest_AssertFileContains(l:core_file, "'rng_seed': game#rng#default_seed()", 'core.vim should seed new runs through the shared RNG helper.')
   call QuadarTest_AssertFileContains(l:rng_file, 'function! game#rng#next', 'rng.vim must define the shared RNG step helper.')

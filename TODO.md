@@ -311,7 +311,7 @@ items that would unblock the most other items if tackled now.
   - **What changes:** Store keeps `previous_state`. Action `system/undo`
     swaps it in. Limit to one step to avoid masking save/load.
 
-- [ ] **Make help self-documenting.**
+- [x] **Make help self-documenting.**
   - **Why:** `hint` strings are scattered across reducers. The README and
     DEV_LOG enumerate commands manually, so they drift from `action#command`.
   - **What changes:** A `help` verb that introspects `action#command` (or a
