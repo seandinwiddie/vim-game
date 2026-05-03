@@ -48,8 +48,9 @@ This project follows functional programming principles:
 - **Immutable State**: Game logic operates on a state dictionary.
 - **Pure Views**: The UI is a pure function of the current state.
 - **Side-Effect Isolation**: All buffer manipulations are sequestered in the engine layer.
-- **Story Bookkeeping**: Scene focus, active objectives, and procedural quest targets are tracked directly in state so exploration can react to narrative progress.
+- **Story Bookkeeping**: Scene focus, active objectives, and procedural quest targets (like recovering lost tomes or purifying eldritch altars) are tracked directly in state so exploration can react to narrative progress.
 - **Persistent Notecards**: Scene cards, thread facts, and known NPCs are stored in state so CRGE-style bookkeeping survives past the visible log buffer.
+- **Environmental Hazards**: Movement logic parses the procedural biome of the destination (e.g. Toxic Wastes, Mud Slides, Dimensional Nexus) to apply dynamic damage, tension spikes, or navigational warnings.
 - **Economy Loop**: Trade cache, wares, salvage, and persistent upgrades now turn recovered relics into concrete progression.
 
 ## License
