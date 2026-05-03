@@ -37,11 +37,12 @@ Then run `:PlugInstall`.
 11. **Review Objectives**: Press `o`, or type `:call s:run('quests')`, to inspect current mission progress, focus, and completed objectives.
 12. **Open Field Notes**: Press `j`, or type `:call s:run('notes')`, to review CRGE-style notecards for scenes, known NPCs, and established thread facts, including which NPCs are tied to each thread.
 13. **Frame Scenes**: Use `:call s:run('frame [thread#] [stage]')` to explicitly set the current scene's main thread and stage before play.
-14. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
-15. **Scene NPCs**: Use `:call s:run('npc add [name]')`, `npc rm [name]`, or `npc` to manage who is instantly present in the current scene.
-16. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
-17. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
-18. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
+14. **Guide the Vignette**: Use `:call s:run('framework')` to inspect the current CRGE vignette card, `framework theme [subject]` to set the chapter question, `framework hook [aspiration]` to store the obscured hook, and `framework next` / `framework phase [name]` to move between Exposition, Rising Action, Climax, and Epilogue.
+15. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
+16. **Scene NPCs**: Use `:call s:run('npc add [name]')`, `npc rm [name]`, or `npc` to manage who is instantly present in the current scene.
+17. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
+18. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
+19. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 
 ## Architecture
 This project follows functional programming principles:
@@ -51,6 +52,7 @@ This project follows functional programming principles:
 - **Side-Effect Isolation**: All buffer manipulations are sequestered in the engine layer.
 - **Story Bookkeeping**: Scene focus, active objectives, and procedural quest targets (like recovering lost tomes or purifying eldritch altars) are tracked directly in state so exploration can react to narrative progress.
 - **Persistent Notecards**: Scene cards, thread facts, known NPCs, and thread-to-NPC links are stored in state so CRGE-style bookkeeping survives past the visible log buffer.
+- **Vignette Framework**: Story state now tracks a CRGE chapter theme, obscured hook, and current dramatic phase so scene framing can move through Exposition, Rising Action, Climax, and Epilogue instead of drifting.
 - **Hidden Lore**: Discovering Holographic Terminals or Eldritch Frescoes will dynamically dispense procedural worldbuilding secrets directly into the active thread's fact ledger.
 - **Portal Realms**: Veiled gates inside Mysterious Portals, Dimensional Nexus chambers, and Outerworldly Realms can branch the run into alien pocket-zones and back again.
 - **Environmental Hazards**: Movement logic parses the procedural biome of the destination (e.g. Toxic Wastes, Mud Slides, Dimensional Nexus) to apply dynamic damage, tension spikes, or navigational warnings.

@@ -55,7 +55,7 @@ function! game#story#commands#cmd_notes(state) abort
     call add(l:lines, ' * none')
   else
     for l:card in l:next_state.notes.scene_cards
-      call add(l:lines, ' * ' . l:card.title . ' | visits: ' . l:card.visits . ' | stage: TO ' . toupper(l:card.stage) . ' | focus: ' . l:card.focus . ' | npcs: ' . (empty(get(l:card, 'npcs', [])) ? 'none' : join(l:card.npcs, ', ')))
+      call add(l:lines, ' * ' . l:card.title . ' | visits: ' . l:card.visits . ' | stage: TO ' . toupper(l:card.stage) . ' | arc: CH' . get(l:card, 'framework_chapter', 1) . ' ' . game#story#framework#phase_name_label(get(l:card, 'framework_phase', 'exposition')) . ' | focus: ' . l:card.focus . ' | npcs: ' . (empty(get(l:card, 'npcs', [])) ? 'none' : join(l:card.npcs, ', ')))
     endfor
   endif
 

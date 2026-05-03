@@ -53,6 +53,7 @@ function! game#core#render(state) abort
         \ "== QUA'DAR NEURAL LINK ==",
         \ "Stage: TO " . toupper(l:state.stage) . " | Surge Count: " . l:state.surge,
         \ "Scene #" . get(l:state.scene, 'index', 1) . ": " . game#story#scene_label(l:state),
+        \ game#story#framework_summary(l:state),
         \ "Focus: " . game#story#focus_label(l:state),
         \ game#story#quest_summary(l:state),
         \ game#story#notes_summary(l:state),

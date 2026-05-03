@@ -46,6 +46,7 @@
 - **Thread NPC Bookkeeping**: Thread cards now retain related NPCs from scene casting and rescues, aligning the ledger more closely with the Familiar's notecard guidance.
 - **RTK-Style Store Layer**: Inputs now flow through event-style actions, a root reducer, and a small Vimscript store/subscription layer so the engine redraws from dispatched state changes instead of directly mutating local state.
 - **Veiled Gate Traversal**: Portal biomes now surface interactable gates that branch into generated Outerworldly / Nexus pocket-zones, preserve a return path, and write the crossing into the scene ledger.
+- **Vignette Framework Card**: Added Familiar-inspired framework tracking for theme, hook, chapter, and dramatic phase so a run can move through Exposition, Rising Action, Climax, and Epilogue with explicit scene guidance.
 - **Architecture Guard**: The Vim test harness now fails if a game module grows beyond 300 lines, forcing oversized files to be split into subdomains.
 - **Scene Lifecycle**: Added explicit scene-card review, fade-out summaries, and elsewhere/sidebar facts so the CRGE scene loop is represented directly in play.
 - **Scene Setup**: Added explicit scene framing plus NPC-presence management so the active scene can be staged around a chosen thread, stage, and cast before action begins.
@@ -91,6 +92,11 @@
 - `quests` / `o`: Review active objectives, completion progress, and current scene focus.
 - `notes` / `journal` / `facts` / `j`: Review story notecards, discovered NPCs, and thread facts.
 - `frame [thread#] [stage]`: Explicitly frame the current scene around a main thread and stage.
+- `framework` / `arc`: Review the current vignette framework card.
+- `framework theme [subject]`: Set the current vignette chapter's theme or waylay.
+- `framework hook [aspiration]`: Store the obscured hook tugging the chapter forward.
+- `framework phase [name]`: Explicitly set the dramatic phase to exposition, rising, climax, or epilogue.
+- `framework next`: Advance the current framework to the next dramatic phase, rolling to a new chapter after epilogue.
 - `scene` / `sc`: Inspect the current scene card and recent scene closings.
 - `npc add [name]` / `npc rm [name]` / `npc`: Manage the current scene's present NPC roster.
 - `fade [summary]`: Close the current scene with a bookkeeping summary.

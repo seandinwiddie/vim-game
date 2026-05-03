@@ -20,6 +20,8 @@ function! game#reducer#reduce(state, action) abort
     return game#story#cmd_focus(a:state, get(l:payload, 'focus', ''))
   elseif l:type ==# 'story/frameRequested'
     return game#story#cmd_frame(a:state, get(l:payload, 'thread_ref', ''), get(l:payload, 'stage', ''))
+  elseif l:type ==# 'story/frameworkRequested'
+    return game#story#cmd_framework(a:state, get(l:payload, 'subcmd', 'show'), get(l:payload, 'args', ''))
   elseif l:type ==# 'story/sceneReviewed'
     return game#story#cmd_scene(a:state)
   elseif l:type ==# 'story/npcCommandRequested'

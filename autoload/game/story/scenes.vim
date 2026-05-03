@@ -4,11 +4,14 @@ function! game#story#scenes#cmd_scene(state) abort
   let l:next_state = deepcopy(a:state)
   let l:next_state.hint = 'DIRECTIVE: Review the current scene card before pushing to the next scene.'
   let l:card = game#story#records#get_scene_card(l:next_state.notes.scene_cards, l:next_state.loc)
+  let l:framework_chapter = empty(l:card) ? get(get(l:next_state, 'framework', {}), 'chapter', 1) : get(l:card, 'framework_chapter', get(get(l:next_state, 'framework', {}), 'chapter', 1))
+  let l:framework_phase = empty(l:card) ? get(get(l:next_state, 'framework', {}), 'phase', 'exposition') : get(l:card, 'framework_phase', get(get(l:next_state, 'framework', {}), 'phase', 'exposition'))
   let l:lines = [
         \ '--- SCENE CARD ---',
         \ 'Scene #' . get(l:next_state.scene, 'index', 1) . ': ' . game#story#state#scene_label(l:next_state),
         \ 'Focus: ' . game#story#state#focus_label(l:next_state),
-        \ 'Stage: TO ' . toupper(l:next_state.stage)
+        \ 'Stage: TO ' . toupper(l:next_state.stage),
+        \ 'Framework: CH' . l:framework_chapter . ' ' . game#story#framework#phase_name_label(l:framework_phase)
         \ ]
 
   if empty(l:card)
@@ -47,7 +50,7 @@ function! game#story#scenes#cmd_fade(state, summary) abort
   let l:next_state = deepcopy(a:state)
   let l:next_state = game#story#records#append_scene_closing(l:next_state, l:next_state.loc, a:summary)
   let l:next_state = game#story#threads#record_fact(l:next_state, 'Fade Out: ' . a:summary)
-  let l:next_state.hint = 'DIRECTIVE: Scene closed. Use thread mod/split/replace to capture fallout before moving on.'
+  let l:next_state.hint = 'DIRECTIVE: Scene closed. Use thread mod/split/replace, then advance the framework when the next act is earned.'
 
   return game#core#add_log(l:next_state, [
         \ 'FADE OUT: ' . a:summary,

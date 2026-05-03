@@ -24,6 +24,14 @@ function! game#story#notes_summary(state) abort
   return game#story#state#notes_summary(a:state)
 endfunction
 
+function! game#story#framework_summary(state) abort
+  return game#story#framework#summary(a:state)
+endfunction
+
+function! game#story#framework_phase_label(state) abort
+  return game#story#framework#phase_label(a:state)
+endfunction
+
 function! game#story#cmd_quests(state) abort
   return game#story#commands#cmd_quests(a:state)
 endfunction
@@ -58,6 +66,10 @@ endfunction
 
 function! game#story#cmd_aside(state, thread_ref, fact) abort
   return game#story#scenes#cmd_aside(a:state, a:thread_ref, a:fact)
+endfunction
+
+function! game#story#cmd_framework(state, subcmd, args) abort
+  return game#story#framework#cmd_framework(a:state, a:subcmd, a:args)
 endfunction
 
 function! game#story#ensure_thread(state, thread_name) abort

@@ -215,10 +215,23 @@ function! s:ensure_scene_card(state, loc) abort
   let l:idx = game#story#records#scene_card_index(l:next_state.notes.scene_cards, a:loc)
 
   if l:idx == -1
-    call add(l:next_state.notes.scene_cards, {'loc': a:loc, 'title': l:title, 'visits': 0, 'stage': l:next_state.stage, 'focus': l:focus, 'closings': [], 'openings': [], 'npcs': []})
+    call add(l:next_state.notes.scene_cards, {
+          \ 'loc': a:loc,
+          \ 'title': l:title,
+          \ 'visits': 0,
+          \ 'stage': l:next_state.stage,
+          \ 'focus': l:focus,
+          \ 'framework_phase': get(get(l:next_state, 'framework', {}), 'phase', 'exposition'),
+          \ 'framework_chapter': get(get(l:next_state, 'framework', {}), 'chapter', 1),
+          \ 'closings': [],
+          \ 'openings': [],
+          \ 'npcs': []
+          \ })
   else
     let l:next_state.notes.scene_cards[l:idx].stage = l:next_state.stage
     let l:next_state.notes.scene_cards[l:idx].focus = l:focus
+    let l:next_state.notes.scene_cards[l:idx].framework_phase = get(get(l:next_state, 'framework', {}), 'phase', 'exposition')
+    let l:next_state.notes.scene_cards[l:idx].framework_chapter = get(get(l:next_state, 'framework', {}), 'chapter', 1)
     if !has_key(l:next_state.notes.scene_cards[l:idx], 'closings')
       let l:next_state.notes.scene_cards[l:idx].closings = []
     endif
@@ -227,6 +240,12 @@ function! s:ensure_scene_card(state, loc) abort
     endif
     if !has_key(l:next_state.notes.scene_cards[l:idx], 'npcs')
       let l:next_state.notes.scene_cards[l:idx].npcs = []
+    endif
+    if !has_key(l:next_state.notes.scene_cards[l:idx], 'framework_phase')
+      let l:next_state.notes.scene_cards[l:idx].framework_phase = get(get(l:next_state, 'framework', {}), 'phase', 'exposition')
+    endif
+    if !has_key(l:next_state.notes.scene_cards[l:idx], 'framework_chapter')
+      let l:next_state.notes.scene_cards[l:idx].framework_chapter = get(get(l:next_state, 'framework', {}), 'chapter', 1)
     endif
   endif
 

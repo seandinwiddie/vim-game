@@ -2,32 +2,24 @@
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 2
-Scene #2: ᚲ OUTERWORLDLY_REALM ᚲ
+Scene #2: ᚲ MYSTERIOUS_PORTAL ᚲ
+Arc: CH1 CLIMAX
 Focus: decode the return codex relay
 Objectives: 2 active / 1 complete
 Notes: 7 scenes / 3 NPCs
 Trade Cache: 36 | Guard: 14 | Mark: none
-DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
+DIRECTIVE: Keep the vignette hook in mind while you frame the next scene.
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
 2. decode the return codex relay
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
-RECOVERED: The holy resonance restores 15 HP.
-OBJECTIVE UPDATED: Purify the Eldritch Altars [1/2]
-NEURAL_TRACKING: Shifting coordinates to west
----
-ᚲ MILITARY_FACILITY ᚲ
-Ancient military bastion.
-INTERACTIVE OBJECTS:
-  > [?] Holographic Terminal
-ᚱ ENTRANCES: north
 [Threat Tier: 1 | HP: 150/150]
 --
 INTERACT: You examine the Holographic Terminal.
 A distorted projection.
-HIDDEN LORE DISCOVERED: The missing rangers were not captured; they surrendered willingly to the whispers.
+HIDDEN LORE DISCOVERED: The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.
 THREAD UPDATED: Forbidden truth appended to the active focus thread.
 NEURAL_TRACKING: Shifting coordinates to south
 ---
@@ -41,14 +33,13 @@ INTERACTIVE OBJECTS:
 INTERACT: You examine the Veiled Gate.
 A veiled gate shivering with impossible geometry.
 VEILED_GATE: The threshold parts and reveals a path into the alien dark.
-PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ OUTERWORLDLY_REALM ᚲ
+PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ MYSTERIOUS_PORTAL ᚲ
 SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.
 ---
-ᚲ OUTERWORLDLY_REALM ᚲ
-A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defying roads.
+ᚲ MYSTERIOUS_PORTAL ᚲ
+A thin alien threshold shivering with arcane fields and extradimensional static.
 INTERACTIVE OBJECTS:
   > [?] Return Gate
-  > [?] Alien Monolith
 ᚱ ENTRANCES: south, north
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -59,6 +50,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
+ [ᛟ] Zinc Plating
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -84,15 +76,15 @@ Companions (Party):
 Notes: 7 scenes / 3 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ
   NPCs: Bound Ranger
   Facts:
-   - Scene framed around Recover the Lost Tomes at TO KNOWLEDGE.
    - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
+   - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
-   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
+   - LORE: The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.
+   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ.
 --- THREAD LEDGER ---
  1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell | NPCs: iron broker, Bound Ranger
  2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes | NPCs: Bound Ranger
@@ -102,13 +94,139 @@ Focus Thread Card: decode the return codex relay
  - Purify the Eldritch Altars [OPEN]
 ---------------------
 Scene Cards:
- * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: iron broker, Bound Ranger
- * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: none
- * ᚲ TOXIC_WASTES ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
- * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
- * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
- * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
- * ᚲ OUTERWORLDLY_REALM ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
+ * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 RISING ACTION | focus: Recover the Lost Tomes | npcs: iron broker, Bound Ranger
+ * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: Recover the Lost Tomes | npcs: none
+ * ᚲ TOXIC_WASTES ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+ * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+ * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+Known NPCs:
+ * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
+ * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
+ * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+-------------------
+--- VIGNETTE FRAMEWORK ---
+Framework: Vignette
+Chapter: 1
+Phase: CLIMAX
+Theme: learn why the tower is hollowing out recruits
+Hook: meet the architect behind the disappearances
+Focus: decode the return codex relay
+Guidance: Push the decisive thread toward confrontation, closure, or revelation.
+---------------------------
+
+ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
+== QUA'DAR NEURAL LINK ==
+Stage: TO KNOWLEDGE | Surge Count: 2
+Scene #2: ᚲ MYSTERIOUS_PORTAL ᚲ
+Arc: CH1 CLIMAX
+Focus: decode the return codex relay
+Objectives: 2 active / 1 complete
+Notes: 7 scenes / 3 NPCs
+Trade Cache: 36 | Guard: 14 | Mark: none
+DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
+--- ACTIVE THREADS ---
+1. Find Missing Rangers
+2. decode the return codex relay
+3. secure the tower shell extraction route
+4. track the tower shell recon cell
+
+RECOVERED: The holy resonance restores 15 HP.
+OBJECTIVE UPDATED: Purify the Eldritch Altars [1/2]
+NEURAL_TRACKING: Shifting coordinates to west
+---
+ᚲ MILITARY_FACILITY ᚲ
+Ancient military bastion.
+INTERACTIVE OBJECTS:
+  > [?] Holographic Terminal
+ᚱ ENTRANCES: north
+[Threat Tier: 1 | HP: 150/150]
+--
+INTERACT: You examine the Holographic Terminal.
+A distorted projection.
+HIDDEN LORE DISCOVERED: The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.
+THREAD UPDATED: Forbidden truth appended to the active focus thread.
+NEURAL_TRACKING: Shifting coordinates to south
+---
+ᚲ MYSTERIOUS_PORTAL ᚲ
+A thin alien threshold trembles here.
+INTERACTIVE OBJECTS:
+  > [?] Veiled Gate
+ᚱ ENTRANCES: east
+[Threat Tier: 1 | HP: 150/150]
+--
+INTERACT: You examine the Veiled Gate.
+A veiled gate shivering with impossible geometry.
+VEILED_GATE: The threshold parts and reveals a path into the alien dark.
+PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ MYSTERIOUS_PORTAL ᚲ
+SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.
+---
+ᚲ MYSTERIOUS_PORTAL ᚲ
+A thin alien threshold shivering with arcane fields and extradimensional static.
+INTERACTIVE OBJECTS:
+  > [?] Return Gate
+ᚱ ENTRANCES: south, north
+[Threat Tier: 4 | HP: 150/150]
+--
+--- SECURED RELICS ---
+Trade Cache: 36 | Guard: 14 | Mark: none
+ [ᛟ] Basic Dagger
+ [ᛟ] Scout Gear
+ [ᛟ] Ranger Signal Token
+ [ᛟ] Lost Tomes
+ [ᛟ] Signal Codex
+ [ᛟ] Zinc Plating
+----------------------
+--- PLAYER PROFILE ---
+Name:  Kamenal
+Class: Rogue/Ranger
+Level: 12
+HP:    150 / 150
+STR: 5 | AGI: 9 | ARC: 4
+Trade: 36 | Guard: 14
+Mark: none
+Spells:
+ - Ethereal Dagger Assault
+ - Cloak of Shadows
+ - Dark Crystal Shielding
+ - Hunter's Mark
+ - Explosive Barrage
+ - Shatterstrike Slam
+Upgrades:
+ + Zinc Weave Cloak
+Companions (Party):
+ * Ranger Operative [STR:5 AGI:5 ARC:3]
+----------------------
+--- FIELD NOTES ---
+Notes: 7 scenes / 3 NPCs
+Focus Thread Card: decode the return codex relay
+  Stage: TO KNOWLEDGE
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ
+  NPCs: Bound Ranger
+  Facts:
+   - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
+   - Framework phase shifted to CLIMAX in chapter 1.
+   - Fade Out: ashwalker resistance confirms the spire approach is still contested
+   - Replaces Recover the Lost Tomes after scene fallout.
+   - LORE: The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.
+   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ.
+--- THREAD LEDGER ---
+ 1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell | NPCs: iron broker, Bound Ranger
+ 2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes | NPCs: Bound Ranger
+ 3. secure the tower shell extraction route [OPEN] | aliases: Purify the Eldritch Altars
+ 4. track the tower shell recon cell [OPEN] | split from: Find Missing Rangers | NPCs: iron broker, Bound Ranger
+ - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay | NPCs: Bound Ranger
+ - Purify the Eldritch Altars [OPEN]
+---------------------
+Scene Cards:
+ * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 RISING ACTION | focus: Recover the Lost Tomes | npcs: iron broker, Bound Ranger
+ * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: Recover the Lost Tomes | npcs: none
+ * ᚲ TOXIC_WASTES ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+ * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+ * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: none
 Known NPCs:
  * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ

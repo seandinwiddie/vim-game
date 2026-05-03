@@ -15,7 +15,7 @@ function! game#story#setup#cmd_frame(state, thread_ref, stage_name) abort
   let l:next_state = deepcopy(a:state)
   let l:next_state.scene.focus = l:idx
   let l:next_state.stage = l:stage
-  let l:opening = 'Scene framed around ' . l:threads[l:idx - 1] . ' at TO ' . toupper(l:stage) . '.'
+  let l:opening = 'Scene framed around ' . l:threads[l:idx - 1] . ' at TO ' . toupper(l:stage) . ' during ' . game#story#framework_phase_label(l:next_state) . '.'
   let l:next_state = game#story#records#append_scene_opening(l:next_state, l:next_state.loc, l:opening)
   let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:threads[l:idx - 1], l:opening)
   let l:next_state.hint = 'DIRECTIVE: Scene frame locked. Choose present NPCs or press forward.'
@@ -23,7 +23,8 @@ function! game#story#setup#cmd_frame(state, thread_ref, stage_name) abort
   return game#core#add_log(l:next_state, [
         \ 'FADE IN: ' . game#story#state#scene_label(l:next_state),
         \ 'MAIN THREAD: ' . l:threads[l:idx - 1],
-        \ 'STAGE: TO ' . toupper(l:stage)
+        \ 'STAGE: TO ' . toupper(l:stage),
+        \ 'ARC: ' . game#story#framework_summary(l:next_state)
         \ ])
 endfunction
 

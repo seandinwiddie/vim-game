@@ -3,6 +3,13 @@
 function! game#story#state#bootstrap() abort
   return {
         \ 'scene': {'index': 1, 'location': 'nexus', 'focus': 1},
+        \ 'framework': {
+        \   'name': 'Vignette',
+        \   'chapter': 1,
+        \   'phase': 'exposition',
+        \   'theme': 'Recover the missing rangers from Qua''dar Tower.',
+        \   'hook': 'Kamenal needs a live witness who knows what the tower is doing to the recruits.'
+        \ },
         \ 'quests': [
         \   {
         \     'id': 'rescue-rangers',
@@ -43,6 +50,9 @@ function! game#story#state#hydrate(state) abort
   if !has_key(l:next_state, 'quests')
     let l:next_state.quests = deepcopy(l:defaults.quests)
   endif
+  if !has_key(l:next_state, 'framework')
+    let l:next_state.framework = deepcopy(l:defaults.framework)
+  endif
   if !has_key(l:next_state, 'notes')
     let l:next_state.notes = deepcopy(l:defaults.notes)
   endif
@@ -60,6 +70,21 @@ function! game#story#state#hydrate(state) abort
   endif
   if !has_key(l:next_state.flags, 'terminal_briefed')
     let l:next_state.flags.terminal_briefed = l:defaults.flags.terminal_briefed
+  endif
+  if !has_key(l:next_state.framework, 'name')
+    let l:next_state.framework.name = l:defaults.framework.name
+  endif
+  if !has_key(l:next_state.framework, 'chapter')
+    let l:next_state.framework.chapter = l:defaults.framework.chapter
+  endif
+  if !has_key(l:next_state.framework, 'phase')
+    let l:next_state.framework.phase = l:defaults.framework.phase
+  endif
+  if !has_key(l:next_state.framework, 'theme')
+    let l:next_state.framework.theme = l:defaults.framework.theme
+  endif
+  if !has_key(l:next_state.framework, 'hook')
+    let l:next_state.framework.hook = l:defaults.framework.hook
   endif
   if !has_key(l:next_state.notes, 'scene_cards')
     let l:next_state.notes.scene_cards = []
