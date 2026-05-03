@@ -103,12 +103,7 @@ function! s:apply_table2_modifier(state, modifier, log_lines) abort
       let l:rng = game#rng#next(l:next_state)
       let l:next_state = l:rng.state
       let l:val = l:rng.value
-      let l:pool = [
-            \ {'name': 'Ashwalker', 'str': 4, 'agi': 7, 'arc': 4},
-            \ {'name': 'Voidwraith', 'str': 3, 'agi': 6, 'arc': 9},
-            \ {'name': 'Doomguard', 'str': 8, 'agi': 3, 'arc': 3},
-            \ {'name': 'Twilight Weaver', 'str': 4, 'agi': 9, 'arc': 6}
-            \ ]
+      let l:pool = game#enemies#select(['Ashwalker', 'Voidwraith', 'Doomguard', 'Twilight Weaver'])
       let l:spawn = deepcopy(l:pool[l:val % len(l:pool)])
       let l:next_state.rooms[l:next_state.loc] = copy(l:room)
       let l:next_state.rooms[l:next_state.loc].entities = copy(get(l:room, 'entities', [])) + [l:spawn]

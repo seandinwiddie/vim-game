@@ -21,6 +21,28 @@ function! game#enemies#flavor_lines(target_name) abort
         \ ]
 endfunction
 
+function! game#enemies#pool(rank) abort
+  let l:key = a:rank >= 4 ? '4' : string(max([1, a:rank]))
+  return deepcopy(get(s:pools(), l:key, s:pools()['1']))
+endfunction
+
+function! game#enemies#select(names) abort
+  let l:catalog = {}
+  for l:pool in values(s:pools())
+    for l:enemy in l:pool
+      let l:catalog[l:enemy.name] = l:enemy
+    endfor
+  endfor
+
+  let l:selected = []
+  for l:name in a:names
+    if has_key(l:catalog, l:name)
+      call add(l:selected, deepcopy(l:catalog[l:name]))
+    endif
+  endfor
+  return l:selected
+endfunction
+
 function! game#enemies#counter_signature(state, target_name, log_lines) abort
   let l:archetype = game#enemies#archetype(a:target_name)
   if empty(l:archetype)
@@ -144,6 +166,38 @@ function! s:quest_complete(state, quest_id) abort
     endif
   endfor
   return 0
+endfunction
+
+function! s:pools() abort
+  return {
+        \ '4': [
+        \   {'name': 'Storm Titan', 'str': 10, 'agi': 3, 'arc': 8},
+        \   {'name': 'Shadowhorn Juggernaut', 'str': 11, 'agi': 3, 'arc': 5},
+        \   {'name': 'Magma Leviathan', 'str': 11, 'agi': 2, 'arc': 8},
+        \   {'name': 'Abyssal Overfiend', 'str': 10, 'agi': 4, 'arc': 9},
+        \   {'name': 'Aksov Hexe-Spinne', 'str': 8, 'agi': 10, 'arc': 10}
+        \ ],
+        \ '3': [
+        \   {'name': 'Byssalspawn', 'str': 9, 'agi': 2, 'arc': 7},
+        \   {'name': 'Twilight Weaver', 'str': 4, 'agi': 9, 'arc': 6},
+        \   {'name': 'Gravewalker', 'str': 7, 'agi': 4, 'arc': 6},
+        \   {'name': 'Flame Corps', 'str': 8, 'agi': 4, 'arc': 5},
+        \   {'name': 'Aetherwing Herald', 'str': 5, 'agi': 9, 'arc': 8}
+        \ ],
+        \ '2': [
+        \   {'name': 'Obsidian Warden', 'str': 7, 'agi': 2, 'arc': 6},
+        \   {'name': 'Doomguard', 'str': 8, 'agi': 3, 'arc': 3},
+        \   {'name': 'Voidwraith', 'str': 3, 'agi': 6, 'arc': 9},
+        \   {'name': 'Cyberflux Guardian', 'str': 6, 'agi': 6, 'arc': 5},
+        \   {'name': 'Sentinel of Terror', 'str': 8, 'agi': 5, 'arc': 4}
+        \ ],
+        \ '1': [
+        \   {'name': 'Ashwalker', 'str': 4, 'agi': 7, 'arc': 4},
+        \   {'name': 'Aether Spirit', 'str': 2, 'agi': 8, 'arc': 8},
+        \   {'name': 'Thunder Trooper', 'str': 5, 'agi': 5, 'arc': 4},
+        \   {'name': 'Iron Armored Guardian', 'str': 6, 'agi': 2, 'arc': 2}
+        \ ]
+        \ }
 endfunction
 
 function! s:archetypes() abort

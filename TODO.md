@@ -89,7 +89,7 @@ items that would unblock the most other items if tackled now.
 
 ## ᚢ Determinism & Testability
 
-- [ ] **Stop using `reltime()` as a PRNG.** *(highest-leverage item in the repo)*
+- [x] **Stop using `reltime()` as a PRNG.** *(highest-leverage item in the repo)*
   - **Why:** Almost every randomized branch calls
     `str2nr(split(reltimestr(reltime()), '\.')[1])` — d20 rolls, room
     generation, loot tables, dynamic spawns, lore selection, recruit names,
@@ -156,7 +156,7 @@ items that would unblock the most other items if tackled now.
 
 ## ᚦ Code Organization
 
-- [ ] **The 300-line architecture guard is a smell, not a fix.**
+- [x] **The 300-line architecture guard is a smell, not a fix.**
   - **Why:** It catches *file size* but not *coupling*. `combat.vim` sits at
     295/300 because `cmd_cast` is a long if-elseif tower over spell names —
     the cap is preventing growth, not improving design. The next spell will
@@ -181,7 +181,7 @@ items that would unblock the most other items if tackled now.
     Balance retunes touch one file. A test asserts every magic value
     referenced via `game#tuning#get` exists in the dict.
 
-- [ ] **Kill duplicate enemy-pool definitions.**
+- [x] **Kill duplicate enemy-pool definitions.**
   - **Why:** `procgen.vim`'s `s:enemy_pool(rank)` is its own table.
     `player.vim#cmd_rest` has its own four-enemy list for dynamic spawns.
     `oracle.vim#apply_table2_modifier` for Entering The Red has *another*
@@ -334,11 +334,11 @@ items that would unblock the most other items if tackled now.
 
 If you only ever do three of these, do these three — they unblock the others:
 
-- [ ] **1. Inject RNG into combat / oracle / procgen / loot tables.** Stops
+- [x] **1. Inject RNG into combat / oracle / procgen / loot tables.** Stops
   combat tests from boosting the player to god-mode to verify boss flow.
   Required before snapshot tests and before per-feature test splits become
   truly useful, because randomness pollutes assertions.
-- [ ] **2. Replace the spell-name `if/elseif` chain in `combat.vim#cmd_cast`
+- [x] **2. Replace the spell-name `if/elseif` chain in `combat.vim#cmd_cast`
   with a handler dict.** Every new spell currently edits the same growing
   function — that's why combat.vim is wedged near the 300-line guard. The
   handler-dict pattern is the same one you'll want for quest-completion

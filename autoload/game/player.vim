@@ -118,13 +118,8 @@ function! game#player#cmd_rest(state) abort
     let l:room = l:next_state.rooms[a:state.loc]
     let l:next_state.rooms[a:state.loc] = copy(l:room)
     let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
-    
-    let l:enemies = [
-          \ {'name': 'Ashwalker', 'str': 4, 'agi': 7, 'arc': 4},
-          \ {'name': 'Aether Spirit', 'str': 2, 'agi': 8, 'arc': 8},
-          \ {'name': 'Voidwraith', 'str': 3, 'agi': 6, 'arc': 9},
-          \ {'name': 'Obsidian Warden', 'str': 7, 'agi': 2, 'arc': 6}
-          \ ]
+
+    let l:enemies = game#enemies#select(['Ashwalker', 'Aether Spirit', 'Voidwraith', 'Obsidian Warden'])
     let l:spawned = deepcopy(l:enemies[(l:val / 3) % len(l:enemies)])
     call add(l:next_state.rooms[a:state.loc].entities, l:spawned)
     call add(l:log_lines, "DYNAMIC SPAWN: The shadows shift! A " . l:spawned.name . " found you while resting!")
