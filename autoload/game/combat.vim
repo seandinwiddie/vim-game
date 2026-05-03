@@ -66,8 +66,8 @@ function! game#combat#cmd_attack(state) abort
       let l:dmg = (l:val % 10) + 5
     endif
     
-    call s:apply_damage(l:next_state, l:dmg, l:log_lines)
-    call s:defeat_target(l:next_state, a:state.loc, l:target, l:val, l:log_lines)
+    call game#combat#apply_damage(l:next_state, l:dmg, l:log_lines)
+    call game#combat#defeat_target(l:next_state, a:state.loc, l:target, l:val, l:log_lines)
     
     let l:next_state.hint = 'DIRECTIVE: Hostile neutralized. Sector secure.'
   else
@@ -80,7 +80,7 @@ function! game#combat#cmd_attack(state) abort
       let l:dmg = (l:val % 15) + 5
     endif
     
-    call s:apply_damage(l:next_state, l:dmg, l:log_lines)
+    call game#combat#apply_damage(l:next_state, l:dmg, l:log_lines)
     call game#enemies#counter_signature(l:next_state, l:target_name, l:log_lines)
     let l:next_state.hint = 'WARNING: Vital signs dropping. Consider retreat!'
   endif
@@ -99,139 +99,47 @@ function! game#combat#cmd_cast(state, spell_name) abort
     return game#core#add_log(a:state, "LOG_ERR: Specify a spell to cast (e.g. 'cast Ethereal Dagger Assault').")
   endif
   
-  let l:has_spell = 0
-  for l:sp in a:state.player.spells
-    if tolower(l:sp) ==# tolower(a:spell_name) || tolower(l:sp) =~# '^' . tolower(a:spell_name)
-      let l:has_spell = 1
-      let l:matched_spell = l:sp
-      break
-    endif
-  endfor
-  
-  if !l:has_spell
+  let l:matched_spell = game#combat#spells#match_known(a:state.player.spells, a:spell_name)
+  if empty(l:matched_spell)
     return game#core#add_log(a:state, "SPELL_ERR: You do not know the spell '" . a:spell_name . "'.")
   endif
 
-  let l:next_state = copy(a:state) | let l:next_state.player = copy(a:state.player)
-  let l:p_arc = get(a:state.player, 'arc', 4)
-  let l:p_agi = get(a:state.player, 'agi', 8)
-
-  if l:matched_spell ==# 'Dark Crystal Shielding'
-    let l:next_state.guard = 10 + l:p_arc
-    let l:next_state.hint = 'DIRECTIVE: Barrier online. You can absorb the next heavy strike.'
-    return game#core#add_log(l:next_state, [
-          \ 'CASTING: Dark Crystal Shielding...',
-          \ 'WARD STRENGTH: ' . l:next_state.guard,
-          \ 'DEFENSIVE MATRIX: Crystalline shielding coils around the neural link.'
-          \ ])
-  elseif l:matched_spell ==# 'Resurgence Ritual'
-    let l:heal = 35 + l:p_arc
-    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
-    let l:next_state.hint = 'DIRECTIVE: Vital reserves replenished.'
-    return game#core#add_log(l:next_state, [
-          \ 'CASTING: Resurgence Ritual...',
-          \ 'RESTORED: +' . l:heal . ' HP.'
-          \ ])
-  elseif l:matched_spell ==# 'Dimensional Weave Shield'
-    let l:next_state.guard = 14 + l:p_arc
-    let l:next_state.hint = 'DIRECTIVE: Extradimensional ward fortified.'
-    return game#core#add_log(l:next_state, [
-          \ 'CASTING: Dimensional Weave Shield...',
-          \ 'WARD STRENGTH: ' . l:next_state.guard,
-          \ 'STARWEAVE: A protective lattice of dimensional energy guards the link.'
-          \ ])
+  let l:spell = game#combat#spells#get(l:matched_spell)
+  if empty(l:spell)
+    return game#core#add_log(a:state, "LOG_ERR_CRITICAL: No combat handler registered for '" . l:matched_spell . "'.")
   endif
 
-  let l:room = a:state.rooms[a:state.loc]
-  if empty(l:room.entities)
-    return game#core#add_log(a:state, "CAST_LOG: You channel " . l:matched_spell . ", but the energy dissipates in the empty air.")
-  endif
+  let l:next_state = copy(a:state)
+  let l:next_state.player = copy(a:state.player)
+  let l:ctx = {
+        \ 'loc': a:state.loc,
+        \ 'player_str': get(a:state.player, 'str', 5),
+        \ 'player_agi': get(a:state.player, 'agi', 8),
+        \ 'player_arc': get(a:state.player, 'arc', 4),
+        \ 'group_bonus': game#party#group_bonus(a:state),
+        \ 'mark_bonus': 0,
+        \ 'target': {},
+        \ 'target_name': ''
+        \ }
 
-  let l:target = l:room.entities[0]
-  let l:target_name = type(l:target) == v:t_dict ? get(l:target, 'name', 'Unknown Entity') : l:target
-
-  let l:next_state.rooms = copy(a:state.rooms)
-  let l:next_state.rooms[a:state.loc] = copy(l:room)
-  let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
-  let l:mark_bonus = s:mark_bonus(a:state, l:target_name)
-
-  if l:matched_spell ==# "Hunter's Mark"
-    let l:next_state.mark = l:target_name
-    let l:next_state.hint = 'DIRECTIVE: Target marked. Follow with attack or offensive casting.'
-    return game#core#add_log(l:next_state, [
-          \ "CASTING: Hunter's Mark on " . l:target_name . "...",
-          \ 'TARGET LOCK: +' . s:mark_bonus_value() . ' to the next strike against this hostile.'
-          \ ])
-  endif
-  let l:rng = game#rng#next(l:next_state)
-  let l:next_state = l:rng.state
-  let l:val = l:rng.value
-
-  if l:matched_spell ==# 'Precision Shot'
-    let l:roll = (l:val % 20) + 1 + l:p_agi + l:mark_bonus
-    let l:log_lines = [
-          \ "CASTING: Precision Shot on " . l:target_name . "...",
-          \ "AIM_ROLL: " . l:roll
-          \ ]
-    if l:roll >= 18
-      call add(l:log_lines, 'HEADSHOT VECTOR: The shot tears through the target''s weak point.')
-      call s:defeat_target(l:next_state, a:state.loc, l:target, l:val, l:log_lines)
-      let l:next_state.hint = 'DIRECTIVE: Precision elimination confirmed.'
-    else
-      let l:dmg = (l:val % 8) + 4
-      call add(l:log_lines, 'SHOT SPOILED: The target twists away and counters from cover.')
-      call s:apply_damage(l:next_state, l:dmg, l:log_lines)
-      let l:next_state.hint = 'WARNING: Precision Shot failed. Reposition or strike hard.'
+  if get(l:spell, 'needs_target', 1)
+    let l:room = a:state.rooms[a:state.loc]
+    if empty(l:room.entities)
+      return game#core#add_log(a:state, "CAST_LOG: You channel " . l:matched_spell . ", but the energy dissipates in the empty air.")
     endif
-    if l:next_state.player.hp <= 0
-      let l:next_state.player.hp = 0
-      call add(l:log_lines, 'FATAL_ERROR: NEURAL LINK SEVERED. YOU HAVE DIED.')
-      let l:next_state.hint = 'GAME OVER: Type "q" to quit.'
-    endif
-    return game#core#add_log(l:next_state, l:log_lines)
+
+    let l:ctx.target = l:room.entities[0]
+    let l:ctx.target_name = type(l:ctx.target) == v:t_dict ? get(l:ctx.target, 'name', 'Unknown Entity') : l:ctx.target
+    let l:ctx.mark_bonus = s:mark_bonus(a:state, l:ctx.target_name)
+    let l:next_state.rooms = copy(a:state.rooms)
+    let l:next_state.rooms[a:state.loc] = copy(l:room)
+    let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
   endif
 
-  let l:kind_str = 'ARCANE'
-  let l:bonus = l:p_arc
-  let l:low = tolower(l:matched_spell)
-  if l:low =~# 'strike\|slam\|sword\|blade\|slash\|charge\|melee\|edge'
-    let l:kind_str = 'MELEE'
-    let l:bonus = l:p_str
-  elseif l:low =~# 'shot\|ranged\|explosive\|grenade\|barrage\|gun\|blaster\|projectile\|launch'
-    let l:kind_str = 'RANGED'
-    let l:bonus = l:p_agi
-  endif
-
-  let l:p_group_score = game#party#group_bonus(a:state)
-
-  let l:roll = (l:val % 20) + 1 + l:bonus + l:mark_bonus + l:p_group_score
-  
-  let l:log_lines = [
-        \ "CASTING: " . l:matched_spell . " on " . l:target_name . "...",
-        \ l:kind_str . "_ROLL: " . l:roll . (l:p_group_score > 0 ? " (includes +" . l:p_group_score . " PARTY bonus)" : "")
-        \ ]
-
-  if l:roll >= 15
-    call add(l:log_lines, "CRITICAL HIT: The spell overwhelms the " . l:target_name . "!")
-    call s:defeat_target(l:next_state, a:state.loc, l:target, l:val, l:log_lines)
-    let l:next_state.hint = 'DIRECTIVE: Target eliminated.'
-  else
-    let l:dmg = (l:val % 10) + 5
-    call add(l:log_lines, "RESISTED: The " . l:target_name . " deflects the magic and counterattacks!")
-    call s:apply_damage(l:next_state, l:dmg, l:log_lines)
-    let l:next_state.hint = 'WARNING: Spell failed. Consider standard attack.'
-  endif
-
-  if l:next_state.player.hp <= 0
-    let l:next_state.player.hp = 0
-    call add(l:log_lines, "FATAL_ERROR: NEURAL LINK SEVERED. YOU HAVE DIED.")
-    let l:next_state.hint = 'GAME OVER: Type "q" to quit.'
-  endif
-
-  return game#core#add_log(l:next_state, l:log_lines)
+  return game#combat#spells#cast(l:next_state, l:matched_spell, l:ctx)
 endfunction
 
-function! s:defeat_target(state, room_key, target, seed, log_lines) abort
+function! game#combat#defeat_target(state, room_key, target, seed, log_lines) abort
   let l:target_name = type(a:target) == v:t_dict ? get(a:target, 'name', 'Unknown Entity') : a:target
 
   if type(a:target) == v:t_dict && get(a:target, 'is_boss', 0)
@@ -263,7 +171,7 @@ function! s:defeat_target(state, room_key, target, seed, log_lines) abort
   endif
 endfunction
 
-function! s:apply_damage(state, dmg, log_lines) abort
+function! game#combat#apply_damage(state, dmg, log_lines) abort
   let l:remaining = a:dmg
   if get(a:state, 'guard', 0) > 0
     let l:absorbed = min([a:state.guard, l:remaining])

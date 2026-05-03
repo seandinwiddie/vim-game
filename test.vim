@@ -138,6 +138,8 @@ function! s:count_state_change(_state) abort
 endfunction
 
 let s:action_file = expand('autoload/game/action.vim')
+let s:combat_file = expand('autoload/game/combat.vim')
+let s:combat_spells_file = expand('autoload/game/combat/spells.vim')
 let s:store_file = expand('autoload/game/store.vim')
 let s:reducer_file = expand('autoload/game/reducer.vim')
 let s:engine_file = expand('autoload/game/engine.vim')
@@ -160,6 +162,11 @@ call s:assert_file_contains(s:store_file, 'function! game#store#dispatch(', 'sto
 call s:assert_file_contains(s:store_file, 'function! game#store#dispatch_batch', 'store.vim must define dispatch_batch().')
 call s:assert_file_contains(s:store_file, 'function! game#store#subscribe', 'store.vim must define subscribe().')
 call s:assert_file_contains(s:store_file, 'game#reducer#reduce', 'store.vim dispatch must route through the reducer.')
+
+call s:assert_file_contains(s:combat_file, 'game#combat#spells#cast', 'combat.vim should delegate spell execution through the spell registry.')
+call s:assert_file_not_contains(s:combat_file, "elseif l:matched_spell ==#", 'combat.vim should not keep inline spell-name handler chains.')
+call s:assert_file_contains(s:combat_spells_file, 'function! game#combat#spells#get', 'combat/spells.vim must expose the spell registry lookup.')
+call s:assert_file_contains(s:combat_spells_file, 'function! game#combat#spells#cast', 'combat/spells.vim must expose the spell dispatcher.')
 
 call s:assert_file_contains(s:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
 call s:assert_file_contains(s:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
@@ -207,6 +214,8 @@ call s:assert_true(get(game#story#records#get_scene_card(s:state.notes.scene_car
 call s:assert_true(!empty(get(get(s:state.rooms, 'test_portal', {}).objects[0], 'target_room', '')), 'Portal gates should bind to a generated destination.')
 call s:assert_true(s:state.loc ==# s:state.rooms['test_portal'].objects[0].target_room, 'Portal traversal should move the player into the bound destination room.')
 call s:assert_true(get(get(s:state.rooms[s:state.loc], 'objects', [])[0], 'target_room', '') ==# 'test_portal', 'Generated portal rooms should preserve a return gate back to the source room.')
+call s:assert_true(game#combat#spells#match_known(get(s:state.player, 'spells', []), 'dark crystal') ==# 'Dark Crystal Shielding', 'Spell matching should continue supporting unique prefixes.')
+call s:assert_true(!empty(game#combat#spells#get('Precision Shot')), 'Spell registry should expose Precision Shot through the shared registry.')
 
 let s:travel_action = game#action#command('go north')
 call s:assert_true(get(s:travel_action, 'type', '') ==# 'explore/travelRequested', 'go north should produce a travel action.')
