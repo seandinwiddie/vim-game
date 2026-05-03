@@ -97,7 +97,31 @@ function! game#player#cmd_rest(state) abort
   
   let l:next_state.surge += 5
   let l:next_state.hint = 'WARNING: Resting increases the Surge Count!'
-  return game#core#add_log(l:next_state, ["You rest in the shadows...", "HEALED: +" . l:heal . " HP.", "TENSION RISING: Surge Count increased by 5."])
+  let l:log_lines = ["You rest in the shadows...", "HEALED: +" . l:heal . " HP.", "TENSION RISING: Surge Count increased by 5."]
+
+  " Dynamic Spawning: Time interval / player action encounter
+  let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+  if (l:val % 100) > 60
+    if !has_key(l:next_state, 'rooms')
+      let l:next_state.rooms = copy(a:state.rooms)
+    endif
+    let l:room = l:next_state.rooms[a:state.loc]
+    let l:next_state.rooms[a:state.loc] = copy(l:room)
+    let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
+    
+    let l:enemies = [
+          \ {'name': 'Ashwalker', 'str': 4, 'agi': 7, 'arc': 4},
+          \ {'name': 'Aether Spirit', 'str': 2, 'agi': 8, 'arc': 8},
+          \ {'name': 'Voidwraith', 'str': 3, 'agi': 6, 'arc': 9},
+          \ {'name': 'Obsidian Warden', 'str': 7, 'agi': 2, 'arc': 6}
+          \ ]
+    let l:spawned = deepcopy(l:enemies[(l:val / 3) % len(l:enemies)])
+    call add(l:next_state.rooms[a:state.loc].entities, l:spawned)
+    call add(l:log_lines, "DYNAMIC SPAWN: The shadows shift! A " . l:spawned.name . " found you while resting!")
+    let l:next_state.hint = 'WARNING: Hostile entity detected. Prepare for combat!'
+  endif
+
+  return game#core#add_log(l:next_state, l:log_lines)
 endfunction
 
 function! game#player#cmd_save(state) abort

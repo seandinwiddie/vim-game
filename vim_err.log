@@ -1,0 +1,119 @@
+
+not found in 'packpath': "pack/*/start/*"
+                                         GetLatestVimScripts is not vi-compatible; not loaded (you need to set nocp)
+not found in 'packpath': "pack/*/start/*"
+not found in 'runtimepath': "plugin/**/*.vim"
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[1]..function game#core#init[1]..game#data#init_rooms:
+line    1:
+E723: Missing end of Dictionary '}': 
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim:
+line   21:
+E1203: Dot not allowed after a number: s:state.player.trade = 50
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[22]..function game#core#process[46]..game#economy#cmd_shop[1]..game#economy#has_trade_access:
+line    1:
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim:
+line   26:
+E121: Undefined variable: player
+E116: Invalid arguments for function add
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[27]..function game#core#process[52]..game#economy#cmd_sell[1]..game#economy#has_trade_access:
+line    1:
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[28]..function game#core#process[27]..game#story#cmd_frame[1]..game#story#setup#cmd_frame:
+line    1:
+E896: Argument of get() must be a List, Dictionary or Blob
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[29]..function game#core#process[33]..game#story#cmd_npc[1]..game#story#setup#cmd_npc:
+line    1:
+E896: Argument of get() must be a List, Dictionary or Blob
+E121: Undefined variable: loc
+E116: Invalid arguments for function game#story#records#get_scene_card(get(get(a:state, 'notes', {}), 'scene_cards', []), a:state.loc)
+E896: Argument of get() must be a List, Dictionary or Blob
+E121: Undefined variable: loc
+E116: Invalid arguments for function game#story#records#get_scene_card(get(get(a:state, 'notes', {}), 'scene_cards', []), a:state.loc)
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[31]..function game#core#process[42]..game#story#cmd_quests[1]..game#story#commands#cmd_quests:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Objectives indexed. Adjust scene focus with "focus [thread#]".'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[32]..function game#core#process[44]..game#story#cmd_notes[1]..game#story#commands#cmd_notes:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[33]..function game#core#process[29]..game#story#cmd_scene[1]..game#story#scenes#cmd_scene:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Review the current scene card before pushing to the next scene.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[34]..function game#core#process[7]..game#explore#cmd_look[1]..game#explore#view#cmd_look:
+line    1:
+E121: Undefined variable: rooms
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[35]..function game#core#process[60]..game#explore#cmd_interact[1]..game#explore#interact#cmd_interact:
+line    5:
+E121: Undefined variable: rooms
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[36]..function game#core#process[27]..game#story#cmd_frame[1]..game#story#setup#cmd_frame:
+line    1:
+E896: Argument of get() must be a List, Dictionary or Blob
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[37]..function game#core#process[40]..game#story#cmd_aside[1]..game#story#scenes#cmd_aside:
+line    5:
+E896: Argument of get() must be a List, Dictionary or Blob
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim:
+line   38:
+E697: Missing end of List ']': 
+line   39:
+E10: \ should be followed by /, ? or &
+line   40:
+E10: \ should be followed by /, ? or &
+line   41:
+E10: \ should be followed by /, ? or &
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[42]..function game#core#process[60]..game#explore#cmd_interact[1]..game#explore#interact#cmd_interact:
+line    5:
+E121: Undefined variable: rooms
+E121: Undefined variable: rooms
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[44]..function game#core#process[42]..game#story#cmd_quests[1]..game#story#commands#cmd_quests:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Objectives indexed. Adjust scene focus with "focus [thread#]".'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[45]..function game#core#process[57]..game#combat#cmd_cast:
+line    6:
+E121: Undefined variable: player
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[46]..function game#core#process[10]..game#explore#cmd_go[1]..game#explore#travel#cmd_go:
+line    1:
+E121: Undefined variable: rooms
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[47]..function game#core#process[57]..game#combat#cmd_cast:
+line    6:
+E121: Undefined variable: player
+E121: Undefined variable: player
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[49]..function game#core#process[36]..game#story#cmd_fade[1]..game#story#scenes#cmd_fade:
+line    6:
+E121: Undefined variable: loc
+E116: Invalid arguments for function game#story#records#append_scene_closing(l:next_state, l:next_state.loc, a:summary)
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[50]..function game#core#process[20]..game#story#cmd_thread[1]..game#story#ledger#cmd_thread[43]..game#story#threads#split_thread[1]..<SNR>28_thread_name_at:
+line    1:
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+E896: Argument of get() must be a List, Dictionary or Blob
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[53]..function game#core#process[20]..game#story#cmd_thread[1]..game#story#ledger#cmd_thread:
+line    5:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Use thread mod/split/replace after a fade-out to keep the fallout ledger current.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[54]..function game#core#process[65]..game#player#cmd_inventory:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Local inventory cache accessed.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[55]..function game#core#process[67]..game#player#cmd_profile:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Neural diagnostic complete.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[56]..function game#core#process[44]..game#story#cmd_notes[1]..game#story#commands#cmd_notes:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[58]..function game#core#render[1]..game#core#normalize:
+line    2:
+E1206: Dictionary required for argument 1
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim:
+line   58:
+E475: Invalid argument: writefile() first argument must be a List or a Blob
+not found in 'packpath': "pack/*/start/*"
+                                         GetLatestVimScripts is not vi-compatible; not loaded (you need to set nocp)
+not found in 'packpath': "pack/*/start/*"
+not found in 'runtimepath': "plugin/**/*.vim"
+Writing viminfo file "/home/seandinwiddie/.viminfo"

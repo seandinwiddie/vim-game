@@ -51,11 +51,11 @@ DETECTED ENTITIES:
 CASTING: Hunter's Mark on Ashwalker...
 TARGET LOCK: +4 to the next strike against this hostile.
 CASTING: Ethereal Dagger Assault on Ashwalker...
-ARCANE_ROLL: 23
+ARCANE_ROLL: 27
 CRITICAL HIT: The spell overwhelms the Ashwalker!
 HUNTER'S MARK: Target lock collapses with the kill.
 SALVAGE BANKED: +4 trade from Ashwalker.
-LOOT RECOVERED: Corrupt Watcher Core
+LOOT RECOVERED: Pollen Vial
 FADE OUT: ashwalker resistance confirms the spire approach is still contested
 BOOKKEEPING: Review thread changes, new facts, and scene fallout before the next transition.
 THREAD SPLIT: Find Missing Rangers -> track the tower shell recon cell
@@ -74,7 +74,7 @@ Trade Cache: 17 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Corrupt Watcher Core
+ [ᛟ] Pollen Vial
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
