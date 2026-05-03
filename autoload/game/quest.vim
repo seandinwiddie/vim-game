@@ -49,7 +49,7 @@ function! game#quest#ensure(state, quest) abort
     return {'state': a:state, 'added': 0}
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   call add(l:next_state.quests, l:quest)
   let l:next_state = game#story#threads#ensure_thread(l:next_state, l:quest.thread)
   return {'state': l:next_state, 'added': 1}
@@ -78,7 +78,7 @@ function! game#quest#set_status(state, quest_id, status) abort
     return {'state': a:state, 'log': ['OBJECTIVE_ERR: Invalid quest status transition for ' . l:current.title . '.'], 'events': []}
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_quest = game#quest#normalize(l:next_state.quests[l:idx])
   let l:next_quest.status = l:next_status
   if l:next_status ==# 'complete'
@@ -104,7 +104,7 @@ function! game#quest#advance(state, quest_id, amount) abort
     return {'state': a:state, 'log': ['OBJECTIVE CACHE: ' . l:quest.title . ' is no longer active.'], 'events': []}
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_quest = game#quest#normalize(l:next_state.quests[l:idx])
   let l:next_quest.progress = min([l:next_quest.goal, l:next_quest.progress + a:amount])
   let l:next_state.quests[l:idx] = l:next_quest

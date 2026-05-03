@@ -18,7 +18,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
   let l:desc = type(l:matched_obj) == v:t_dict ? get(l:matched_obj, 'desc', 'It does nothing.') : 'It does nothing.'
   let l:name = type(l:matched_obj) == v:t_dict ? get(l:matched_obj, 'name', 'Unknown Object') : l:matched_obj
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:effect = type(l:matched_obj) == v:t_dict ? get(l:matched_obj, 'effect', '') : ''
   let l:consume_object = 0
   let l:log_lines = ['INTERACT: You examine the ' . l:name . '.', l:desc]
@@ -258,7 +258,7 @@ function! s:first_hidden_exit(exits) abort
 endfunction
 
 function! s:traverse_portal(state, source_loc, object_index) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:source_room = l:next_state.rooms[a:source_loc]
   let l:source_name = get(l:source_room, 'display_name', toupper(a:source_loc))
   let l:portal = l:source_room.objects[a:object_index]

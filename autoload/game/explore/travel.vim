@@ -11,7 +11,7 @@ function! game#explore#travel#cmd_go(state, dir) abort
     return game#core#add_log(a:state, 'PHYSICS_LOGIC_ERR: Cannot penetrate ' . l:target_dir)
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:is_new_room = 0
 
   if l:room.exits[l:target_dir] ==# 'unexplored'

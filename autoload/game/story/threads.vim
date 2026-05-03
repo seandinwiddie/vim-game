@@ -25,7 +25,7 @@ function! game#story#threads#get_thread_card(cards, thread_name) abort
 endfunction
 
 function! game#story#threads#ensure_thread_card(state, thread_name) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:idx = game#story#threads#thread_card_index(l:next_state.notes.thread_cards, a:thread_name)
   if l:idx == -1
     call add(l:next_state.notes.thread_cards, game#story#cards#new_thread(a:thread_name, l:next_state.stage))

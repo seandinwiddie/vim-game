@@ -4,7 +4,7 @@ function! game#story#meeting#cmd_meeting(state, subcmd, args) abort
   let l:subcmd = empty(a:subcmd) ? 'show' : a:subcmd
 
   if index(['show', 'list', 'status'], l:subcmd) != -1
-    let l:next_state = deepcopy(a:state)
+    let l:next_state = a:state
     let l:next_state.hint = 'DIRECTIVE: Keep the social contract visible while you choose threats, fallout, and scene pressure.'
     return game#core#add_log(l:next_state, game#story#meeting#lines(l:next_state))
   elseif l:subcmd ==# 'focus'
@@ -38,7 +38,7 @@ function! game#story#meeting#lines(state) abort
 endfunction
 
 function! s:add_entry(state, list_name, args, label, hint_text) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   if index(l:next_state.meeting[a:list_name], a:args) == -1
     call add(l:next_state.meeting[a:list_name], a:args)
   endif
@@ -66,7 +66,7 @@ function! s:remove_entry(state, args) abort
     return game#core#add_log(a:state, 'LOG_ERR: Invalid Meeting of Minds entry index.')
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:removed = remove(l:next_state.meeting[l:list_name], l:idx - 1)
   let l:next_state.hint = 'DIRECTIVE: Accord trimmed. Keep the current run inside the remaining boundaries.'
   return game#core#add_log(l:next_state, [

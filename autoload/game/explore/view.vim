@@ -2,7 +2,7 @@
 
 function! game#explore#view#cmd_look(state) abort
   let l:room = a:state.rooms[a:state.loc]
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.hint = 'DIRECTIVE: Use "go [dir]" to explore, "interact [object]" to manipulate the scene, or "ask" the oracle.'
   let l:lines = [
         \ '---',

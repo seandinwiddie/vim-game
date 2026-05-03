@@ -5,7 +5,7 @@ function! game#oracle#cmd_stage(state, stage_name) abort
   if index(l:valid, a:stage_name) == -1
     return game#core#add_log(a:state, "LOG_ERR: Invalid stage. Use: stage knowledge, stage conflict, or stage endings.")
   endif
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.stage = a:stage_name
   let l:next_state.hint = 'DIRECTIVE: Stage of the Scene shifted to ' . toupper(a:stage_name) . '.'
   return game#core#add_log(l:next_state, "NARRATIVE_SHIFT: Loom of Fate probabilities calibrated to " . toupper(a:stage_name) . ".")

@@ -1,7 +1,7 @@
 " autoload/game/economy.vim - Merchant economy and wares
 
 function! game#economy#hydrate(state) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
 
   if !has_key(l:next_state, 'guard')
     let l:next_state.guard = 0
@@ -34,7 +34,7 @@ function! game#economy#cmd_shop(state) abort
     return game#core#add_log(a:state, 'TRADE_ERR: No merchant channel is available in this location.')
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.hint = 'DIRECTIVE: Use "buy [ware]" or "sell [relic]" while linked to the merchandise room.'
   let l:lines = [
         \ '--- MERCHANT LEDGER ---',
@@ -71,7 +71,7 @@ function! game#economy#cmd_buy(state, item_name) abort
     return game#core#add_log(a:state, 'TRADE_ERR: Insufficient trade cache for ' . l:ware.name . '.')
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.player.trade -= l:ware.price
   let l:log_lines = ['TRANSACTION: Acquired ' . l:ware.name . ' for ' . l:ware.price . ' trade.']
 
@@ -125,7 +125,7 @@ function! game#economy#cmd_sell(state, item_name) abort
     return game#core#add_log(a:state, 'TRADE_ERR: The merchant has no market for ' . l:item . '.')
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   call remove(l:next_state.player.inv, l:idx)
   let l:next_state.player.trade += l:value
   let l:next_state.hint = 'DIRECTIVE: Trade cache replenished.'
@@ -137,7 +137,7 @@ function! game#economy#cmd_sell(state, item_name) abort
 endfunction
 
 function! game#economy#reward_trade(state, amount, reason) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.player.trade += a:amount
   return {
         \ 'state': l:next_state,

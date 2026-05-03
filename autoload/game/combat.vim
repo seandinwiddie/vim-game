@@ -40,13 +40,9 @@ function! game#combat#cmd_attack(state, ...) abort
   let l:p_score = l:p_roll + l:p_str + l:p_agi + l:p_arc + l:mark_bonus + l:p_group_score
   let l:e_score = l:e_roll + l:e_str + l:e_agi + l:e_arc + l:e_group_score
 
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.rng_seed = l:rolls.rng_seed
-  let l:next_state.rooms = copy(a:state.rooms)
-  let l:next_state.rooms[a:state.loc] = copy(l:room)
-  let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
-  let l:next_state.player = copy(a:state.player)
-
+  
   let l:log_lines = [
         \ "COMBAT_INITIATED: Engaging " . l:target_name . " (Shadows of Fate Duel)",
         \ "PLAYER: Roll[d20]=" . l:p_roll . " + STR(" . l:p_str . ")+AGI(" . l:p_agi . ")+ARC(" . l:p_arc . ")" . (l:mark_bonus > 0 ? "+MARK(" . l:mark_bonus . ")" : '') . (l:p_group_score > 0 ? "+PARTY(" . l:p_group_score . ")" : '') . " = " . l:p_score,
@@ -112,8 +108,7 @@ function! game#combat#cmd_cast(state, spell_name, ...) abort
     return game#core#add_log(a:state, "LOG_ERR_CRITICAL: No combat handler registered for '" . l:matched_spell . "'.")
   endif
 
-  let l:next_state = copy(a:state)
-  let l:next_state.player = copy(a:state.player)
+  let l:next_state = a:state
   let l:ctx = {
         \ 'loc': a:state.loc,
         \ 'player_str': get(a:state.player, 'str', 5),

@@ -33,7 +33,7 @@ endfunction
 
 function! game#story#state#hydrate(state) abort
   let l:defaults = game#story#state#bootstrap()
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
 
   if !has_key(l:next_state, 'scene')
     let l:next_state.scene = deepcopy(l:defaults.scene)

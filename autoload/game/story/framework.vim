@@ -4,17 +4,17 @@ function! game#story#framework#cmd_framework(state, subcmd, args) abort
   let l:subcmd = empty(a:subcmd) ? 'show' : a:subcmd
 
   if l:subcmd ==# 'show' || l:subcmd ==# 'list' || l:subcmd ==# 'status'
-    let l:next_state = deepcopy(a:state)
+    let l:next_state = a:state
     let l:next_state.hint = 'DIRECTIVE: Keep the vignette hook in mind while you frame the next scene.'
     return game#core#add_log(l:next_state, s:framework_lines(l:next_state))
   elseif l:subcmd ==# 'theme'
-    let l:next_state = deepcopy(a:state)
+    let l:next_state = a:state
     let l:next_state.framework.theme = a:args
     let l:next_state.hint = 'DIRECTIVE: Framework theme set. Frame scenes that drive this subject toward closure.'
     let l:next_state = game#story#record_fact(l:next_state, 'Framework theme fixed on ' . a:args . '.')
     return game#core#add_log(l:next_state, ['FRAMEWORK THEME: ' . a:args])
   elseif l:subcmd ==# 'hook'
-    let l:next_state = deepcopy(a:state)
+    let l:next_state = a:state
     let l:next_state.framework.hook = a:args
     let l:next_state.hint = 'DIRECTIVE: Hook stored. Let it tug the next scene without turning it into rails.'
     let l:next_state = game#story#record_fact(l:next_state, 'Framework hook established: ' . a:args . '.')
@@ -24,13 +24,13 @@ function! game#story#framework#cmd_framework(state, subcmd, args) abort
     if empty(l:phase)
       return game#core#add_log(a:state, 'LOG_ERR: Framework phase must be exposition, rising, climax, or epilogue.')
     endif
-    let l:next_state = deepcopy(a:state)
+    let l:next_state = a:state
     let l:next_state.framework.phase = l:phase
     let l:next_state.hint = 'DIRECTIVE: Arc phase updated. Let the next scene match the dramatic pressure.'
     let l:next_state = game#story#record_fact(l:next_state, 'Framework phase shifted to ' . s:phase_label(l:phase) . ' in chapter ' . l:next_state.framework.chapter . '.')
     return game#core#add_log(l:next_state, ['FRAMEWORK PHASE: ' . s:phase_label(l:phase)])
   elseif l:subcmd ==# 'next'
-    let l:next_state = deepcopy(a:state)
+    let l:next_state = a:state
     let l:current = get(l:next_state.framework, 'phase', 'exposition')
     let l:next_phase = s:next_phase(l:current)
     if l:current ==# 'epilogue'

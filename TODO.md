@@ -43,7 +43,7 @@ items that would unblock the most other items if tackled now.
   - **Acceptance:** A grep for `\<copy(\|deepcopy(` in `autoload/` returns at
     most one per reducer entry, plus the `state#patch` implementation.
 
-- [ ] **Move root-state schema out of `core#init` into a typed bootstrap.**
+- [x] **Move root-state schema out of `core#init` into a typed bootstrap.**
   - **Why:** Today `init` constructs a literal dict, `state.vim#hydrate`
     patches missing fields, `economy#hydrate` adds `guard`/`mark`/`trade`/
     `upgrades`, `party#hydrate` adds `companions`, and `tests` poke fields
@@ -70,7 +70,7 @@ items that would unblock the most other items if tackled now.
   - **Why this matters later:** With ownership rules, the deep-copy story
     above becomes simple — each owner deep-copies its own slice.
 
-- [ ] **Separate domain entities from view labels.**
+- [x] **Separate domain entities from view labels.**
   - **Why:** Room names embed Unicode runes (`ᚲ ABYSSAL_THRONE_OF_QUADAR ᚲ`),
     and hazard logic does `room.name =~# 'TOXIC_WASTES'` against the decorated
     string. If the rendering style ever changes, every regex breaks. The same

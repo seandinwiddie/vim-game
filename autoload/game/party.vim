@@ -1,7 +1,7 @@
 " autoload/game/party.vim - Party bookkeeping and Tapestry-inspired scene presence
 
 function! game#party#hydrate(state) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   if !has_key(l:next_state, 'player')
     let l:next_state.player = {}
   endif

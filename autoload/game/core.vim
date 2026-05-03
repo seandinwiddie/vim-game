@@ -2,33 +2,14 @@
 
 " === PURE LOGIC: INITIAL STATE ===
 function! game#core#init() abort
-  let l:rooms = game#data#init_rooms()
-  let l:story = game#story#bootstrap()
-
-  let l:s = {
-        \ 'view': 'game',
-        \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear'], 'spells': ['Ethereal Dagger Assault', 'Cloak of Shadows'], 'str': 5, 'agi': 8, 'arc': 4},
-        \ 'loc': 'nexus',
-        \ 'rng_seed': game#rng#default_seed(),
-        \ 'surge': 0,
-        \ 'stage': 'knowledge',
-        \ 'threads': ['Find Missing Rangers'],
-        \ 'scene': l:story.scene,
-        \ 'quests': l:story.quests,
-        \ 'flags': l:story.flags,
-        \ 'progress': l:story.progress,
-        \ 'rooms': l:rooms,
-        \ 'log': [],
-        \ 'log_cursor': 0,
-        \ 'hint': 'SYSTEM_INIT: Type "look" to scan your surroundings or "help" to review commands.',
-        \ }
-  let l:s = game#core#normalize(l:s)
+  let l:s = game#state#bootstrap()
   let l:s = game#story#record_scene(l:s, l:s.loc)
   let l:s = game#story#record_fact_for_thread(l:s, 'Find Missing Rangers', 'Kamenal begins in the Merchandise Store Room under orders to recover missing rangers.')
   return game#core#add_log(l:s, ['NEURAL_LINK_ESTABLISHED', 'SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ', 'You materialize in the Merchandise Store Room.'])
 endfunction
 
 " === PURE LOGIC: COMMAND PROCESSING ===
+
 function! game#core#process(state, input) abort
   return game#reducer#reduce(a:state, game#action#command(a:input))
 endfunction
@@ -36,13 +17,13 @@ endfunction
 " === INTERNAL PURE HELPERS ===
 
 function! game#core#cmd_help(state) abort
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.hint = 'DIRECTIVE: Use "help" any time to review the command surface.'
   return game#core#add_log(l:next_state, game#action#help_lines())
 endfunction
 
 function! game#core#add_log(state, msg) abort
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.log_cursor = s:log_cursor(a:state)
   if type(a:msg) == v:t_list
     let l:next_state.log += a:msg
@@ -84,13 +65,13 @@ function! game#core#header(state) abort
 endfunction
 
 function! game#core#mark_rendered(state) abort
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.log_cursor = len(get(a:state, 'log', []))
   return l:next_state
 endfunction
 
 function! game#core#reset_render_cursor(state) abort
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.log_cursor = 0
   return l:next_state
 endfunction
@@ -111,19 +92,5 @@ function! s:log_cursor(state) abort
 endfunction
 
 function! game#core#normalize(state) abort
-  let l:next_state = deepcopy(a:state)
-  let l:next_state = game#rng#hydrate(l:next_state)
-  if !has_key(l:next_state, 'threads') || empty(l:next_state.threads)
-    let l:next_state.threads = ['Find Missing Rangers']
-  endif
-  if !has_key(l:next_state, 'hint')
-    let l:next_state.hint = 'SYSTEM_INIT: Type "look" to scan your surroundings or "help" to review commands.'
-  endif
-  if !has_key(l:next_state, 'log_cursor')
-    let l:next_state.log_cursor = 0
-  endif
-  let l:next_state.log_cursor = s:log_cursor(l:next_state)
-  let l:next_state = game#party#hydrate(l:next_state)
-  let l:next_state = game#story#hydrate(l:next_state)
-  return game#economy#hydrate(l:next_state)
+  return game#state#hydrate(a:state)
 endfunction

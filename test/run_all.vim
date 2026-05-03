@@ -18,7 +18,7 @@ for s:test in get(g:, 'quadar_test_cases', [])
     call call(s:test.fn, [])
     call QuadarTest_Append('PASS: ' . s:test.name)
   catch
-    let s:message = QuadarTest_FormatException(v:exception)
+    let s:message = QuadarTest_FormatException(v:exception) . ' AT ' . v:throwpoint
     call add(s:failures, s:test.name . ' :: ' . s:message)
     call QuadarTest_Append('FAIL: ' . s:test.name . ' :: ' . s:message)
   endtry

@@ -1,7 +1,7 @@
 " autoload/game/story/scenes.vim - Scene Review, Fade Out, and Elsewhere
 
 function! game#story#scenes#cmd_scene(state) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.hint = 'DIRECTIVE: Review the current scene card before pushing to the next scene.'
   let l:card = game#story#records#get_scene_card(l:next_state.notes.scene_cards, l:next_state.loc)
   let l:framework_chapter = empty(l:card) ? get(get(l:next_state, 'framework', {}), 'chapter', 1) : get(l:card, 'framework_chapter', get(get(l:next_state, 'framework', {}), 'chapter', 1))
@@ -43,7 +43,7 @@ function! game#story#scenes#cmd_scene(state) abort
 endfunction
 
 function! game#story#scenes#cmd_fade(state, summary) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state = game#story#records#append_scene_closing(l:next_state, l:next_state.loc, a:summary)
   let l:next_state = game#story#threads#record_fact(l:next_state, 'Fade Out: ' . a:summary)
   let l:next_state.hint = 'DIRECTIVE: Scene closed. Use thread mod/split/replace, then advance the framework when the next act is earned.'
@@ -55,7 +55,7 @@ function! game#story#scenes#cmd_fade(state, summary) abort
 endfunction
 
 function! game#story#scenes#cmd_montage(state, summary) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state = game#story#records#append_scene_closing(l:next_state, l:next_state.loc, 'MONTAGE: ' . a:summary)
   let l:next_state = game#story#threads#record_fact(l:next_state, 'Montage: ' . a:summary)
   for l:thread in get(l:next_state, 'threads', [])
@@ -79,7 +79,7 @@ function! game#story#scenes#cmd_aside(state, thread_ref, fact) abort
   endif
 
   let l:thread_name = l:threads[l:idx - 1]
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:thread_name, 'Elsewhere: ' . a:fact)
   let l:next_state.hint = 'DIRECTIVE: Elsewhere fact recorded without disrupting the active scene.'
 

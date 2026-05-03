@@ -60,6 +60,7 @@ function! QuadarTest_Path(key) abort
         \ 'combat': expand('autoload/game/combat.vim'),
         \ 'combat_spells': expand('autoload/game/combat/spells.vim'),
         \ 'core': expand('autoload/game/core.vim'),
+        \ 'state': expand('autoload/game/state.vim'),
         \ 'economy': expand('autoload/game/economy.vim'),
         \ 'enemies': expand('autoload/game/enemies.vim'),
         \ 'engine': expand('autoload/game/engine.vim'),

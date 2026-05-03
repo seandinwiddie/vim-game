@@ -12,7 +12,7 @@ function! game#story#setup#cmd_frame(state, thread_ref, stage_name) abort
     return game#core#add_log(a:state, 'LOG_ERR: Frame stage must be knowledge, conflict, or endings.')
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.scene.focus = l:idx
   let l:next_state.stage = l:stage
   let l:opening = 'Scene framed around ' . l:threads[l:idx - 1] . ' at TO ' . toupper(l:stage) . ' during ' . game#story#framework_phase_label(l:next_state) . '.'
@@ -46,7 +46,7 @@ function! game#story#setup#cmd_npc(state, subcmd, npc_name) abort
     return game#core#add_log(a:state, l:lines)
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   if a:subcmd ==# 'add'
     let l:next_state = game#story#records#assign_scene_npc(l:next_state, l:next_state.loc, a:npc_name)
     let l:next_state = game#story#threads#record_fact(l:next_state, a:npc_name . ' is present in the current scene.')

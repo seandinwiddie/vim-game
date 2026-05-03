@@ -144,14 +144,15 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileContains(l:party_file, 'function! game#party#cmd_party', 'party.vim must define the party command handler.')
   call QuadarTest_AssertFileContains(l:party_file, 'function! game#party#group_bonus', 'party.vim must centralize active companion bonuses.')
 
+  let l:state_file = QuadarTest_Path('state')
   call QuadarTest_AssertFileContains(l:core_file, "return game#reducer#reduce(a:state, game#action#command(a:input))", 'core.vim must delegate command processing through the action/reducer pipeline.')
   call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#cmd_help', 'core.vim must expose the help command reducer target.')
-  call QuadarTest_AssertFileContains(l:core_file, "'log_cursor': 0", 'core.vim should initialize state with a render cursor.')
+  call QuadarTest_AssertFileContains(l:state_file, "'log_cursor': 0", 'state.vim should initialize state with a render cursor.')
   call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#mark_rendered', 'core.vim must expose a helper to advance the render cursor after drawing.')
   call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#reset_render_cursor', 'core.vim must expose a helper to force full-log rebuilds when needed.')
   call QuadarTest_AssertFileContains(l:core_file, 'function! game#core#header', 'core.vim must expose a header helper so engine redraws can preserve buffer log history.')
   call QuadarTest_AssertFileNotContains(l:core_file, "elseif l:action ==#", 'core.vim should not keep the legacy command router.')
-  call QuadarTest_AssertFileContains(l:core_file, "'rng_seed': game#rng#default_seed()", 'core.vim should seed new runs through the shared RNG helper.')
+  call QuadarTest_AssertFileContains(l:state_file, "'rng_seed': 0", 'state.vim should seed new runs through the schema.')
   call QuadarTest_AssertFileContains(l:rng_file, 'function! game#rng#next', 'rng.vim must define the shared RNG step helper.')
   call QuadarTest_AssertFileContains(l:rng_file, 'function! game#rng#draw', 'rng.vim must define bounded draws for command handlers.')
 

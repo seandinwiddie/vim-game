@@ -1,7 +1,7 @@
 " autoload/game/story/commands.vim - Story Commands
 
 function! game#story#commands#cmd_quests(state) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.hint = 'DIRECTIVE: Objectives indexed. Adjust scene focus with "focus [thread#]".'
   let l:lines = [
         \ '--- OBJECTIVES ---',
@@ -24,7 +24,7 @@ function! game#story#commands#cmd_quests(state) abort
 endfunction
 
 function! game#story#commands#cmd_notes(state) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.hint = 'DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.'
   let l:focus = game#story#state#focus_label(l:next_state)
   let l:thread_card = game#story#threads#get_thread_card(l:next_state.notes.thread_cards, l:focus)
@@ -85,7 +85,7 @@ function! game#story#commands#cmd_focus(state, focus_arg) abort
     return game#core#add_log(a:state, 'LOG_ERR: Invalid thread index for scene focus.')
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.scene.focus = l:idx
   let l:next_state.hint = 'DIRECTIVE: Scene focus aligned to thread ' . l:idx . '.'
   return game#core#add_log(l:next_state, [

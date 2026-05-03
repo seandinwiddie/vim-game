@@ -11,7 +11,7 @@ function! game#rng#hydrate(state) abort
 endfunction
 
 function! game#rng#next(state) abort
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:val = s:random_val()
   let l:next_state.rng_seed = l:val
   return {'state': l:next_state, 'value': l:val}

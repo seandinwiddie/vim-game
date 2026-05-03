@@ -5,7 +5,7 @@ function! game#story#records#ensure_quest(state, quest) abort
 endfunction
 
 function! game#story#records#enter_location(state, loc, discovered) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.scene.location = a:loc
   let l:next_state.progress.steps += 1
   if a:discovered
@@ -87,7 +87,7 @@ function! game#story#records#record_npc(state, npc_name, scene_name) abort
     return a:state
   endif
 
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:idx = game#story#records#npc_card_index(l:next_state.notes.npc_cards, a:npc_name)
   if l:idx == -1
     call add(l:next_state.notes.npc_cards, game#story#cards#new_npc(a:npc_name, a:scene_name))
@@ -156,7 +156,7 @@ function! game#story#records#get_scene_card(cards, loc) abort
 endfunction
 
 function! s:ensure_scene_card(state, loc) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:defaults = s:scene_card_defaults(l:next_state, a:loc)
   let l:idx = game#story#records#scene_card_index(l:next_state.notes.scene_cards, a:loc)
   let l:card = l:idx == -1

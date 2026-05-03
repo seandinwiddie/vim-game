@@ -16,7 +16,7 @@ function! game#player#cmd_use(state, item) abort
   
   let l:idx = l:match.index
   let l:matched_item = a:state.player.inv[l:idx]
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   
   call remove(l:next_state.player.inv, l:idx)
   
@@ -39,7 +39,7 @@ function! game#player#cmd_use(state, item) abort
 endfunction
 
 function! game#player#cmd_inventory(state) abort
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.hint = 'DIRECTIVE: Local inventory cache accessed.'
   let l:lines = ['--- SECURED RELICS ---', game#economy#status_label(a:state)]
   for l:item in a:state.player.inv
@@ -50,7 +50,7 @@ function! game#player#cmd_inventory(state) abort
 endfunction
 
 function! game#player#cmd_profile(state) abort
-  let l:next_state = copy(a:state)
+  let l:next_state = a:state
   let l:next_state.hint = 'DIRECTIVE: Neural diagnostic complete.'
   let l:lines = [
         \ '--- PLAYER PROFILE ---',
@@ -86,8 +86,7 @@ function! game#player#cmd_profile(state) abort
 endfunction
 
 function! game#player#cmd_rest(state) abort
-  let l:next_state = copy(a:state)
-  let l:next_state.player = copy(a:state.player)
+  let l:next_state = a:state
   let l:rest_tuning = game#tuning#get('player.rest')
   
   if l:next_state.player.hp >= l:next_state.player.max_hp
@@ -106,11 +105,9 @@ function! game#player#cmd_rest(state) abort
   let l:val = l:rng.value
   if (l:val % 100) > l:rest_tuning.spawn_threshold
     if !has_key(l:next_state, 'rooms')
-      let l:next_state.rooms = copy(a:state.rooms)
+      let l:next_state.rooms = {}
     endif
     let l:room = l:next_state.rooms[a:state.loc]
-    let l:next_state.rooms[a:state.loc] = copy(l:room)
-    let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
 
     let l:enemies = game#enemies#select(['Ashwalker', 'Aether Spirit', 'Voidwraith', 'Obsidian Warden'])
     let l:spawned = deepcopy(l:enemies[(l:val / 3) % len(l:enemies)])
@@ -208,12 +205,27 @@ function! s:load_schema_issues(decoded) abort
   if has_key(a:decoded, 'loc') && type(a:decoded.loc) != v:t_string
     call add(l:issues, 'loc(string)')
   endif
-  if has_key(a:decoded, 'rooms') && type(a:decoded.rooms) != v:t_dict
-    call add(l:issues, 'rooms(dict)')
-  endif
-  if has_key(a:decoded, 'rooms') && has_key(a:decoded, 'loc') && type(a:decoded.rooms) == v:t_dict && type(a:decoded.loc) == v:t_string && !has_key(a:decoded.rooms, a:decoded.loc)
-    call add(l:issues, 'rooms.' . a:decoded.loc)
+  if has_key(a:decoded, 'rooms')
+    if type(a:decoded.rooms) != v:t_dict
+      call add(l:issues, 'rooms(dict)')
+    else
+      for [l:room_key, l:room_val] in items(a:decoded.rooms)
+        if type(l:room_val) != v:t_dict
+          call add(l:issues, 'rooms.' . l:room_key . '(dict)')
+        else
+          for l:req in ['id', 'biome', 'display_name']
+            if !has_key(l:room_val, l:req)
+              call add(l:issues, 'rooms.' . l:room_key . '.' . l:req)
+            endif
+          endfor
+        endif
+      endfor
+      if has_key(a:decoded, 'loc') && type(a:decoded.loc) == v:t_string && !has_key(get(a:decoded, 'rooms', {}), a:decoded.loc)
+        call add(l:issues, 'rooms.' . a:decoded.loc)
+      endif
+    endif
   endif
 
   return l:issues
 endfunction
+

@@ -4,7 +4,7 @@ function! game#story#ledger#cmd_thread(state, subcmd, args) abort
   let l:subcmd = empty(a:subcmd) ? 'list' : a:subcmd
 
   if l:subcmd ==# 'list'
-    let l:next_state = deepcopy(a:state)
+    let l:next_state = a:state
     let l:next_state.hint = 'DIRECTIVE: Use thread mod/split/replace after a fade-out to keep the fallout ledger current.'
     return game#core#add_log(l:next_state, game#story#ledger#lines(l:next_state))
   elseif l:subcmd ==# 'add'
