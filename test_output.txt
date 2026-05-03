@@ -5,18 +5,13 @@ Stage: TO KNOWLEDGE | Surge Count: 0
 Scene #1: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 Focus: Recover the Lost Tomes
 Objectives: 1 active / 1 complete
-Notes: 2 scenes / 2 NPCs
-Trade Cache: 13 | Guard: 8 | Mark: Ashwalker
+Notes: 2 scenes / 3 NPCs
+Trade Cache: 17 | Guard: 14 | Mark: none
 DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
 2. Recover the Lost Tomes
 
-ᚠ MERCHANDISE_STORE_ROOM ᚠ
-A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.
-INTERACTIVE OBJECTS:
-  > [!] Arcane Terminal
-SERVICES: trade
 ᚱ ENTRANCES: west, north
 [Threat Tier: 1 | HP: 150/150]
 --
@@ -25,8 +20,9 @@ A flickering terminal detailing recent shipments, missing operatives, and scaven
 MISSION UPDATE: Recon protocol refreshed. Missing rangers are still alive somewhere beyond the tower shell.
 MISSION UPDATE: Archive traces reveal codices capable of sending captives home.
 OBJECTIVE ADDED: Recover the Lost Tomes
-SCENE_FOCUS: Recover the Lost Tomes
-STAGE LOCK: TO KNOWLEDGE
+FADE IN: ᚠ MERCHANDISE_STORE_ROOM ᚠ
+MAIN THREAD: Recover the Lost Tomes
+STAGE: TO KNOWLEDGE
 ELSEWHERE: Find Missing Rangers
 SIDEBAR FACT: another recon team was seen near the tower shell
 INTERACT: You examine the Bound Ranger.
@@ -66,19 +62,21 @@ DETECTED ENTITIES:
 CASTING: Hunter's Mark on Ashwalker...
 TARGET LOCK: +4 to the next strike against this hostile.
 CASTING: Ethereal Dagger Assault on Ashwalker...
-ARCANE_ROLL: 10
-RESISTED: The Ashwalker deflects the magic and counterattacks!
-DARK CRYSTAL SHIELDING absorbs 6 damage.
-NO HP LOSS: The barrier carries the impact.
+ARCANE_ROLL: 20
+CRITICAL HIT: The spell overwhelms the Ashwalker!
+HUNTER'S MARK: Target lock collapses with the kill.
+SALVAGE BANKED: +4 trade from Ashwalker.
+LOOT RECOVERED: Abyssal Ash
 FADE OUT: ashwalker resistance confirms the spire approach is still contested
 BOOKKEEPING: Review thread changes, new facts, and scene fallout before the next transition.
 --- SECURED RELICS ---
-Trade Cache: 13 | Guard: 8 | Mark: Ashwalker
+Trade Cache: 17 | Guard: 14 | Mark: none
  [ᛟ] Basic Dagger
  [ᛟ] Scout Gear
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
+ [ᛟ] Abyssal Ash
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -86,8 +84,8 @@ Class: Rogue/Ranger
 Level: 12
 HP:    150 / 150
 STR: 5 | AGI: 9 | ARC: 4
-Trade: 13 | Guard: 8
-Mark: Ashwalker
+Trade: 17 | Guard: 14
+Mark: none
 Spells:
  - Ethereal Dagger Assault
  - Cloak of Shadows
@@ -97,18 +95,20 @@ Upgrades:
  + Zinc Weave Cloak
 ----------------------
 --- FIELD NOTES ---
-Notes: 2 scenes / 2 NPCs
+Notes: 2 scenes / 3 NPCs
 Focus Thread Card: Recover the Lost Tomes
   Stage: TO KNOWLEDGE
   Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
   Facts:
    - Archive traces point to codices capable of sending captives home.
+   - Scene framed around Recover the Lost Tomes at TO KNOWLEDGE.
    - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
 Scene Cards:
- * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | focus: Find Missing Rangers
- * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 2 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes
+ * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: iron broker
+ * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: none
 Known NPCs:
+ * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 -------------------

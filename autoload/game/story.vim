@@ -40,6 +40,14 @@ function! game#story#cmd_scene(state) abort
   return game#story#scenes#cmd_scene(a:state)
 endfunction
 
+function! game#story#cmd_frame(state, thread_ref, stage_name) abort
+  return game#story#setup#cmd_frame(a:state, a:thread_ref, a:stage_name)
+endfunction
+
+function! game#story#cmd_npc(state, subcmd, npc_name) abort
+  return game#story#setup#cmd_npc(a:state, a:subcmd, a:npc_name)
+endfunction
+
 function! game#story#cmd_fade(state, summary) abort
   return game#story#scenes#cmd_fade(a:state, a:summary)
 endfunction

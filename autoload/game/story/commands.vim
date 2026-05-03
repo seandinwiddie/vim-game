@@ -52,7 +52,7 @@ function! game#story#commands#cmd_notes(state) abort
     call add(l:lines, ' * none')
   else
     for l:card in l:next_state.notes.scene_cards
-      call add(l:lines, ' * ' . l:card.title . ' | visits: ' . l:card.visits . ' | stage: TO ' . toupper(l:card.stage) . ' | focus: ' . l:card.focus)
+      call add(l:lines, ' * ' . l:card.title . ' | visits: ' . l:card.visits . ' | stage: TO ' . toupper(l:card.stage) . ' | focus: ' . l:card.focus . ' | npcs: ' . (empty(get(l:card, 'npcs', [])) ? 'none' : join(l:card.npcs, ', ')))
     endfor
   endif
 

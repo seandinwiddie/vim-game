@@ -20,6 +20,7 @@
   - `story/commands.vim`: Objective, note, and focus commands
   - `story/records.vim`: Thread, scene, NPC, and fact bookkeeping
   - `story/scenes.vim`: Scene review, fade-out, and elsewhere/sidebar commands
+  - `story/setup.vim`: Explicit scene framing and present-NPC management
 - **Imperative Shell**: The `game#engine` handles rendering the state via `:echo` or appending to a unified `ScratchBuffer` via standard Vim mechanisms (`append()`, `setline()`).
 
 ## ᚢ THE LOOM OF FATE (GAME MECHANICS)
@@ -37,6 +38,7 @@
 - **Bookkeeping Layer**: Added CRGE-style notecards for scenes, thread facts, and known NPCs so discoveries persist as structured story memory instead of only scrollback.
 - **Architecture Guard**: The Vim test harness now fails if a game module grows beyond 300 lines, forcing oversized files to be split into subdomains.
 - **Scene Lifecycle**: Added explicit scene-card review, fade-out summaries, and elsewhere/sidebar facts so the CRGE scene loop is represented directly in play.
+- **Scene Setup**: Added explicit scene framing plus NPC-presence management so the active scene can be staged around a chosen thread, stage, and cast before action begins.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -72,7 +74,9 @@
 - `sell [item]`: Convert scavenged relics into trade cache.
 - `quests` / `o`: Review active objectives, completion progress, and current scene focus.
 - `notes` / `journal` / `facts` / `j`: Review story notecards, discovered NPCs, and thread facts.
+- `frame [thread#] [stage]`: Explicitly frame the current scene around a main thread and stage.
 - `scene` / `sc`: Inspect the current scene card and recent scene closings.
+- `npc add [name]` / `npc rm [name]` / `npc`: Manage the current scene's present NPC roster.
 - `fade [summary]`: Close the current scene with a bookkeeping summary.
 - `aside [thread#] [fact]`: Record an elsewhere/sidebar fact on another active thread.
 - `focus [idx]`: Promote one of the active threads as the current scene's main thread.

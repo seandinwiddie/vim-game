@@ -16,6 +16,14 @@ function! game#story#scenes#cmd_scene(state) abort
     call add(l:lines, 'Closings: none')
   else
     call add(l:lines, 'Visits: ' . get(l:card, 'visits', 0))
+    call add(l:lines, 'Openings:')
+    if empty(get(l:card, 'openings', []))
+      call add(l:lines, ' - none')
+    else
+      for l:opening in l:card.openings
+        call add(l:lines, ' - ' . l:opening)
+      endfor
+    endif
     call add(l:lines, 'Closings:')
     if empty(get(l:card, 'closings', []))
       call add(l:lines, ' - none')
@@ -24,6 +32,7 @@ function! game#story#scenes#cmd_scene(state) abort
         call add(l:lines, ' - ' . l:closing)
       endfor
     endif
+    call add(l:lines, 'NPCs: ' . (empty(get(l:card, 'npcs', [])) ? 'none' : join(l:card.npcs, ', ')))
   endif
 
   call add(l:lines, '------------------')

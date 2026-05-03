@@ -54,8 +54,16 @@ function! game#core#process(state, input) abort
   elseif l:action ==# 'focus'
     let l:focus_arg = len(l:parts) > 1 ? l:parts[1] : ''
     return game#story#cmd_focus(a:state, l:focus_arg)
+  elseif l:action ==# 'frame'
+    let l:thread_ref = len(l:parts) > 1 ? l:parts[1] : ''
+    let l:stage_name = len(l:parts) > 2 ? l:parts[2] : ''
+    return game#story#cmd_frame(a:state, l:thread_ref, l:stage_name)
   elseif l:action ==# 'scene' || l:action ==# 'sc'
     return game#story#cmd_scene(a:state)
+  elseif l:action ==# 'npc'
+    let l:subcmd = len(l:parts) > 1 ? l:parts[1] : 'list'
+    let l:npc_name = join(l:parts[2:], ' ')
+    return game#story#cmd_npc(a:state, l:subcmd, l:npc_name)
   elseif l:action ==# 'fade'
     let l:summary = join(l:parts[1:], ' ')
     return game#story#cmd_fade(a:state, l:summary)
