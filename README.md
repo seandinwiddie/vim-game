@@ -51,6 +51,7 @@ This project follows functional programming principles:
 - **Story Bookkeeping**: Scene focus, active objectives, and procedural quest targets (like recovering lost tomes or purifying eldritch altars) are tracked directly in state so exploration can react to narrative progress.
 - **Persistent Notecards**: Scene cards, thread facts, and known NPCs are stored in state so CRGE-style bookkeeping survives past the visible log buffer.
 - **Environmental Hazards**: Movement logic parses the procedural biome of the destination (e.g. Toxic Wastes, Mud Slides, Dimensional Nexus) to apply dynamic damage, tension spikes, or navigational warnings.
+- **Companions & Group Dynamics**: Rescuing NPCs from the tower allows them to join your party, applying their own aggregated `Group Dynamics` bonus to all your combat rolls, adapting the *Tapestry* TTRPG mechanics into a solo MUD environment.
 - **Economy Loop**: Trade cache, wares, salvage, and persistent upgrades now turn recovered relics into concrete progression.
 
 ## License

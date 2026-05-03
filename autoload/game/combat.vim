@@ -186,11 +186,18 @@ function! game#combat#cmd_cast(state, spell_name) abort
     let l:bonus = l:p_agi
   endif
 
-  let l:roll = (l:val % 20) + 1 + l:bonus + l:mark_bonus
+  let l:p_group_score = 0
+  if has_key(l:next_state.player, 'companions') && len(l:next_state.player.companions) > 0
+    for l:c in l:next_state.player.companions
+      let l:p_group_score += float2nr(ceil((get(l:c, 'str', 4) + get(l:c, 'agi', 4) + get(l:c, 'arc', 4)) / 6.0))
+    endfor
+  endif
+
+  let l:roll = (l:val % 20) + 1 + l:bonus + l:mark_bonus + l:p_group_score
   
   let l:log_lines = [
         \ "CASTING: " . l:matched_spell . " on " . l:target_name . "...",
-        \ l:kind_str . "_ROLL: " . l:roll
+        \ l:kind_str . "_ROLL: " . l:roll . (l:p_group_score > 0 ? " (includes +" . l:p_group_score . " PARTY bonus)" : "")
         \ ]
 
   if l:roll >= 15

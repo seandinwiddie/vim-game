@@ -32,6 +32,7 @@
 - **Unexpected Modifiers**: Rolls d20 on Table 2 (foreshadowing, set change, limelit, etc.) when an "unexpectedly" result triggers.
 - **Narrative Threads**: Integrated a state array for active storylines. Threads are rendered in the Neural Link header to track active goals (e.g. "Find Missing Rangers").
 - **Combat Resolution**: Integrated the *Shadows of Fate* duel system. The `attack` command rolls d20 against the target's STR/AGI/ARC array, factoring in *Group Dynamics* (a collective score from the remaining hostile pack) to calculate damage sustained and entity annihilation. State handles death natively.
+- **Tapestry / Companion System**: Recruited NPCs (like the `Bound Ranger`) now join the player's `party` array. During combat and spellcasting, the player's party calculates its own Group Dynamics score and adds a `+PARTY` bonus to all damage and spell rolls.
 - **Dynamic Spawning**: The `rest` command now evaluates procedural time intervals to occasionally spawn new hostile entities in the current room, creating a persistent threat of ambush.
 - **Environmental Hazards**: Movement through the `go` command now parses the destination's biome properties to apply thematic hazards. For example, `Toxic Wastes` deals corrosive HP damage, `Mud Slides` spikes the Surge Count from exhaustion, and the `Dimensional Nexus` distorts navigational telemetry.
 - **Objective Loop**: The initial missing-rangers thread now drives concrete quest progress, and terminals can surface follow-on objectives for recovering the codices needed to extract survivors.

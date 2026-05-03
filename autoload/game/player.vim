@@ -77,6 +77,12 @@ function! game#player#cmd_profile(state) abort
       call add(l:lines, ' + ' . l:upgrade)
     endfor
   endif
+  if !empty(get(a:state.player, 'companions', []))
+    call add(l:lines, 'Companions (Party):')
+    for l:c in a:state.player.companions
+      call add(l:lines, ' * ' . l:c.name . ' [STR:' . get(l:c, 'str', 4) . ' AGI:' . get(l:c, 'agi', 4) . ' ARC:' . get(l:c, 'arc', 4) . ']')
+    endfor
+  endif
   call add(l:lines, '----------------------')
   return game#core#add_log(l:next_state, l:lines)
 endfunction
