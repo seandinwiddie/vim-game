@@ -1,11 +1,10 @@
 --- START TESTS ---
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
-Stage: TO CONFLICT | Surge Count: 0
-DIRECTIVE: Loom of Fate resolved. "ask" again or explore.
+Stage: TO KNOWLEDGE | Surge Count: 0
+WARNING: Vital signs dropping. Consider retreat!
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
-2. find the truth
 
 NEURAL_LINK_ESTABLISHED
 SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ
@@ -13,36 +12,41 @@ You materialize in the Merchandise Store Room.
 ---
 ᚠ MERCHANDISE_STORE_ROOM ᚠ
 A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.
-ᚱ ENTRANCES: north
+ᚱ ENTRANCES: west, north
 [HP: 150/150]
 --
---- PLAYER PROFILE ---
-Name:  Kamenal
-Class: Rogue/Ranger
-Level: 12
-HP:    150 / 150
-----------------------
-SYSTEM_LOG: HP is already maximum. Resting aborted.
---- SECURED RELICS ---
- [ᛟ] Basic Dagger
- [ᛟ] Scout Gear
-----------------------
+PROCEDURAL_GENERATION: New zone synthesized.
+NEURAL_TRACKING: Shifting coordinates to west
+---
+ᚲ ELDRITCH_FORTRESS ᚲ
+A majestic but sinister labyrinthine terror.
+ᚱ ENTRANCES: east, south
+[HP: 150/150]
+--
+---
+ᚲ ELDRITCH_FORTRESS ᚲ
+A majestic but sinister labyrinthine terror.
+ᚱ ENTRANCES: east, south
+[HP: 150/150]
+--
+NEURAL_TRACKING: Shifting coordinates to east
+---
+ᚠ MERCHANDISE_STORE_ROOM ᚠ
+A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.
+ᚱ ENTRANCES: west, north
+[HP: 150/150]
+--
 NEURAL_TRACKING: Shifting coordinates to north
 ---
 ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 A narrow passage of obsidian stone, crystallized in extraterrestrial resonance. The air hums with chthonic frequencies pulsating from the core.
 DETECTED ENTITIES:
-  > [!!] Ashwalker (Renegade Wanderer)
-ᚱ ENTRANCES: north, south
+  > [!!] Ashwalker
+ᚱ ENTRANCES: north, east, south
 [HP: 150/150]
 --
-COMBAT_INITIATED: Engaging Ashwalker (Renegade Wanderer)...
-TACTICAL_ROLL: 57
-SUCCESS: You execute a flurry of strikes! Ashwalker (Renegade Wanderer) is annihilated.
-SUSTAINED DAMAGE: -6 HP.
-LOOT RECOVERED: Gibsonian Shard
-NARRATIVE_SHIFT: Loom of Fate probabilities calibrated to CONFLICT.
-Q: is this dangerous?
-[Loom of Fate: 8] NO, AND
-THREAD ADDED: find the truth
-PHYSICS_LOGIC_ERR: Cannot penetrate east
+COMBAT_INITIATED: Engaging Ashwalker (Shadows of Fate Duel)
+PLAYER: Roll[d20]=8 + STR(5)+AGI(8)+ARC(4) = 25
+ENEMY : Roll[d20]=11 + STR(4)+AGI(7)+ARC(4) = 26
+CLOSE CALL DEFEAT: The Ashwalker edges you out in combat.
+SUSTAINED DAMAGE: -17 HP.

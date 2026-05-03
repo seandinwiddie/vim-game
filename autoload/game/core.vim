@@ -6,7 +6,7 @@ function! game#core#init() abort
 
   let l:s = {
         \ 'view': 'game',
-        \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear']},
+        \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear'], 'str': 5, 'agi': 8, 'arc': 4},
         \ 'loc': 'nexus',
         \ 'surge': 0,
         \ 'stage': 'knowledge',
