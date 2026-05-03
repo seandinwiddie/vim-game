@@ -6,7 +6,7 @@ function! game#core#init() abort
 
   let l:s = {
         \ 'view': 'game',
-        \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear'], 'str': 5, 'agi': 8, 'arc': 4},
+        \ 'player': {'name': 'Kamenal', 'class': 'Rogue/Ranger', 'level': 12, 'hp': 150, 'max_hp': 150, 'inv': ['Basic Dagger', 'Scout Gear'], 'spells': ['Ethereal Dagger Assault', 'Cloak of Shadows'], 'str': 5, 'agi': 8, 'arc': 4},
         \ 'loc': 'nexus',
         \ 'surge': 0,
         \ 'stage': 'knowledge',
@@ -45,6 +45,12 @@ function! game#core#process(state, input) abort
     return game#oracle#cmd_thread(a:state, l:subcmd, l:args)
   elseif l:action ==# 'attack' || l:action ==# 'fight' || l:action ==# 'c'
     return game#combat#cmd_attack(a:state)
+  elseif l:action ==# 'cast' || l:action ==# 'm'
+    let l:spell = join(l:parts[1:], ' ')
+    return game#combat#cmd_cast(a:state, l:spell)
+  elseif l:action ==# 'use' || l:action ==# 'consume'
+    let l:item = join(l:parts[1:], ' ')
+    return game#player#cmd_use(a:state, l:item)
   elseif l:action ==# 'inventory' || l:action ==# 'i'
     return game#player#cmd_inventory(a:state)
   elseif l:action ==# 'profile' || l:action ==# 'p'

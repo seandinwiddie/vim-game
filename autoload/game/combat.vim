@@ -86,3 +86,65 @@ function! game#combat#cmd_attack(state) abort
 
   return game#core#add_log(l:next_state, l:log_lines)
 endfunction
+
+function! game#combat#cmd_cast(state, spell_name) abort
+  if empty(a:spell_name)
+    return game#core#add_log(a:state, "LOG_ERR: Specify a spell to cast (e.g. 'cast Ethereal Dagger Assault').")
+  endif
+  
+  let l:has_spell = 0
+  for l:sp in a:state.player.spells
+    if tolower(l:sp) ==# tolower(a:spell_name) || tolower(l:sp) =~# '^' . tolower(a:spell_name)
+      let l:has_spell = 1
+      let l:matched_spell = l:sp
+      break
+    endif
+  endfor
+  
+  if !l:has_spell
+    return game#core#add_log(a:state, "SPELL_ERR: You do not know the spell '" . a:spell_name . "'.")
+  endif
+
+  let l:room = a:state.rooms[a:state.loc]
+  if empty(l:room.entities)
+    return game#core#add_log(a:state, "CAST_LOG: You channel " . l:matched_spell . ", but the energy dissipates in the empty air.")
+  endif
+
+  let l:target = l:room.entities[0]
+  let l:target_name = type(l:target) == v:t_dict ? get(l:target, 'name', 'Unknown Entity') : l:target
+
+  let l:next_state = copy(a:state)
+  let l:next_state.rooms = copy(a:state.rooms)
+  let l:next_state.rooms[a:state.loc] = copy(l:room)
+  let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
+  let l:next_state.player = copy(a:state.player)
+
+  let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+  let l:p_arc = get(a:state.player, 'arc', 4)
+  let l:roll = (l:val % 20) + 1 + l:p_arc
+  
+  let l:log_lines = [
+        \ "CASTING: " . l:matched_spell . " on " . l:target_name . "...",
+        \ "ARCANE_ROLL: " . l:roll
+        \ ]
+
+  if l:roll >= 15
+    call remove(l:next_state.rooms[a:state.loc].entities, 0)
+    call add(l:log_lines, "CRITICAL HIT: The spell overwhelms the " . l:target_name . "!")
+    let l:next_state.hint = 'DIRECTIVE: Target eliminated.'
+  else
+    let l:dmg = (l:val % 10) + 5
+    let l:next_state.player.hp -= l:dmg
+    call add(l:log_lines, "RESISTED: The " . l:target_name . " deflects the magic and counterattacks!")
+    call add(l:log_lines, "SUSTAINED DAMAGE: -" . l:dmg . " HP.")
+    let l:next_state.hint = 'WARNING: Spell failed. Consider standard attack.'
+  endif
+
+  if l:next_state.player.hp <= 0
+    let l:next_state.player.hp = 0
+    call add(l:log_lines, "FATAL_ERROR: NEURAL LINK SEVERED. YOU HAVE DIED.")
+    let l:next_state.hint = 'GAME OVER: Type "q" to quit.'
+  endif
+
+  return game#core#add_log(l:next_state, l:log_lines)
+endfunction
