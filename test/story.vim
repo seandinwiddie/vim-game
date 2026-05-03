@@ -101,6 +101,25 @@ function! QuadarTest_RunStory() abort
   let l:help_state = game#core#process(game#core#init(), 'help')
   call QuadarTest_AssertTrue(get(l:help_state, 'hint', '') ==# 'DIRECTIVE: Use "help" any time to review the command surface.', 'help should update the hint toward the command reference.')
 
+  let l:legacy_note_state = game#core#init()
+  let l:legacy_note_state.notes = {
+        \ 'scene_cards': [{'loc': 'nexus', 'title': 'ᚠ MERCHANDISE_STORE_ROOM ᚠ'}],
+        \ 'thread_cards': [{'name': 'Find Missing Rangers'}],
+        \ 'npc_cards': [{'name': 'Iron Broker'}]
+        \ }
+  let l:legacy_note_state = game#story#hydrate(l:legacy_note_state)
+  let l:legacy_scene_card = game#story#records#get_scene_card(l:legacy_note_state.notes.scene_cards, 'nexus')
+  let l:legacy_thread_card = game#story#threads#get_thread_card(l:legacy_note_state.notes.thread_cards, 'Find Missing Rangers')
+  let l:legacy_npc_card = l:legacy_note_state.notes.npc_cards[0]
+  call QuadarTest_AssertTrue(type(get(l:legacy_scene_card, 'closings', 0)) == v:t_list, 'Legacy scene cards should hydrate missing closings through the shared scene-card constructor.')
+  call QuadarTest_AssertTrue(type(get(l:legacy_scene_card, 'openings', 0)) == v:t_list, 'Legacy scene cards should hydrate missing openings through the shared scene-card constructor.')
+  call QuadarTest_AssertTrue(type(get(l:legacy_scene_card, 'npcs', 0)) == v:t_list, 'Legacy scene cards should hydrate missing NPC lists through the shared scene-card constructor.')
+  call QuadarTest_AssertTrue(get(l:legacy_scene_card, 'framework_phase', '') ==# 'exposition', 'Legacy scene cards should hydrate missing framework phase through the shared scene-card constructor.')
+  call QuadarTest_AssertTrue(get(l:legacy_scene_card, 'framework_chapter', 0) == 1, 'Legacy scene cards should hydrate missing framework chapter through the shared scene-card constructor.')
+  call QuadarTest_AssertTrue(type(get(l:legacy_thread_card, 'aliases', 0)) == v:t_list, 'Legacy thread cards should hydrate lineage arrays through the shared thread-card constructor.')
+  call QuadarTest_AssertTrue(type(get(l:legacy_thread_card, 'split_into', 0)) == v:t_list, 'Legacy thread cards should hydrate split tracking through the shared thread-card constructor.')
+  call QuadarTest_AssertTrue(type(get(l:legacy_npc_card, 'scenes', 0)) == v:t_list, 'Legacy NPC cards should hydrate scene lists through the shared NPC-card constructor.')
+
   let l:framework_state = game#core#process(l:state, 'framework')
   let l:meeting_state = game#core#process(l:state, 'minds')
   let l:party_state = game#core#process(l:state, 'party')

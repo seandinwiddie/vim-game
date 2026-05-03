@@ -25,7 +25,7 @@ function! game#story#state#bootstrap() abort
         \     'reward_spell': 'Resurgence Ritual'
         \   }
         \ ],
-        \ 'notes': {'scene_cards': [], 'thread_cards': [], 'npc_cards': []},
+        \ 'notes': game#story#cards#new_notes(),
         \ 'flags': {'terminal_briefed': 0},
         \ 'progress': {'steps': 0, 'rooms_explored': 1}
         \ }
@@ -118,8 +118,24 @@ function! game#story#state#hydrate(state) abort
   endfor
 
   let l:idx = 0
+  while l:idx < len(l:next_state.notes.scene_cards)
+    let l:scene_card = l:next_state.notes.scene_cards[l:idx]
+    let l:next_state.notes.scene_cards[l:idx] = game#story#cards#normalize_scene(
+          \ l:scene_card,
+          \ s:scene_card_defaults(l:next_state, get(l:scene_card, 'loc', ''))
+          \ )
+    let l:idx += 1
+  endwhile
+
+  let l:idx = 0
   while l:idx < len(l:next_state.notes.thread_cards)
-    let l:next_state.notes.thread_cards[l:idx] = game#story#threads#normalize_card(l:next_state.notes.thread_cards[l:idx], l:next_state.stage)
+    let l:next_state.notes.thread_cards[l:idx] = game#story#cards#normalize_thread(l:next_state.notes.thread_cards[l:idx], l:next_state.stage)
+    let l:idx += 1
+  endwhile
+
+  let l:idx = 0
+  while l:idx < len(l:next_state.notes.npc_cards)
+    let l:next_state.notes.npc_cards[l:idx] = game#story#cards#normalize_npc(l:next_state.notes.npc_cards[l:idx])
     let l:idx += 1
   endwhile
 
@@ -162,4 +178,24 @@ endfunction
 
 function! game#story#state#notes_summary(state) abort
   return 'Notes: ' . len(get(get(a:state, 'notes', {}), 'scene_cards', [])) . ' scenes / ' . len(get(get(a:state, 'notes', {}), 'npc_cards', [])) . ' NPCs'
+endfunction
+
+function! s:scene_card_defaults(state, loc) abort
+  let l:title = ''
+  if !empty(a:loc)
+    let l:title = has_key(get(a:state, 'rooms', {}), a:loc) ? get(a:state.rooms[a:loc], 'name', toupper(a:loc)) : toupper(a:loc)
+  endif
+
+  return {
+        \ 'loc': a:loc,
+        \ 'title': l:title,
+        \ 'visits': 0,
+        \ 'stage': get(a:state, 'stage', 'knowledge'),
+        \ 'focus': game#story#state#focus_label(a:state),
+        \ 'framework_phase': get(get(a:state, 'framework', {}), 'phase', 'exposition'),
+        \ 'framework_chapter': get(get(a:state, 'framework', {}), 'chapter', 1),
+        \ 'closings': [],
+        \ 'openings': [],
+        \ 'npcs': []
+        \ }
 endfunction

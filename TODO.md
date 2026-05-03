@@ -2,6 +2,11 @@
 
 `Status: backlog of engineering improvements identified during a code review.`
 
+**Testing tenet:** Do **not** add seeded determinism, mocks, stubs, fakes,
+injected outcomes, or snapshot/golden-file workflows going forward. If a note
+below argues for that approach, treat it as historical review context rather
+than current project policy.
+
 These items are *not* gameplay features — they are structural changes to make the
 codebase easier to extend, easier to reason about, and easier to test. They are
 ordered by approximate leverage (highest impact first within each section), with
@@ -247,7 +252,7 @@ items that would unblock the most other items if tackled now.
   - **Migration:** Provide a one-time hydrator that synthesizes ids from
     existing names so saves still load.
 
-- [ ] **Make notes typed cards instead of dicts with optional keys.**
+- [x] **Make notes typed cards instead of dicts with optional keys.**
   - **Why:** `scene_card`, `thread_card`, `npc_card` all share the pattern of
     "dict with these keys; if a key isn't there, default in 4 places." See
     `state#hydrate`, `records#ensure_scene_card`, `records#scene_card_index`,

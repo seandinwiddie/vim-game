@@ -1,30 +1,11 @@
 " autoload/game/story/threads.vim - Thread Ledger and Fallout Bookkeeping
 
 function! game#story#threads#default_card(thread_name, stage) abort
-  return {
-        \ 'name': a:thread_name,
-        \ 'stage': a:stage,
-        \ 'scenes': [],
-        \ 'npcs': [],
-        \ 'facts': [],
-        \ 'status': 'open',
-        \ 'aliases': [],
-        \ 'split_from': '',
-        \ 'split_into': [],
-        \ 'replaced_from': '',
-        \ 'replaced_by': ''
-        \ }
+  return game#story#cards#new_thread(a:thread_name, a:stage)
 endfunction
 
 function! game#story#threads#normalize_card(card, stage) abort
-  let l:card = deepcopy(a:card)
-  let l:defaults = game#story#threads#default_card(get(l:card, 'name', ''), a:stage)
-  for l:key in keys(l:defaults)
-    if !has_key(l:card, l:key)
-      let l:card[l:key] = deepcopy(l:defaults[l:key])
-    endif
-  endfor
-  return l:card
+  return game#story#cards#normalize_thread(a:card, a:stage)
 endfunction
 
 function! game#story#threads#thread_card_index(cards, thread_name) abort
@@ -47,9 +28,9 @@ function! game#story#threads#ensure_thread_card(state, thread_name) abort
   let l:next_state = deepcopy(a:state)
   let l:idx = game#story#threads#thread_card_index(l:next_state.notes.thread_cards, a:thread_name)
   if l:idx == -1
-    call add(l:next_state.notes.thread_cards, game#story#threads#default_card(a:thread_name, l:next_state.stage))
+    call add(l:next_state.notes.thread_cards, game#story#cards#new_thread(a:thread_name, l:next_state.stage))
   else
-    let l:next_state.notes.thread_cards[l:idx] = game#story#threads#normalize_card(l:next_state.notes.thread_cards[l:idx], l:next_state.stage)
+    let l:next_state.notes.thread_cards[l:idx] = game#story#cards#normalize_thread(l:next_state.notes.thread_cards[l:idx], l:next_state.stage)
   endif
   return l:next_state
 endfunction

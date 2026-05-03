@@ -2,6 +2,11 @@
 
 `Státus: MVP_v1.0 // Protocol: CYBER_GRIMDARK`
 
+## ᚲ PROJECT TENET
+- **Strict rule**: Do **not** add determinism, mocks, stubs, fakes, injected outcomes, or snapshot/golden-file workflows to the test strategy.
+- Tests should validate live behavior under real gameplay flow, even when outputs vary.
+- If output is dynamic, assert durable invariants instead of forcing deterministic replay.
+
 ## ᚠ PURE VIMSCRIPT LOGIC
 - **Functional Core, Imperative Shell**: Implemented `game#core` purely via pure functions that map `State + Input -> State`.
 - **Architectural Subdomains**: Split the engine out of `core.vim` and into localized functional domains:

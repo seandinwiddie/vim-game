@@ -71,5 +71,11 @@ This project follows functional programming principles:
 - **Enemy Archetype Lore**: Combat output now narrates each archetype's signature spell from the Qua'dar appendix (e.g., Storm Titans flash `Thunderous Slam`, Voidwraiths haunt with `Spectral Grasp`).
 - **Roving Allies**: Procedural rooms occasionally surface a `Stranded Ranger` (interact to recruit) or a `Nomadic Merchant` (whose presence opens the shop in the wild) so the Familiar's fresh-recruit and traveling-trader rhythms appear during exploration.
 
+## Testing Tenet
+- **Strict rule**: Do **not** add seeded determinism, mocks, stubs, fakes, injected outcomes, or snapshot/golden-file workflows as a testing strategy for this project.
+- Tests should exercise live play behavior and tolerate naturally dynamic output instead of pinning the game to exact seeded transcripts or mocked rolls.
+- When output is volatile, prefer asserting durable gameplay invariants, state transitions, or structural guarantees over forcing the engine into deterministic replay.
+- This is a project tenet, not a suggestion.
+
 ## License
 All rights reserved. © 2026 ForbocAI. See [LICENSE](./LICENSE) for full details.
