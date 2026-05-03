@@ -70,7 +70,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:next_state = game#party#sync_scene(l:next_state)
     let l:next_state = game#story#threads#record_npc_for_thread(l:next_state, 'Find Missing Rangers', 'Ranger Operative')
     call add(l:log_lines, 'PARTY UPDATE: Ranger Operative joins your unit, providing Group Dynamics bonuses in combat.')
-    let l:quest_progress = game#story#advance_quest(l:next_state, 'rescue-rangers', 1)
+    let l:quest_progress = game#quest#advance(l:next_state, 'rescue-rangers', 1)
     let l:next_state = l:quest_progress.state
     let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', 'A bound ranger was extracted alive from ' . l:next_state.rooms[a:state.loc].name . '.')
     let l:log_lines += l:quest_progress.log
@@ -80,7 +80,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
       call add(l:next_state.player.inv, 'Lost Tomes')
     endif
     call add(l:log_lines, 'ARCHIVE RECOVERED: The reliquary yields a stack of codices and return sigils.')
-    let l:quest_progress = game#story#advance_quest(l:next_state, 'recover-lost-tomes', 1)
+    let l:quest_progress = game#quest#advance(l:next_state, 'recover-lost-tomes', 1)
     let l:next_state = l:quest_progress.state
     let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Recover the Lost Tomes', 'A sealed reliquary yielded codices and return sigils in ' . l:next_state.rooms[a:state.loc].name . '.')
     let l:log_lines += l:quest_progress.log
@@ -90,7 +90,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:heal = 15
     let l:next_state = game#player#heal(l:next_state, l:heal)
     call add(l:log_lines, 'RECOVERED: The holy resonance restores ' . l:heal . ' HP.')
-    let l:quest_progress = game#story#advance_quest(l:next_state, 'purify-altars', 1)
+    let l:quest_progress = game#quest#advance(l:next_state, 'purify-altars', 1)
     let l:next_state = l:quest_progress.state
     let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Purify the Eldritch Altars', 'A corrupted altar was purified in ' . l:next_state.rooms[a:state.loc].name . '.')
     let l:log_lines += l:quest_progress.log
@@ -172,7 +172,7 @@ function! s:check_climax_unveil(state, log_lines) abort
   let a:state.flags.climax_unveiled = 1
 
   let l:quest_def = game#enemies#climax_quest_definition()
-  let l:quest_result = game#story#ensure_quest(a:state, l:quest_def)
+  let l:quest_result = game#quest#ensure(a:state, l:quest_def)
   call extend(a:state, l:quest_result.state, 'force')
 
   let l:room = a:state.rooms[a:state.loc]
@@ -202,7 +202,7 @@ function! s:apply_briefing(state, log_lines) abort
   endif
 
   let a:state.flags.terminal_briefed = 1
-  let l:quest_result = game#story#ensure_quest(a:state, {
+  let l:quest_result = game#quest#ensure(a:state, {
         \ 'id': 'recover-lost-tomes',
         \ 'title': 'Recover the Lost Tomes',
         \ 'thread': 'Recover the Lost Tomes',
@@ -216,7 +216,7 @@ function! s:apply_briefing(state, log_lines) abort
         \ })
   call extend(a:state, l:quest_result.state, 'force')
   
-  let l:altar_quest = game#story#ensure_quest(a:state, {
+  let l:altar_quest = game#quest#ensure(a:state, {
         \ 'id': 'purify-altars',
         \ 'title': 'Purify the Eldritch Altars',
         \ 'thread': 'Purify the Eldritch Altars',

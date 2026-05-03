@@ -4,12 +4,8 @@ function! QuadarTest_RunClimax() abort
   let l:boss_tuning = game#tuning#get('enemies.boss.abyssal_overfiend')
 
   for l:climax_id in ['rescue-rangers', 'recover-lost-tomes', 'purify-altars']
-    for l:i in range(len(l:state.quests))
-      if get(l:state.quests[l:i], 'id', '') ==# l:climax_id
-        let l:state.quests[l:i].status = 'complete'
-        let l:state.quests[l:i].progress = l:state.quests[l:i].goal
-      endif
-    endfor
+    let l:status_result = game#quest#set_status(l:state, l:climax_id, 'complete')
+    let l:state = l:status_result.state
   endfor
 
   let l:state.loc = 'nexus'

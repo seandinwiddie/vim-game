@@ -89,7 +89,7 @@ function! game#story#ensure_thread(state, thread_name) abort
 endfunction
 
 function! game#story#ensure_quest(state, quest) abort
-  return game#story#records#ensure_quest(a:state, a:quest)
+  return game#quest#ensure(a:state, a:quest)
 endfunction
 
 function! game#story#enter_location(state, loc, discovered) abort
@@ -97,11 +97,15 @@ function! game#story#enter_location(state, loc, discovered) abort
 endfunction
 
 function! game#story#has_active_quest(state, quest_id) abort
-  return game#story#records#has_active_quest(a:state, a:quest_id)
+  return game#quest#has_active(a:state, a:quest_id)
 endfunction
 
 function! game#story#advance_quest(state, quest_id, amount) abort
-  return game#story#records#advance_quest(a:state, a:quest_id, a:amount)
+  return game#quest#advance(a:state, a:quest_id, a:amount)
+endfunction
+
+function! game#story#set_quest_status(state, quest_id, status) abort
+  return game#quest#set_status(a:state, a:quest_id, a:status)
 endfunction
 
 function! game#story#record_scene(state, loc) abort

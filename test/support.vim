@@ -93,6 +93,7 @@ function! QuadarTest_Path(key) abort
         \ 'party': expand('autoload/game/party.vim'),
         \ 'player': expand('autoload/game/player.vim'),
         \ 'procgen': expand('autoload/game/explore/procgen.vim'),
+        \ 'quest': expand('autoload/game/quest.vim'),
         \ 'reducer': expand('autoload/game/reducer.vim'),
         \ 'rng': expand('autoload/game/rng.vim'),
         \ 'run_all': expand('test/run_all.vim'),

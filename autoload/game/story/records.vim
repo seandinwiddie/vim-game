@@ -1,14 +1,7 @@
 " autoload/game/story/records.vim - Story Records and Notecards
 
 function! game#story#records#ensure_quest(state, quest) abort
-  if s:quest_index(a:state, a:quest.id) != -1
-    return {'state': a:state, 'added': 0}
-  endif
-
-  let l:next_state = deepcopy(a:state)
-  call add(l:next_state.quests, deepcopy(a:quest))
-  let l:next_state = game#story#threads#ensure_thread(l:next_state, a:quest.thread)
-  return {'state': l:next_state, 'added': 1}
+  return game#quest#ensure(a:state, a:quest)
 endfunction
 
 function! game#story#records#enter_location(state, loc, discovered) abort
@@ -23,44 +16,11 @@ function! game#story#records#enter_location(state, loc, discovered) abort
 endfunction
 
 function! game#story#records#has_active_quest(state, quest_id) abort
-  let l:idx = s:quest_index(a:state, a:quest_id)
-  if l:idx == -1
-    return 0
-  endif
-  return get(a:state.quests[l:idx], 'status', 'active') ==# 'active'
+  return game#quest#has_active(a:state, a:quest_id)
 endfunction
 
 function! game#story#records#advance_quest(state, quest_id, amount) abort
-  let l:idx = s:quest_index(a:state, a:quest_id)
-  if l:idx == -1
-    return {'state': a:state, 'log': []}
-  endif
-
-  let l:quest = a:state.quests[l:idx]
-  if get(l:quest, 'status', 'active') ==# 'complete'
-    return {'state': a:state, 'log': ['OBJECTIVE CACHE: ' . l:quest.title . ' already complete.']}
-  endif
-
-  let l:next_state = deepcopy(a:state)
-  let l:next_quest = l:next_state.quests[l:idx]
-  let l:next_quest.progress = min([l:next_quest.goal, l:next_quest.progress + a:amount])
-  let l:log_lines = ['OBJECTIVE UPDATED: ' . l:next_quest.title . ' [' . l:next_quest.progress . '/' . l:next_quest.goal . ']']
-
-  if l:next_quest.progress >= l:next_quest.goal
-    let l:next_quest.status = 'complete'
-    call add(l:log_lines, 'OBJECTIVE COMPLETE: ' . l:next_quest.title)
-
-    if !empty(get(l:next_quest, 'reward_item', '')) && index(l:next_state.player.inv, l:next_quest.reward_item) == -1
-      call add(l:next_state.player.inv, l:next_quest.reward_item)
-      call add(l:log_lines, 'REWARD ITEM: ' . l:next_quest.reward_item)
-    endif
-    if !empty(get(l:next_quest, 'reward_spell', '')) && index(l:next_state.player.spells, l:next_quest.reward_spell) == -1
-      call add(l:next_state.player.spells, l:next_quest.reward_spell)
-      call add(l:log_lines, 'REWARD SPELL: ' . l:next_quest.reward_spell)
-    endif
-  endif
-
-  return {'state': l:next_state, 'log': l:log_lines}
+  return game#quest#advance(a:state, a:quest_id, a:amount)
 endfunction
 
 function! game#story#records#record_scene(state, loc) abort
@@ -193,17 +153,6 @@ endfunction
 function! game#story#records#get_scene_card(cards, loc) abort
   let l:idx = game#story#records#scene_card_index(a:cards, a:loc)
   return l:idx == -1 ? {} : a:cards[l:idx]
-endfunction
-
-function! s:quest_index(state, quest_id) abort
-  let l:idx = 0
-  for l:quest in get(a:state, 'quests', [])
-    if get(l:quest, 'id', '') ==# a:quest_id
-      return l:idx
-    endif
-    let l:idx += 1
-  endfor
-  return -1
 endfunction
 
 function! s:ensure_scene_card(state, loc) abort

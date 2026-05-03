@@ -148,7 +148,7 @@ function! game#enemies#handle_boss_defeat(state, room_key, target, log_lines) ab
 endfunction
 
 function! game#enemies#trigger_overfiend_epilogue(state, log_lines) abort
-  let l:quest_progress = game#story#advance_quest(a:state, 'confront-overfiend', 1)
+  let l:quest_progress = game#quest#advance(a:state, 'confront-overfiend', 1)
   call extend(a:state, l:quest_progress.state, 'force')
   call extend(a:log_lines, l:quest_progress.log)
   let l:state2 = game#story#record_fact_for_thread(a:state, 'Confront the Abyssal Overfiend', 'The Voidmaw Abyssalgeist was annihilated atop the Abyssal Throne, severing Goeteian Chthonica''s anchor to Quadar Tower.')
@@ -158,7 +158,7 @@ endfunction
 
 function! game#enemies#all_climax_quests_complete(state) abort
   for l:id in ['rescue-rangers', 'recover-lost-tomes', 'purify-altars']
-    if !s:quest_complete(a:state, l:id)
+    if !game#quest#is_complete(a:state, l:id)
       return 0
     endif
   endfor
@@ -241,13 +241,4 @@ endfunction
 
 function! s:compare_pool_order(left, right) abort
   return get(a:left, 'pool_order', 0) - get(a:right, 'pool_order', 0)
-endfunction
-
-function! s:quest_complete(state, quest_id) abort
-  for l:quest in get(a:state, 'quests', [])
-    if get(l:quest, 'id', '') ==# a:quest_id
-      return get(l:quest, 'status', 'active') ==# 'complete'
-    endif
-  endfor
-  return 0
 endfunction

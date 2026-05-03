@@ -51,6 +51,11 @@ function! game#story#state#hydrate(state) abort
   if !has_key(l:next_state, 'quests')
     let l:next_state.quests = deepcopy(l:defaults.quests)
   endif
+  let l:idx = 0
+  while l:idx < len(l:next_state.quests)
+    let l:next_state.quests[l:idx] = game#quest#normalize(l:next_state.quests[l:idx])
+    let l:idx += 1
+  endwhile
   if !has_key(l:next_state, 'framework')
     let l:next_state.framework = deepcopy(l:defaults.framework)
   endif
@@ -167,7 +172,7 @@ function! game#story#state#quest_summary(state) abort
   let l:active = 0
   let l:complete = 0
   for l:quest in get(a:state, 'quests', [])
-    if get(l:quest, 'status', 'active') ==# 'complete'
+    if get(game#quest#normalize(l:quest), 'status', 'active') ==# 'complete'
       let l:complete += 1
     else
       let l:active += 1

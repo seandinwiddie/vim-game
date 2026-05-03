@@ -227,7 +227,7 @@ items that would unblock the most other items if tackled now.
 
 ## ᚱ Data Modeling
 
-- [ ] **Define a quest lifecycle.**
+- [x] **Define a quest lifecycle.**
   - **Why:** Quests are dicts with a `status` string `'active'|'complete'|
     'replaced'`. There's no enum, no allowed-transition validation, no
     completion hook. Each quest's `reward_item` and `reward_spell` are
