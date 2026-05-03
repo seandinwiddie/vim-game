@@ -1,11 +1,11 @@
 --- START TESTS ---
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
-Stage: TO KNOWLEDGE | Surge Count: 0
-Scene #1: ᚲ MILITARY_FACILITY ᚲ
+Stage: TO KNOWLEDGE | Surge Count: 2
+Scene #2: ᚲ OUTERWORLDLY_REALM ᚲ
 Focus: decode the return codex relay
 Objectives: 2 active / 1 complete
-Notes: 5 scenes / 3 NPCs
+Notes: 7 scenes / 3 NPCs
 Trade Cache: 36 | Guard: 14 | Mark: none
 DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 --- ACTIVE THREADS ---
@@ -14,30 +14,6 @@ DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
- 3. secure the tower shell extraction route [OPEN] | aliases: Purify the Eldritch Altars
- 4. track the tower shell recon cell [OPEN] | split from: Find Missing Rangers | NPCs: iron broker, Bound Ranger
- - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay | NPCs: Bound Ranger
----------------------
-NEURAL_TRACKING: Shifting coordinates to east
-ENVIRONMENTAL HAZARD: The perilous terrain inflicts 6 damage.
----
-ᚲ TOXIC_WASTES ᚲ
-A ghastly mire of desolation.
-ᚱ ENTRANCES: west
-[Threat Tier: 1 | HP: 144/150]
---
-NEURAL_TRACKING: Shifting coordinates to south
----
-ᚲ HAUNTED_CHAPEL ᚲ
-An accursed chapel.
-INTERACTIVE OBJECTS:
-  > [*] Corrupted Altar
-ᚱ ENTRANCES: north
-[Threat Tier: 1 | HP: 144/150]
---
-INTERACT: You examine the Corrupted Altar.
-A desecrated monolith.
-SANCTIFICATION: You channel pure energy into the altar, cleansing the eldritch taint.
 RECOVERED: The holy resonance restores 15 HP.
 OBJECTIVE UPDATED: Purify the Eldritch Altars [1/2]
 NEURAL_TRACKING: Shifting coordinates to west
@@ -51,8 +27,31 @@ INTERACTIVE OBJECTS:
 --
 INTERACT: You examine the Holographic Terminal.
 A distorted projection.
-HIDDEN LORE DISCOVERED: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
+HIDDEN LORE DISCOVERED: The missing rangers were not captured; they surrendered willingly to the whispers.
 THREAD UPDATED: Forbidden truth appended to the active focus thread.
+NEURAL_TRACKING: Shifting coordinates to south
+---
+ᚲ MYSTERIOUS_PORTAL ᚲ
+A thin alien threshold trembles here.
+INTERACTIVE OBJECTS:
+  > [?] Veiled Gate
+ᚱ ENTRANCES: east
+[Threat Tier: 1 | HP: 150/150]
+--
+INTERACT: You examine the Veiled Gate.
+A veiled gate shivering with impossible geometry.
+VEILED_GATE: The threshold parts and reveals a path into the alien dark.
+PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ OUTERWORLDLY_REALM ᚲ
+SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.
+---
+ᚲ OUTERWORLDLY_REALM ᚲ
+A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defying roads.
+INTERACTIVE OBJECTS:
+  > [?] Return Gate
+  > [?] Alien Monolith
+ᚱ ENTRANCES: south, north
+[Threat Tier: 4 | HP: 150/150]
+--
 --- SECURED RELICS ---
 Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Basic Dagger
@@ -60,7 +59,6 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Obsidian Fragment
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -83,18 +81,18 @@ Companions (Party):
  * Ranger Operative [STR:5 AGI:5 ARC:3]
 ----------------------
 --- FIELD NOTES ---
-Notes: 5 scenes / 3 NPCs
+Notes: 7 scenes / 3 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
   NPCs: Bound Ranger
   Facts:
-   - Archive traces point to codices capable of sending captives home.
    - Scene framed around Recover the Lost Tomes at TO KNOWLEDGE.
    - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
+   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
 --- THREAD LEDGER ---
  1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell | NPCs: iron broker, Bound Ranger
  2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes | NPCs: Bound Ranger
@@ -109,6 +107,8 @@ Scene Cards:
  * ᚲ TOXIC_WASTES ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
  * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
  * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
+ * ᚲ OUTERWORLDLY_REALM ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
 Known NPCs:
  * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ

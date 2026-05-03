@@ -40,7 +40,12 @@ function! game#explore#procgen#generate_room(seed, entrance_dir, entrance_id, st
   let l:special_object = s:story_object(a:state, a:seed)
   if !empty(l:special_object)
     call add(l:room.objects, l:special_object)
-  else
+  endif
+
+  let l:portal_object = s:portal_object(l:room.name)
+  if !empty(l:portal_object)
+    call add(l:room.objects, l:portal_object)
+  elseif empty(l:special_object)
     let l:object_roll = (a:seed / 4) % 100
     if l:object_roll > 35
       let l:interactives = [
@@ -78,6 +83,35 @@ function! game#explore#procgen#generate_room(seed, entrance_dir, entrance_id, st
       let l:room.exits[l:d] = 'unexplored'
     endif
   endfor
+
+  return l:room
+endfunction
+
+function! game#explore#procgen#generate_portal_room(seed, entrance_id, state) abort
+  let l:env = s:portal_env(a:seed)
+  let l:room = {
+        \ 'name': 'ᚲ ' . toupper(substitute(l:env.name, ' ', '_', 'g')) . ' ᚲ',
+        \ 'desc': l:env.desc,
+        \ 'exits': {'south': a:entrance_id, 'north': 'unexplored'},
+        \ 'entities': [],
+        \ 'objects': [
+        \   {'name': 'Return Gate', 'desc': 'A trembling aperture that still remembers the route back to Qua''dar.', 'effect': 'portal_jump', 'target_room': a:entrance_id}
+        \ ],
+        \ 'services': [],
+        \ 'difficulty': min([4, s:encounter_rank(a:state, a:seed) + 1])
+        \ }
+
+  let l:enemy_roll = (a:seed / 3) % 100
+  if l:enemy_roll > 40
+    let l:enemies = s:enemy_pool(l:room.difficulty)
+    call add(l:room.entities, deepcopy(l:enemies[(a:seed / 5) % len(l:enemies)]))
+  endif
+
+  if l:room.name =~# 'DIMENSIONAL_NEXUS'
+    call add(l:room.objects, {'name': 'Spatial Anchor', 'desc': 'A station-core knotting reality into brutal angles.', 'effect': 'surge_rift'})
+  elseif l:room.name =~# 'OUTERWORLDLY_REALM'
+    call add(l:room.objects, {'name': 'Alien Monolith', 'desc': 'A geometry of impossible angles whispering macrocosmic threats.', 'effect': 'hidden_lore'})
+  endif
 
   return l:room
 endfunction
@@ -164,4 +198,24 @@ function! s:story_object(state, seed) abort
   endif
 
   return {}
+endfunction
+
+function! s:portal_object(room_name) abort
+  if a:room_name =~# 'MYSTERIOUS_PORTAL'
+    return {'name': 'Veiled Gate', 'desc': 'A thin extradimensional threshold opening onto alien fields beyond Qua''dar.', 'effect': 'portal_jump'}
+  elseif a:room_name =~# 'DIMENSIONAL_NEXUS'
+    return {'name': 'Nexus Gate', 'desc': 'A grotesque gateway whose stations drift through impossible geometry.', 'effect': 'portal_jump'}
+  elseif a:room_name =~# 'OUTERWORLDLY_REALM'
+    return {'name': 'Macrocosm Gate', 'desc': 'An unstable aperture through surreal angles and gravity-defying roads.', 'effect': 'portal_jump'}
+  endif
+  return {}
+endfunction
+
+function! s:portal_env(seed) abort
+  let l:envs = [
+        \ {'name': 'Mysterious Portal', 'desc': 'A thin alien threshold shivering with arcane fields and extradimensional static.'},
+        \ {'name': 'Dimensional Nexus', 'desc': 'Reality writhes here, with floating stations and pathways that defy sane geometry.'},
+        \ {'name': 'Outerworldly Realm', 'desc': 'A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defying roads.'}
+        \ ]
+  return l:envs[a:seed % len(l:envs)]
 endfunction

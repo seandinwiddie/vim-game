@@ -27,7 +27,7 @@ Then run `:PlugInstall`.
    ```
 2. **Move**: Press `n`, `s`, `e`, or `w` to navigate the spatial nodes of the Quadar Tower.
 3. **Engage**: Press `c` to initiate combat with any hostile entities detected in your current node, or type `:call s:run('cast [spell]')` in command mode to cast a spell. Purchased spells like `Dark Crystal Shielding`, `Explosive Barrage`, and `Shatterstrike Slam` now feed directly into combat. The `attack` command now rolls a `d20` utilizing the *Shadows of Fate* mechanics and calculates against the entire group of hostiles (*Group Dynamics*).
-4. **Interact**: Type `:call s:run('interact [object]')` to investigate and manipulate environmental objects. Consoles can add objectives, levers can expose new exits, and special targets can complete missions.
+4. **Interact**: Type `:call s:run('interact [object]')` to investigate and manipulate environmental objects. Consoles can add objectives, levers can expose new exits, portal gates can open surreal side-realms, and special targets can complete missions.
 5. **Inventory**: Press `i` to view the relics and artifacts you've scavenged and looted. Type `:call s:run('use [item]')` to consume items.
 6. **Profile & Rest**: Press `p` to view your character stats and spells, or `r` to rest and recover HP (warning: resting increases your Surge Count and triggers *Dynamic Spawning*, potentially drawing new enemies to your location).
 7. **State Persistence**: In command mode, type `:call s:run('save')` to serialize your state to `~/.quadar_save.json`. Use `load` to restore.
@@ -45,12 +45,14 @@ Then run `:PlugInstall`.
 
 ## Architecture
 This project follows functional programming principles:
+- **RTK-Style Dataflow**: User input is parsed into event-style actions, routed through a root reducer, and applied through a small store/subscription layer in the engine.
 - **Immutable State**: Game logic operates on a state dictionary.
 - **Pure Views**: The UI is a pure function of the current state.
 - **Side-Effect Isolation**: All buffer manipulations are sequestered in the engine layer.
 - **Story Bookkeeping**: Scene focus, active objectives, and procedural quest targets (like recovering lost tomes or purifying eldritch altars) are tracked directly in state so exploration can react to narrative progress.
 - **Persistent Notecards**: Scene cards, thread facts, known NPCs, and thread-to-NPC links are stored in state so CRGE-style bookkeeping survives past the visible log buffer.
 - **Hidden Lore**: Discovering Holographic Terminals or Eldritch Frescoes will dynamically dispense procedural worldbuilding secrets directly into the active thread's fact ledger.
+- **Portal Realms**: Veiled gates inside Mysterious Portals, Dimensional Nexus chambers, and Outerworldly Realms can branch the run into alien pocket-zones and back again.
 - **Environmental Hazards**: Movement logic parses the procedural biome of the destination (e.g. Toxic Wastes, Mud Slides, Dimensional Nexus) to apply dynamic damage, tension spikes, or navigational warnings.
 - **Companions & Group Dynamics**: Rescuing NPCs from the tower allows them to join your party, applying their own aggregated `Group Dynamics` bonus to all your combat rolls, adapting the *Tapestry* TTRPG mechanics into a solo MUD environment.
 - **Economy Loop**: Trade cache, wares, salvage, and persistent upgrades now turn recovered relics into concrete progression.

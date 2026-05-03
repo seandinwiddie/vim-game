@@ -1,11 +1,13 @@
 " autoload/game/engine.vim - Quadar MUD Engine
 
-let s:state = {}
+let s:store = {}
+let s:subscription_id = 0
 
 function! game#engine#start() abort
-  let s:state = game#core#init()
+  let s:store = game#store#create(game#core#init())
   call s:set_up_buffer()
-  call s:draw()
+  let s:subscription_id = game#store#subscribe(s:store, function(expand('<SID>') . 'on_state_change'))
+  call s:draw(game#store#get_state(s:store))
 endfunction
 
 function! s:set_up_buffer() abort
@@ -61,12 +63,16 @@ function! s:prompt_cmd() abort
 endfunction
 
 function! s:run(input) abort
-  let s:state = game#core#process(s:state, a:input)
-  call s:draw()
+  call game#store#dispatch_input(s:store, a:input)
 endfunction
 
-function! s:draw() abort
-  let l:lines = game#core#render(s:state)
+function! s:on_state_change(state) abort
+  call s:draw(a:state)
+endfunction
+
+function! s:draw(...) abort
+  let l:state = a:0 ? a:1 : game#store#get_state(s:store)
+  let l:lines = game#core#render(l:state)
   if empty(l:lines)
     let l:lines = ['DEBUG: No lines returned from render()']
   endif

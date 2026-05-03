@@ -97,6 +97,11 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:consume_object = 1
     let l:next_state.surge += 3
     call add(l:log_lines, 'RIFT BACKLASH: The void surges through the link and spikes the Surge Count by 3.')
+  elseif l:effect ==# 'portal_jump'
+    let l:portal_result = s:traverse_portal(l:next_state, a:state.loc, l:match.index)
+    let l:next_state = l:portal_result.state
+    let l:log_lines += l:portal_result.log
+    return game#explore#view#cmd_look(game#core#add_log(l:next_state, l:log_lines))
   else
     let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
     if (l:val % 100) > 70
@@ -185,4 +190,35 @@ function! s:first_hidden_exit(exits) abort
     endif
   endfor
   return ''
+endfunction
+
+function! s:traverse_portal(state, source_loc, object_index) abort
+  let l:next_state = deepcopy(a:state)
+  let l:source_room = l:next_state.rooms[a:source_loc]
+  let l:source_name = get(l:source_room, 'name', toupper(a:source_loc))
+  let l:portal = l:source_room.objects[a:object_index]
+  let l:target_room = get(l:portal, 'target_room', '')
+  let l:is_new_room = 0
+  let l:log_lines = []
+
+  if empty(l:target_room)
+    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:target_room = 'portal_room_' . l:val
+    let l:next_state.rooms[l:target_room] = game#explore#procgen#generate_portal_room(l:val, a:source_loc, l:next_state)
+    let l:next_state.rooms[a:source_loc].objects[a:object_index].target_room = l:target_room
+    let l:is_new_room = 1
+    call add(l:log_lines, 'VEILED_GATE: The threshold parts and reveals a path into the alien dark.')
+  else
+    call add(l:log_lines, 'VEILED_GATE: The portal remembers your previous crossing and opens again.')
+  endif
+
+  let l:next_state.loc = l:target_room
+  let l:next_state = game#story#enter_location(l:next_state, l:target_room, l:is_new_room)
+  let l:next_state.surge += 2
+  let l:target_name = get(l:next_state.rooms[l:target_room], 'name', toupper(l:target_room))
+  let l:next_state.hint = 'DIRECTIVE: Portal transit complete. Scan the impossible geometry before moving.'
+  let l:next_state = game#story#record_fact(l:next_state, 'Portal transit carried the scene from ' . l:source_name . ' into ' . l:target_name . '.')
+  call add(l:log_lines, 'PORTAL TRANSIT: ' . l:source_name . ' -> ' . l:target_name)
+  call add(l:log_lines, 'SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.')
+  return {'state': l:next_state, 'log': l:log_lines}
 endfunction

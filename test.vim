@@ -84,6 +84,17 @@ let s:state.rooms[s:state.loc].exits['west'] = 'test_mil'
 let s:state = game#core#process(s:state, 'go west')
 let s:state = game#core#process(s:state, 'interact Holographic Terminal')
 
+let s:state.rooms['test_portal'] = {
+      \ 'name': 'ᚲ MYSTERIOUS_PORTAL ᚲ',
+      \ 'desc': 'A thin alien threshold trembles here.',
+      \ 'exits': {'east': s:state.loc},
+      \ 'entities': [],
+      \ 'objects': [{'name': 'Veiled Gate', 'desc': 'A veiled gate shivering with impossible geometry.', 'effect': 'portal_jump'}]
+      \ }
+let s:state.rooms[s:state.loc].exits['south'] = 'test_portal'
+let s:state = game#core#process(s:state, 'go south')
+let s:state = game#core#process(s:state, 'interact Veiled Gate')
+
 let s:state = game#core#process(s:state, 'inventory')
 let s:state = game#core#process(s:state, 'profile')
 let s:state = game#core#process(s:state, 'notes')
@@ -99,11 +110,69 @@ function! s:assert_contains(lines, needle) abort
   call s:assert_true(stridx(join(a:lines, "\n"), a:needle) >= 0, 'Missing expected text: ' . a:needle)
 endfunction
 
+function! s:assert_file_contains(path, needle, message) abort
+  call s:assert_true(filereadable(a:path), 'Missing required file: ' . a:path)
+  call s:assert_true(stridx(join(readfile(a:path), "\n"), a:needle) >= 0, a:message)
+endfunction
+
+function! s:assert_file_not_contains(path, needle, message) abort
+  call s:assert_true(filereadable(a:path), 'Missing required file: ' . a:path)
+  call s:assert_true(stridx(join(readfile(a:path), "\n"), a:needle) == -1, a:message)
+endfunction
+
+function! s:count_state_change(_state) abort
+  let s:store_notifications += 1
+endfunction
+
+let s:action_file = expand('autoload/game/action.vim')
+let s:store_file = expand('autoload/game/store.vim')
+let s:reducer_file = expand('autoload/game/reducer.vim')
+let s:engine_file = expand('autoload/game/engine.vim')
+let s:core_file = expand('autoload/game/core.vim')
+
+call s:assert_file_contains(s:action_file, 'function! game#action#make', 'action.vim must define the action factory.')
+call s:assert_file_contains(s:action_file, 'function! game#action#command', 'action.vim must define the command-to-action mapper.')
+call s:assert_file_contains(s:action_file, 'explore/travelRequested', 'action.vim must centralize event-style action types.')
+call s:assert_file_not_contains(s:action_file, '/set', 'action.vim should use event-style action names instead of setter-style names.')
+
+call s:assert_file_contains(s:store_file, 'function! game#store#create', 'store.vim must define create().')
+call s:assert_file_contains(s:store_file, 'function! game#store#dispatch(', 'store.vim must define dispatch().')
+call s:assert_file_contains(s:store_file, 'function! game#store#dispatch_batch', 'store.vim must define dispatch_batch().')
+call s:assert_file_contains(s:store_file, 'function! game#store#subscribe', 'store.vim must define subscribe().')
+call s:assert_file_contains(s:store_file, 'game#reducer#reduce', 'store.vim dispatch must route through the reducer.')
+
+call s:assert_file_contains(s:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
+call s:assert_file_contains(s:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
+call s:assert_file_contains(s:reducer_file, "Unknown action_vector", 'reducer.vim must surface unknown actions explicitly.')
+
+call s:assert_file_contains(s:core_file, "return game#reducer#reduce(a:state, game#action#command(a:input))", 'core.vim must delegate command processing through the action/reducer pipeline.')
+call s:assert_file_not_contains(s:core_file, "elseif l:action ==#", 'core.vim should not keep the legacy command router.')
+
+call s:assert_file_contains(s:engine_file, 'game#store#create(game#core#init())', 'engine.vim must bootstrap the store from initial state.')
+call s:assert_file_contains(s:engine_file, 'game#store#subscribe', 'engine.vim must subscribe redraws to store changes.')
+call s:assert_file_contains(s:engine_file, 'game#store#dispatch_input', 'engine.vim must dispatch user input through the store.')
+call s:assert_file_not_contains(s:engine_file, 'let s:state = game#core#process', 'engine.vim should not mutate local state directly anymore.')
+
 let s:find_thread = game#story#threads#get_thread_card(s:state.notes.thread_cards, 'Find Missing Rangers')
 let s:decode_thread = game#story#threads#get_thread_card(s:state.notes.thread_cards, 'decode the return codex relay')
 call s:assert_true(index(get(s:find_thread, 'npcs', []), 'iron broker') != -1, 'Iron Broker should be linked to the main thread card.')
 call s:assert_true(index(get(s:find_thread, 'npcs', []), 'Bound Ranger') != -1, 'Bound Ranger should be linked to the rescue thread card.')
 call s:assert_true(index(get(s:decode_thread, 'npcs', []), 'Bound Ranger') != -1, 'Replacement threads should inherit linked NPCs.')
+call s:assert_true(!empty(get(get(s:state.rooms, 'test_portal', {}).objects[0], 'target_room', '')), 'Portal gates should bind to a generated destination.')
+call s:assert_true(s:state.loc ==# s:state.rooms['test_portal'].objects[0].target_room, 'Portal traversal should move the player into the bound destination room.')
+call s:assert_true(get(get(s:state.rooms[s:state.loc], 'objects', [])[0], 'target_room', '') ==# 'test_portal', 'Generated portal rooms should preserve a return gate back to the source room.')
+
+let s:travel_action = game#action#command('go north')
+call s:assert_true(get(s:travel_action, 'type', '') ==# 'explore/travelRequested', 'go north should produce a travel action.')
+call s:assert_true(get(get(s:travel_action, 'payload', {}), 'dir', '') ==# 'north', 'travel action should capture the normalized direction.')
+
+let s:store = game#store#create(game#core#init())
+let s:store_notifications = 0
+let s:sub_id = game#store#subscribe(s:store, function(expand('<SID>') . 'count_state_change'))
+call game#store#dispatch_batch(s:store, [game#action#command('look'), game#action#command('profile')])
+call s:assert_true(s:store_notifications == 1, 'dispatch_batch should notify subscribers once.')
+call s:assert_contains(game#core#render(game#store#get_state(s:store)), '--- PLAYER PROFILE ---')
+call game#store#unsubscribe(s:store, s:sub_id)
 
 let s:rendered = game#core#render(s:state)
 call s:assert_contains(s:rendered, '| NPCs: iron broker')
