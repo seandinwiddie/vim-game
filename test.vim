@@ -133,6 +133,14 @@ function! s:assert_file_not_contains(path, needle, message) abort
   call s:assert_true(stridx(join(readfile(a:path), "\n"), a:needle) == -1, a:message)
 endfunction
 
+function! s:assert_tuning_key_exists(key) abort
+  try
+    call game#tuning#get(a:key)
+  catch
+    call s:assert_true(0, 'Missing tuning key: ' . a:key)
+  endtry
+endfunction
+
 function! s:count_state_change(_state) abort
   let s:store_notifications += 1
 endfunction
@@ -148,6 +156,7 @@ let s:reducer_file = expand('autoload/game/reducer.vim')
 let s:engine_file = expand('autoload/game/engine.vim')
 let s:core_file = expand('autoload/game/core.vim')
 let s:rng_file = expand('autoload/game/rng.vim')
+let s:tuning_file = expand('autoload/game/tuning.vim')
 let s:framework_file = expand('autoload/game/story/framework.vim')
 let s:meeting_file = expand('autoload/game/story/meeting.vim')
 let s:party_file = expand('autoload/game/party.vim')
@@ -177,6 +186,13 @@ call s:assert_file_contains(s:procgen_file, 'game#enemies#pool(', 'procgen.vim s
 call s:assert_file_not_contains(s:procgen_file, 'function! s:enemy_pool', 'procgen.vim should not keep a duplicate enemy-pool definition.')
 call s:assert_file_contains(s:player_file, 'game#enemies#select(', 'player.vim should source dynamic rest spawns from the canonical enemy catalog.')
 call s:assert_file_contains(s:oracle_file, 'game#enemies#select(', 'oracle.vim should source Entering the Red spawns from the canonical enemy catalog.')
+call s:assert_file_contains(s:tuning_file, 'function! game#tuning#get', 'tuning.vim must expose the canonical tuning lookup.')
+call s:assert_file_contains(s:combat_file, 'game#tuning#get(', 'combat.vim should source combat balance numbers from tuning.vim.')
+call s:assert_file_contains(s:combat_spells_file, 'game#tuning#get(', 'combat/spells.vim should source spell balance numbers from tuning.vim.')
+call s:assert_file_contains(s:player_file, 'game#tuning#get(', 'player.vim should source consumable and rest balance numbers from tuning.vim.')
+call s:assert_file_contains(s:oracle_file, 'game#tuning#get(', 'oracle.vim should source oracle balance numbers from tuning.vim.')
+call s:assert_file_contains(s:enemies_file, 'game#tuning#get(', 'enemies.vim should source boss balance numbers from tuning.vim.')
+call s:assert_file_contains(s:procgen_file, 'game#tuning#get(', 'procgen.vim should source friendly spawn thresholds from tuning.vim.')
 
 call s:assert_file_contains(s:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
 call s:assert_file_contains(s:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
@@ -229,6 +245,24 @@ call s:assert_true(!empty(game#combat#spells#get('Precision Shot')), 'Spell regi
 call s:assert_true(len(game#enemies#pool(2)) == 5, 'Enemy rank pools should stay centrally defined by difficulty tier.')
 let s:oracle_pool = game#enemies#select(['Ashwalker', 'Voidwraith', 'Doomguard', 'Twilight Weaver'])
 call s:assert_true(len(s:oracle_pool) == 4 && get(s:oracle_pool[3], 'name', '') ==# 'Twilight Weaver', 'Canonical enemy selection should preserve requested spawn subsets in order.')
+for s:key in [
+      \ 'player.consumables.pollen_vial_heal',
+      \ 'player.consumables.field_rations_heal',
+      \ 'player.consumables.ranger_field_kit',
+      \ 'player.rest',
+      \ 'combat.mark_bonus',
+      \ 'combat.attack',
+      \ 'combat.spells.dark_crystal',
+      \ 'combat.spells.dimensional_weave',
+      \ 'combat.spells.resurgence_ritual',
+      \ 'combat.spells.precision_shot',
+      \ 'combat.spells.offensive',
+      \ 'oracle',
+      \ 'enemies.boss.abyssal_overfiend',
+      \ 'procgen.friendly_spawn'
+      \ ]
+  call s:assert_tuning_key_exists(s:key)
+endfor
 
 let s:travel_action = game#action#command('go north')
 call s:assert_true(get(s:travel_action, 'type', '') ==# 'explore/travelRequested', 'go north should produce a travel action.')

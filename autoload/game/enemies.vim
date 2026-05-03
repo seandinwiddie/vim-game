@@ -80,11 +80,12 @@ endfunction
 
 function! game#enemies#build_boss(name) abort
   if a:name ==# 'Abyssal Overfiend'
+    let l:boss_tuning = game#tuning#get('enemies.boss.abyssal_overfiend')
     return {
           \ 'name': 'Abyssal Overfiend',
-          \ 'str': 14,
-          \ 'agi': 6,
-          \ 'arc': 12,
+          \ 'str': l:boss_tuning.str,
+          \ 'agi': l:boss_tuning.agi,
+          \ 'arc': l:boss_tuning.arc,
           \ 'is_boss': 1,
           \ 'phases': 2,
           \ 'phases_done': 0,
@@ -98,15 +99,16 @@ function! game#enemies#handle_boss_defeat(state, room_key, target, log_lines) ab
   let l:phases = get(a:target, 'phases', 1)
   let l:done = get(a:target, 'phases_done', 0) + 1
   if l:done < l:phases
+    let l:boss_tuning = game#tuning#get('enemies.boss.abyssal_overfiend')
     let l:next_target = copy(a:target)
     let l:next_target.phases_done = l:done
-    let l:next_target.str = get(a:target, 'str', 8) + 2
-    let l:next_target.agi = get(a:target, 'agi', 4) + 1
-    let l:next_target.arc = get(a:target, 'arc', 8) + 2
+    let l:next_target.str = get(a:target, 'str', l:boss_tuning.str) + l:boss_tuning.phase_delta.str
+    let l:next_target.agi = get(a:target, 'agi', l:boss_tuning.agi) + l:boss_tuning.phase_delta.agi
+    let l:next_target.arc = get(a:target, 'arc', l:boss_tuning.arc) + l:boss_tuning.phase_delta.arc
     let l:next_target.phase_label = 'Tyrant of the Abyss'
     let a:state.rooms[a:room_key].entities[0] = l:next_target
     call add(a:log_lines, 'PHASE_SHIFT: The ' . a:target.name . ' tears its physical form apart and reconstitutes as the ' . l:next_target.phase_label . '.')
-    call add(a:log_lines, 'BOSS_TRACE: STR+2 AGI+1 ARC+2. The duel resumes -- attack again.')
+    call add(a:log_lines, 'BOSS_TRACE: STR+' . l:boss_tuning.phase_delta.str . ' AGI+' . l:boss_tuning.phase_delta.agi . ' ARC+' . l:boss_tuning.phase_delta.arc . '. The duel resumes -- attack again.')
     return {'fully_defeated': 0}
   endif
   return {'fully_defeated': 1}

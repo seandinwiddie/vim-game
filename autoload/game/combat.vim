@@ -34,6 +34,7 @@ function! game#combat#cmd_attack(state) abort
   let l:e_roll = ((l:val / 10) % 20) + 1
   let l:mark_bonus = s:mark_bonus(a:state, l:target_name)
   let l:p_group_score = game#party#group_bonus(a:state)
+  let l:attack_tuning = game#tuning#get('combat.attack')
   
   let l:p_score = l:p_roll + l:p_str + l:p_agi + l:p_arc + l:mark_bonus + l:p_group_score
   let l:e_score = l:e_roll + l:e_str + l:e_agi + l:e_arc + l:e_group_score
@@ -58,12 +59,12 @@ function! game#combat#cmd_attack(state) abort
   
   if l:p_score >= l:e_score
     let l:diff = l:p_score - l:e_score
-    if l:diff >= 5
+    if l:diff >= l:attack_tuning.clear_margin
       call add(l:log_lines, "CLEAR VICTORY: You execute a flurry of strikes! " . l:target_name . " is annihilated.")
-      let l:dmg = (l:val % 5) + 1
+      let l:dmg = (l:val % l:attack_tuning.clear_damage.mod) + l:attack_tuning.clear_damage.base
     else
       call add(l:log_lines, "CLOSE CALL: You barely overpower the " . l:target_name . ", sustaining minor injuries.")
-      let l:dmg = (l:val % 10) + 5
+      let l:dmg = (l:val % l:attack_tuning.close_damage.mod) + l:attack_tuning.close_damage.base
     endif
     
     call game#combat#apply_damage(l:next_state, l:dmg, l:log_lines)
@@ -72,12 +73,12 @@ function! game#combat#cmd_attack(state) abort
     let l:next_state.hint = 'DIRECTIVE: Hostile neutralized. Sector secure.'
   else
     let l:diff = l:e_score - l:p_score
-    if l:diff >= 5
+    if l:diff >= l:attack_tuning.defeat_margin
       call add(l:log_lines, "CRITICAL FAILURE: The " . l:target_name . " retaliates with lethal force!")
-      let l:dmg = (l:val % 20) + 15
+      let l:dmg = (l:val % l:attack_tuning.critical_damage.mod) + l:attack_tuning.critical_damage.base
     else
       call add(l:log_lines, "CLOSE CALL DEFEAT: The " . l:target_name . " edges you out in combat.")
-      let l:dmg = (l:val % 15) + 5
+      let l:dmg = (l:val % l:attack_tuning.close_defeat_damage.mod) + l:attack_tuning.close_defeat_damage.base
     endif
     
     call game#combat#apply_damage(l:next_state, l:dmg, l:log_lines)
@@ -193,7 +194,7 @@ function! s:mark_bonus(state, target_name) abort
 endfunction
 
 function! s:mark_bonus_value() abort
-  return 4
+  return game#tuning#get('combat.mark_bonus')
 endfunction
 
 function! s:salvage_value(target) abort

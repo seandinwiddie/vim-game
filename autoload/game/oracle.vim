@@ -17,6 +17,7 @@ function! game#oracle#cmd_ask(state, question) abort
   endif
 
   let l:rng = game#rng#draw(a:state, 100)
+  let l:oracle_tuning = game#tuning#get('oracle')
   let l:roll = l:rng.value
   let l:surge = a:state.surge
   let l:modified_roll = (l:roll > 50) ? (l:roll + l:surge) : (l:roll - l:surge)
@@ -26,15 +27,8 @@ function! game#oracle#cmd_ask(state, question) abort
   let l:hint = 'DIRECTIVE: Loom of Fate resolved. "ask" again or explore.'
   let l:is_unexpected = 0
 
-  " Define boundaries based on current stage
-  let l:b = {}
-  if a:state.stage ==# 'endings'
-    let l:b = {'y_un': 100, 'y_but': 99, 'y_and': 81, 'y': 51, 'n': 21, 'n_and': 3, 'n_but': 2, 'n_un': 1}
-  elseif a:state.stage ==# 'conflict'
-    let l:b = {'y_un': 99, 'y_but': 95, 'y_and': 85, 'y': 51, 'n': 17, 'n_and': 7, 'n_but': 3, 'n_un': 1}
-  else " knowledge is default
-    let l:b = {'y_un': 96, 'y_but': 86, 'y_and': 81, 'y': 51, 'n': 21, 'n_and': 16, 'n_but': 6, 'n_un': 1}
-  endif
+  let l:stage_key = has_key(l:oracle_tuning.stage_boundaries, a:state.stage) ? a:state.stage : 'knowledge'
+  let l:b = l:oracle_tuning.stage_boundaries[l:stage_key]
 
   if l:modified_roll >= l:b.y_un
     let l:res = "YES, AND UNEXPECTEDLY"
@@ -48,10 +42,10 @@ function! game#oracle#cmd_ask(state, question) abort
     let l:new_surge = 0
   elseif l:modified_roll >= l:b.y
     let l:res = "YES"
-    let l:new_surge += 2
+    let l:new_surge += l:oracle_tuning.surge_gain
   elseif l:modified_roll >= l:b.n
     let l:res = "NO"
-    let l:new_surge += 2
+    let l:new_surge += l:oracle_tuning.surge_gain
   elseif l:modified_roll >= l:b.n_and
     let l:res = "NO, AND"
     let l:new_surge = 0
@@ -107,8 +101,9 @@ function! s:apply_table2_modifier(state, modifier, log_lines) abort
       let l:spawn = deepcopy(l:pool[l:val % len(l:pool)])
       let l:next_state.rooms[l:next_state.loc] = copy(l:room)
       let l:next_state.rooms[l:next_state.loc].entities = copy(get(l:room, 'entities', [])) + [l:spawn]
-      let l:next_state.surge += 3
-      call add(a:log_lines, 'ENTERING THE RED: A ' . l:spawn.name . ' enters the scene. Surge Count +3.')
+      let l:surge_gain = game#tuning#get('oracle.modifiers.entering_red.surge_gain')
+      let l:next_state.surge += l:surge_gain
+      call add(a:log_lines, 'ENTERING THE RED: A ' . l:spawn.name . ' enters the scene. Surge Count +' . l:surge_gain . '.')
     endif
   elseif a:modifier ==# 'enter stage left'
     let l:rng = game#rng#next(l:next_state)
@@ -154,8 +149,9 @@ function! s:apply_table2_modifier(state, modifier, log_lines) abort
     let l:next_state = game#story#record_fact_for_thread(l:next_state, l:focus_name, 'Tying off: narrative decree pushes this thread toward resolution.')
     call add(a:log_lines, 'TYING OFF: Current focus thread receives a narrative-decreed push toward resolution.')
   elseif a:modifier ==# 'upstaged'
-    let l:next_state.surge += 4
-    call add(a:log_lines, 'UPSTAGED: An NPC goes into overdrive. Surge Count +4.')
+    let l:surge_gain = game#tuning#get('oracle.modifiers.upstaged.surge_gain')
+    let l:next_state.surge += l:surge_gain
+    call add(a:log_lines, 'UPSTAGED: An NPC goes into overdrive. Surge Count +' . l:surge_gain . '.')
   endif
   return l:next_state
 endfunction

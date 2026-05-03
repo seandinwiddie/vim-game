@@ -23,21 +23,21 @@ function! game#player#cmd_use(state, item) abort
   call remove(l:next_state.player.inv, l:idx)
   
   if l:matched_item ==# 'Pollen Vial' || l:matched_item ==# 'Abyssal Ash'
-    let l:heal = 50
+    let l:heal = game#tuning#get('player.consumables.pollen_vial_heal')
     let l:next_state.player.hp += l:heal
     if l:next_state.player.hp > l:next_state.player.max_hp
       let l:next_state.player.hp = l:next_state.player.max_hp
     endif
     return game#core#add_log(l:next_state, ["CONSUMED: " . l:matched_item, "EFFECT: Healed " . l:heal . " HP."])
   elseif l:matched_item ==# 'Field Rations'
-    let l:heal = 30
+    let l:heal = game#tuning#get('player.consumables.field_rations_heal')
     let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
     return game#core#add_log(l:next_state, ["CONSUMED: " . l:matched_item, "EFFECT: Restored " . l:heal . " HP."])
   elseif l:matched_item ==# 'Ranger Field Kit'
-    let l:heal = 60
-    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
-    let l:next_state.guard += 6
-    return game#core#add_log(l:next_state, ["DEPLOYED: " . l:matched_item, "EFFECT: Restored " . l:heal . " HP and reinforced your guard by 6."])
+    let l:field_kit = game#tuning#get('player.consumables.ranger_field_kit')
+    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:field_kit.heal])
+    let l:next_state.guard += l:field_kit.guard
+    return game#core#add_log(l:next_state, ["DEPLOYED: " . l:matched_item, "EFFECT: Restored " . l:field_kit.heal . " HP and reinforced your guard by " . l:field_kit.guard . "."])
   else
     return game#core#add_log(l:next_state, ["USED: " . l:matched_item, "EFFECT: Nothing happens. The relic dissipates into the ether."])
   endif
@@ -93,25 +93,26 @@ endfunction
 function! game#player#cmd_rest(state) abort
   let l:next_state = copy(a:state)
   let l:next_state.player = copy(a:state.player)
+  let l:rest_tuning = game#tuning#get('player.rest')
   
   if l:next_state.player.hp >= l:next_state.player.max_hp
     return game#core#add_log(a:state, "SYSTEM_LOG: HP is already maximum. Resting aborted.")
   endif
 
-  let l:heal = 30
+  let l:heal = l:rest_tuning.heal
   let l:next_state.player.hp += l:heal
   if l:next_state.player.hp > l:next_state.player.max_hp
     let l:next_state.player.hp = l:next_state.player.max_hp
   endif
   
-  let l:next_state.surge += 5
+  let l:next_state.surge += l:rest_tuning.surge_gain
   let l:next_state.hint = 'WARNING: Resting increases the Surge Count!'
-  let l:log_lines = ["You rest in the shadows...", "HEALED: +" . l:heal . " HP.", "TENSION RISING: Surge Count increased by 5."]
+  let l:log_lines = ["You rest in the shadows...", "HEALED: +" . l:heal . " HP.", "TENSION RISING: Surge Count increased by " . l:rest_tuning.surge_gain . "."]
 
   let l:rng = game#rng#next(l:next_state)
   let l:next_state = l:rng.state
   let l:val = l:rng.value
-  if (l:val % 100) > 60
+  if (l:val % 100) > l:rest_tuning.spawn_threshold
     if !has_key(l:next_state, 'rooms')
       let l:next_state.rooms = copy(a:state.rooms)
     endif

@@ -172,7 +172,7 @@ items that would unblock the most other items if tackled now.
     Adding a spell becomes a one-line registration, not an edit to a growing
     function.
 
-- [ ] **Extract magic numbers into a tuning module.**
+- [x] **Extract magic numbers into a tuning module.**
   - **Why:** Balance constants are scattered: `+30 HP rest` (player.vim),
     `+5 surge on rest`, `mark bonus = 4` (combat.vim), `+10 + arc guard`,
     boss `str/agi/arc + 2/1/2` per phase (enemies.vim), Surge thresholds in

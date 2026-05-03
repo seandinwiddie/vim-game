@@ -89,14 +89,15 @@ function! game#explore#procgen#generate_room(seed, entrance_dir, entrance_id, st
 endfunction
 
 function! s:apply_friendly_spawn(room, seed) abort
+  let l:friendly_tuning = game#tuning#get('procgen.friendly_spawn')
   let l:friendly_roll = (a:seed / 11) % 100
-  if l:friendly_roll >= 88
+  if l:friendly_roll >= l:friendly_tuning.ranger_threshold
     call add(a:room.objects, {
           \ 'name': 'Stranded Ranger',
           \ 'desc': 'A fellow recon operative emerges from cover, signal-token raised. They will fold into your unit if helped.',
           \ 'effect': 'recruit_ranger'
           \ })
-  elseif l:friendly_roll >= 78
+  elseif l:friendly_roll >= l:friendly_tuning.merchant_threshold
     call add(a:room.services, 'trade')
     call add(a:room.objects, {
           \ 'name': 'Nomadic Merchant',

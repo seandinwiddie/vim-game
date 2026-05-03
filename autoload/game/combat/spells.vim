@@ -24,9 +24,9 @@ endfunction
 
 function! s:registry() abort
   return {
-        \ 'Dark Crystal Shielding': {'handler': function('s:cast_guard'), 'needs_target': 0, 'base_guard': 10, 'hint': 'DIRECTIVE: Barrier online. You can absorb the next heavy strike.', 'effect_line': 'DEFENSIVE MATRIX: Crystalline shielding coils around the neural link.'},
-        \ 'Resurgence Ritual': {'handler': function('s:cast_heal'), 'needs_target': 0, 'base_heal': 35, 'hint': 'DIRECTIVE: Vital reserves replenished.'},
-        \ 'Dimensional Weave Shield': {'handler': function('s:cast_guard'), 'needs_target': 0, 'base_guard': 14, 'hint': 'DIRECTIVE: Extradimensional ward fortified.', 'effect_line': 'STARWEAVE: A protective lattice of dimensional energy guards the link.'},
+        \ 'Dark Crystal Shielding': {'handler': function('s:cast_guard'), 'needs_target': 0, 'tuning_key': 'combat.spells.dark_crystal', 'hint': 'DIRECTIVE: Barrier online. You can absorb the next heavy strike.', 'effect_line': 'DEFENSIVE MATRIX: Crystalline shielding coils around the neural link.'},
+        \ 'Resurgence Ritual': {'handler': function('s:cast_heal'), 'needs_target': 0, 'tuning_key': 'combat.spells.resurgence_ritual', 'hint': 'DIRECTIVE: Vital reserves replenished.'},
+        \ 'Dimensional Weave Shield': {'handler': function('s:cast_guard'), 'needs_target': 0, 'tuning_key': 'combat.spells.dimensional_weave', 'hint': 'DIRECTIVE: Extradimensional ward fortified.', 'effect_line': 'STARWEAVE: A protective lattice of dimensional energy guards the link.'},
         \ "Hunter's Mark": {'handler': function('s:cast_mark'), 'needs_target': 1},
         \ 'Precision Shot': {'handler': function('s:cast_precision'), 'needs_target': 1},
         \ 'Ethereal Dagger Assault': {'handler': function('s:cast_offensive'), 'needs_target': 1, 'kind': 'ARCANE', 'bonus_attr': 'arc'},
@@ -43,7 +43,7 @@ endfunction
 
 function! s:cast_guard(state, spell_name, spell, ctx) abort
   let l:next_state = a:state
-  let l:next_state.guard = a:spell.base_guard + a:ctx.player_arc
+  let l:next_state.guard = game#tuning#get(a:spell.tuning_key . '.base_guard') + a:ctx.player_arc
   let l:next_state.hint = a:spell.hint
   return game#core#add_log(l:next_state, [
         \ 'CASTING: ' . a:spell_name . '...',
@@ -54,7 +54,7 @@ endfunction
 
 function! s:cast_heal(state, spell_name, spell, ctx) abort
   let l:next_state = a:state
-  let l:heal = a:spell.base_heal + a:ctx.player_arc
+  let l:heal = game#tuning#get(a:spell.tuning_key . '.base_heal') + a:ctx.player_arc
   let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
   let l:next_state.hint = a:spell.hint
   return game#core#add_log(l:next_state, [
@@ -69,24 +69,25 @@ function! s:cast_mark(state, spell_name, spell, ctx) abort
   let l:next_state.hint = 'DIRECTIVE: Target marked. Follow with attack or offensive casting.'
   return game#core#add_log(l:next_state, [
         \ 'CASTING: ' . a:spell_name . ' on ' . a:ctx.target_name . '...',
-        \ 'TARGET LOCK: +4 to the next strike against this hostile.'
+        \ 'TARGET LOCK: +' . game#tuning#get('combat.mark_bonus') . ' to the next strike against this hostile.'
         \ ])
 endfunction
 
 function! s:cast_precision(state, spell_name, spell, ctx) abort
   let l:rng = game#rng#next(a:state)
   let l:next_state = l:rng.state
+  let l:precision_tuning = game#tuning#get('combat.spells.precision_shot')
   let l:roll = (l:rng.value % 20) + 1 + a:ctx.player_agi + a:ctx.mark_bonus
   let l:log_lines = [
         \ 'CASTING: ' . a:spell_name . ' on ' . a:ctx.target_name . '...',
         \ 'AIM_ROLL: ' . l:roll
         \ ]
-  if l:roll >= 18
+  if l:roll >= l:precision_tuning.hit_threshold
     call add(l:log_lines, 'HEADSHOT VECTOR: The shot tears through the target''s weak point.')
     call game#combat#defeat_target(l:next_state, a:ctx.loc, a:ctx.target, l:rng.value, l:log_lines)
     let l:next_state.hint = 'DIRECTIVE: Precision elimination confirmed.'
   else
-    let l:dmg = (l:rng.value % 8) + 4
+    let l:dmg = (l:rng.value % l:precision_tuning.damage.mod) + l:precision_tuning.damage.base
     call add(l:log_lines, 'SHOT SPOILED: The target twists away and counters from cover.')
     call game#combat#apply_damage(l:next_state, l:dmg, l:log_lines)
     let l:next_state.hint = 'WARNING: Precision Shot failed. Reposition or strike hard.'
@@ -97,6 +98,7 @@ endfunction
 function! s:cast_offensive(state, spell_name, spell, ctx) abort
   let l:rng = game#rng#next(a:state)
   let l:next_state = l:rng.state
+  let l:offensive_tuning = game#tuning#get('combat.spells.offensive')
   let l:bonus = s:bonus_for(a:ctx, a:spell.bonus_attr)
   let l:roll = (l:rng.value % 20) + 1 + l:bonus + a:ctx.mark_bonus + a:ctx.group_bonus
   let l:log_lines = [
@@ -104,12 +106,12 @@ function! s:cast_offensive(state, spell_name, spell, ctx) abort
         \ a:spell.kind . '_ROLL: ' . l:roll . (a:ctx.group_bonus > 0 ? ' (includes +' . a:ctx.group_bonus . ' PARTY bonus)' : '')
         \ ]
 
-  if l:roll >= 15
+  if l:roll >= l:offensive_tuning.hit_threshold
     call add(l:log_lines, 'CRITICAL HIT: The spell overwhelms the ' . a:ctx.target_name . '!')
     call game#combat#defeat_target(l:next_state, a:ctx.loc, a:ctx.target, l:rng.value, l:log_lines)
     let l:next_state.hint = 'DIRECTIVE: Target eliminated.'
   else
-    let l:dmg = (l:rng.value % 10) + 5
+    let l:dmg = (l:rng.value % l:offensive_tuning.damage.mod) + l:offensive_tuning.damage.base
     call add(l:log_lines, 'RESISTED: The ' . a:ctx.target_name . ' deflects the magic and counterattacks!')
     call game#combat#apply_damage(l:next_state, l:dmg, l:log_lines)
     let l:next_state.hint = 'WARNING: Spell failed. Consider standard attack.'
