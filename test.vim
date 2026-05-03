@@ -178,10 +178,14 @@ call s:assert_file_contains(s:store_file, 'function! game#store#dispatch_batch',
 call s:assert_file_contains(s:store_file, 'function! game#store#subscribe', 'store.vim must define subscribe().')
 call s:assert_file_contains(s:store_file, 'game#reducer#reduce', 'store.vim dispatch must route through the reducer.')
 
+call s:assert_file_contains(s:combat_file, 'function! game#combat#cmd_attack(state, ...) abort', 'combat.vim should expose optional attack roll injection for tests.')
+call s:assert_file_contains(s:combat_file, 'function! game#combat#cmd_cast(state, spell_name, ...) abort', 'combat.vim should expose optional cast roll injection for tests.')
+call s:assert_file_contains(s:combat_file, "get(a:opts, 'rolls', {})", 'combat.vim should honor injected combat rolls when provided.')
 call s:assert_file_contains(s:combat_file, 'game#combat#spells#cast', 'combat.vim should delegate spell execution through the spell registry.')
 call s:assert_file_not_contains(s:combat_file, "elseif l:matched_spell ==#", 'combat.vim should not keep inline spell-name handler chains.')
 call s:assert_file_contains(s:combat_spells_file, 'function! game#combat#spells#get', 'combat/spells.vim must expose the spell registry lookup.')
 call s:assert_file_contains(s:combat_spells_file, 'function! game#combat#spells#cast', 'combat/spells.vim must expose the spell dispatcher.')
+call s:assert_file_contains(s:combat_spells_file, "get(a:ctx, 'opts', {})", 'combat/spells.vim should honor injected spell rolls when provided.')
 call s:assert_file_contains(s:enemies_file, 'function! game#enemies#pool', 'enemies.vim must expose the canonical enemy pool helper.')
 call s:assert_file_contains(s:enemies_file, 'function! game#enemies#select', 'enemies.vim must expose a canonical enemy selection helper.')
 call s:assert_file_contains(s:procgen_file, 'game#enemies#pool(', 'procgen.vim should source encounter pools from enemies.vim.')
@@ -288,6 +292,65 @@ let s:heal_state = game#core#init()
 let s:heal_state.player.hp = s:heal_state.player.max_hp - 5
 let s:heal_state = game#player#heal(s:heal_state, 20)
 call s:assert_true(s:heal_state.player.hp == s:heal_state.player.max_hp, 'game#player#heal should clamp restored HP to max HP.')
+
+let s:attack_win_state = game#core#init()
+let s:attack_win_state.rooms[s:attack_win_state.loc] = {
+      \ 'name': 'ᚲ COMBAT_TEST ᚲ',
+      \ 'desc': 'A deterministic combat proving ground.',
+      \ 'exits': {},
+      \ 'entities': [{'name': 'Test Sentinel', 'str': 7, 'agi': 7, 'arc': 7}],
+      \ 'objects': [],
+      \ 'services': []
+      \ }
+let s:attack_seed = s:attack_win_state.rng_seed
+let s:attack_win_state = game#combat#cmd_attack(s:attack_win_state, {'rolls': {'player': 20, 'enemy': 1}, 'seed': 11})
+call s:assert_true(empty(s:attack_win_state.rooms[s:attack_win_state.loc].entities), 'Injected attack rolls should allow direct tests to force a combat win.')
+call s:assert_true(s:attack_win_state.rng_seed == s:attack_seed, 'Injected attack rolls should bypass RNG advancement.')
+call s:assert_contains(s:attack_win_state.log, 'PLAYER: Roll[d20]=20')
+call s:assert_contains(s:attack_win_state.log, 'ENEMY : Roll[d20]=1')
+
+let s:attack_loss_state = game#core#init()
+let s:attack_loss_state.rooms[s:attack_loss_state.loc] = {
+      \ 'name': 'ᚲ COMBAT_TEST ᚲ',
+      \ 'desc': 'A deterministic combat proving ground.',
+      \ 'exits': {},
+      \ 'entities': [{'name': 'Test Juggernaut', 'str': 9, 'agi': 9, 'arc': 9}],
+      \ 'objects': [],
+      \ 'services': []
+      \ }
+let s:attack_loss_state = game#combat#cmd_attack(s:attack_loss_state, {'rolls': {'player': 1, 'enemy': 20}, 'seed': 17})
+call s:assert_true(len(s:attack_loss_state.rooms[s:attack_loss_state.loc].entities) == 1, 'Injected attack rolls should allow direct tests to force a combat loss.')
+call s:assert_contains(s:attack_loss_state.log, 'CRITICAL FAILURE: The Test Juggernaut retaliates with lethal force!')
+
+let s:cast_hit_state = game#core#init()
+let s:cast_hit_state.player.spells += ['Explosive Barrage']
+let s:cast_hit_state.rooms[s:cast_hit_state.loc] = {
+      \ 'name': 'ᚲ SPELL_TEST ᚲ',
+      \ 'desc': 'A deterministic spell proving ground.',
+      \ 'exits': {},
+      \ 'entities': [{'name': 'Spell Dummy', 'str': 5, 'agi': 5, 'arc': 5}],
+      \ 'objects': [],
+      \ 'services': []
+      \ }
+let s:cast_seed = s:cast_hit_state.rng_seed
+let s:cast_hit_state = game#combat#cmd_cast(s:cast_hit_state, 'Explosive Barrage', {'rolls': {'player': 20}, 'seed': 13})
+call s:assert_true(empty(s:cast_hit_state.rooms[s:cast_hit_state.loc].entities), 'Injected cast rolls should allow direct tests to force a spell hit.')
+call s:assert_true(s:cast_hit_state.rng_seed == s:cast_seed, 'Injected cast rolls should bypass RNG advancement.')
+call s:assert_contains(s:cast_hit_state.log, 'RANGED_ROLL: 28')
+
+let s:cast_fail_state = game#core#init()
+let s:cast_fail_state.player.spells += ['Explosive Barrage']
+let s:cast_fail_state.rooms[s:cast_fail_state.loc] = {
+      \ 'name': 'ᚲ SPELL_TEST ᚲ',
+      \ 'desc': 'A deterministic spell proving ground.',
+      \ 'exits': {},
+      \ 'entities': [{'name': 'Spell Dummy', 'str': 5, 'agi': 5, 'arc': 5}],
+      \ 'objects': [],
+      \ 'services': []
+      \ }
+let s:cast_fail_state = game#combat#cmd_cast(s:cast_fail_state, 'Explosive Barrage', {'rolls': {'player': 1}, 'seed': 19})
+call s:assert_true(len(s:cast_fail_state.rooms[s:cast_fail_state.loc].entities) == 1, 'Injected cast rolls should allow direct tests to force a spell miss.')
+call s:assert_contains(s:cast_fail_state.log, 'RESISTED: The Spell Dummy deflects the magic and counterattacks!')
 
 let s:party_action = game#action#command('party send ranger operative 1')
 call s:assert_true(get(s:party_action, 'type', '') ==# 'party/commandRequested', 'party commands should produce party actions.')

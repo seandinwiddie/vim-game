@@ -1,6 +1,7 @@
 " autoload/game/combat.vim - Combat Mechanics
 
-function! game#combat#cmd_attack(state) abort
+function! game#combat#cmd_attack(state, ...) abort
+  let l:opts = a:0 > 0 && type(a:1) == v:t_dict ? a:1 : {}
   let l:room = a:state.rooms[a:state.loc]
   if empty(l:room.entities)
     return game#core#add_log(a:state, "COMBAT_LOG: Target vector empty. No hostiles found.")
@@ -28,10 +29,10 @@ function! game#combat#cmd_attack(state) abort
     endfor
   endif
 
-  let l:rng = game#rng#next(a:state)
-  let l:val = l:rng.value
-  let l:p_roll = (l:val % 20) + 1
-  let l:e_roll = ((l:val / 10) % 20) + 1
+  let l:rolls = s:attack_rolls(a:state, l:opts)
+  let l:val = l:rolls.value
+  let l:p_roll = l:rolls.player
+  let l:e_roll = l:rolls.enemy
   let l:mark_bonus = s:mark_bonus(a:state, l:target_name)
   let l:p_group_score = game#party#group_bonus(a:state)
   let l:attack_tuning = game#tuning#get('combat.attack')
@@ -40,7 +41,7 @@ function! game#combat#cmd_attack(state) abort
   let l:e_score = l:e_roll + l:e_str + l:e_agi + l:e_arc + l:e_group_score
 
   let l:next_state = copy(a:state)
-  let l:next_state.rng_seed = l:rng.state.rng_seed
+  let l:next_state.rng_seed = l:rolls.rng_seed
   let l:next_state.rooms = copy(a:state.rooms)
   let l:next_state.rooms[a:state.loc] = copy(l:room)
   let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
@@ -95,7 +96,8 @@ function! game#combat#cmd_attack(state) abort
   return game#core#add_log(l:next_state, l:log_lines)
 endfunction
 
-function! game#combat#cmd_cast(state, spell_name) abort
+function! game#combat#cmd_cast(state, spell_name, ...) abort
+  let l:opts = a:0 > 0 && type(a:1) == v:t_dict ? a:1 : {}
   if empty(a:spell_name)
     return game#core#add_log(a:state, "LOG_ERR: Specify a spell to cast (e.g. 'cast Ethereal Dagger Assault').")
   endif
@@ -119,6 +121,7 @@ function! game#combat#cmd_cast(state, spell_name) abort
         \ 'player_arc': get(a:state.player, 'arc', 4),
         \ 'group_bonus': game#party#group_bonus(a:state),
         \ 'mark_bonus': 0,
+        \ 'opts': l:opts,
         \ 'target': {},
         \ 'target_name': ''
         \ }
@@ -138,6 +141,26 @@ function! game#combat#cmd_cast(state, spell_name) abort
   endif
 
   return game#combat#spells#cast(l:next_state, l:matched_spell, l:ctx)
+endfunction
+
+function! s:attack_rolls(state, opts) abort
+  let l:rolls = get(a:opts, 'rolls', {})
+  if has_key(l:rolls, 'player') && has_key(l:rolls, 'enemy')
+    return {
+          \ 'player': l:rolls.player,
+          \ 'enemy': l:rolls.enemy,
+          \ 'value': get(a:opts, 'seed', s:synthetic_seed([l:rolls.player, l:rolls.enemy])),
+          \ 'rng_seed': get(a:state, 'rng_seed', game#rng#default_seed())
+          \ }
+  endif
+
+  let l:rng = game#rng#next(a:state)
+  return {
+        \ 'player': (l:rng.value % 20) + 1,
+        \ 'enemy': ((l:rng.value / 10) % 20) + 1,
+        \ 'value': l:rng.value,
+        \ 'rng_seed': l:rng.state.rng_seed
+        \ }
 endfunction
 
 function! game#combat#defeat_target(state, room_key, target, seed, log_lines) abort
@@ -195,6 +218,14 @@ endfunction
 
 function! s:mark_bonus_value() abort
   return game#tuning#get('combat.mark_bonus')
+endfunction
+
+function! s:synthetic_seed(parts) abort
+  let l:seed = 0
+  for l:part in a:parts
+    let l:seed = (l:seed * 31) + (type(l:part) == v:t_number ? l:part : str2nr(l:part))
+  endfor
+  return l:seed
 endfunction
 
 function! s:salvage_value(target) abort

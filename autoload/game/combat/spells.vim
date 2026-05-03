@@ -74,20 +74,20 @@ function! s:cast_mark(state, spell_name, spell, ctx) abort
 endfunction
 
 function! s:cast_precision(state, spell_name, spell, ctx) abort
-  let l:rng = game#rng#next(a:state)
-  let l:next_state = l:rng.state
+  let l:roll = s:player_roll(a:state, a:ctx)
+  let l:next_state = l:roll.state
   let l:precision_tuning = game#tuning#get('combat.spells.precision_shot')
-  let l:roll = (l:rng.value % 20) + 1 + a:ctx.player_agi + a:ctx.mark_bonus
+  let l:aim_roll = l:roll.roll + a:ctx.player_agi + a:ctx.mark_bonus
   let l:log_lines = [
         \ 'CASTING: ' . a:spell_name . ' on ' . a:ctx.target_name . '...',
-        \ 'AIM_ROLL: ' . l:roll
+        \ 'AIM_ROLL: ' . l:aim_roll
         \ ]
-  if l:roll >= l:precision_tuning.hit_threshold
+  if l:aim_roll >= l:precision_tuning.hit_threshold
     call add(l:log_lines, 'HEADSHOT VECTOR: The shot tears through the target''s weak point.')
-    call game#combat#defeat_target(l:next_state, a:ctx.loc, a:ctx.target, l:rng.value, l:log_lines)
+    call game#combat#defeat_target(l:next_state, a:ctx.loc, a:ctx.target, l:roll.value, l:log_lines)
     let l:next_state.hint = 'DIRECTIVE: Precision elimination confirmed.'
   else
-    let l:dmg = (l:rng.value % l:precision_tuning.damage.mod) + l:precision_tuning.damage.base
+    let l:dmg = (l:roll.value % l:precision_tuning.damage.mod) + l:precision_tuning.damage.base
     call add(l:log_lines, 'SHOT SPOILED: The target twists away and counters from cover.')
     call game#combat#apply_damage(l:next_state, l:dmg, l:log_lines)
     let l:next_state.hint = 'WARNING: Precision Shot failed. Reposition or strike hard.'
@@ -96,22 +96,22 @@ function! s:cast_precision(state, spell_name, spell, ctx) abort
 endfunction
 
 function! s:cast_offensive(state, spell_name, spell, ctx) abort
-  let l:rng = game#rng#next(a:state)
-  let l:next_state = l:rng.state
+  let l:roll = s:player_roll(a:state, a:ctx)
+  let l:next_state = l:roll.state
   let l:offensive_tuning = game#tuning#get('combat.spells.offensive')
   let l:bonus = s:bonus_for(a:ctx, a:spell.bonus_attr)
-  let l:roll = (l:rng.value % 20) + 1 + l:bonus + a:ctx.mark_bonus + a:ctx.group_bonus
+  let l:combat_roll = l:roll.roll + l:bonus + a:ctx.mark_bonus + a:ctx.group_bonus
   let l:log_lines = [
         \ 'CASTING: ' . a:spell_name . ' on ' . a:ctx.target_name . '...',
-        \ a:spell.kind . '_ROLL: ' . l:roll . (a:ctx.group_bonus > 0 ? ' (includes +' . a:ctx.group_bonus . ' PARTY bonus)' : '')
+        \ a:spell.kind . '_ROLL: ' . l:combat_roll . (a:ctx.group_bonus > 0 ? ' (includes +' . a:ctx.group_bonus . ' PARTY bonus)' : '')
         \ ]
 
-  if l:roll >= l:offensive_tuning.hit_threshold
+  if l:combat_roll >= l:offensive_tuning.hit_threshold
     call add(l:log_lines, 'CRITICAL HIT: The spell overwhelms the ' . a:ctx.target_name . '!')
-    call game#combat#defeat_target(l:next_state, a:ctx.loc, a:ctx.target, l:rng.value, l:log_lines)
+    call game#combat#defeat_target(l:next_state, a:ctx.loc, a:ctx.target, l:roll.value, l:log_lines)
     let l:next_state.hint = 'DIRECTIVE: Target eliminated.'
   else
-    let l:dmg = (l:rng.value % l:offensive_tuning.damage.mod) + l:offensive_tuning.damage.base
+    let l:dmg = (l:roll.value % l:offensive_tuning.damage.mod) + l:offensive_tuning.damage.base
     call add(l:log_lines, 'RESISTED: The ' . a:ctx.target_name . ' deflects the magic and counterattacks!')
     call game#combat#apply_damage(l:next_state, l:dmg, l:log_lines)
     let l:next_state.hint = 'WARNING: Spell failed. Consider standard attack.'
@@ -127,6 +127,29 @@ function! s:bonus_for(ctx, attr) abort
     return a:ctx.player_agi
   endif
   return a:ctx.player_arc
+endfunction
+
+function! s:player_roll(state, ctx) abort
+  let l:opts = get(a:ctx, 'opts', {})
+  let l:rolls = get(l:opts, 'rolls', {})
+  if has_key(l:rolls, 'player')
+    return {
+          \ 'state': a:state,
+          \ 'value': get(l:opts, 'seed', s:synthetic_seed(l:rolls.player)),
+          \ 'roll': l:rolls.player
+          \ }
+  endif
+
+  let l:rng = game#rng#next(a:state)
+  return {
+        \ 'state': l:rng.state,
+        \ 'value': l:rng.value,
+        \ 'roll': (l:rng.value % 20) + 1
+        \ }
+endfunction
+
+function! s:synthetic_seed(player_roll) abort
+  return (type(a:player_roll) == v:t_number ? a:player_roll : str2nr(a:player_roll)) * 31
 endfunction
 
 function! s:finalize_resolution(state, log_lines) abort

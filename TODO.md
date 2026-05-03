@@ -112,7 +112,7 @@ items that would unblock the most other items if tackled now.
   - **Acceptance:** `grep reltimestr autoload/` returns zero hits; the boss
     test no longer boosts player stats.
 
-- [ ] **Make combat outcomes injectable.**
+- [x] **Make combat outcomes injectable.**
   - **Why:** `combat#cmd_attack` and `combat#cmd_cast` roll their own d20
     inline. Tests cannot assert "STR 5 vs. STR 7 with these rolls produces
     this outcome" — they can only assert reachable end states.
