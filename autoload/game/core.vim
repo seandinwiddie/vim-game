@@ -48,6 +48,9 @@ function! game#core#process(state, input) abort
   elseif l:action ==# 'cast' || l:action ==# 'm'
     let l:spell = join(l:parts[1:], ' ')
     return game#combat#cmd_cast(a:state, l:spell)
+  elseif l:action ==# 'interact'
+    let l:obj = join(l:parts[1:], ' ')
+    return game#explore#cmd_interact(a:state, l:obj)
   elseif l:action ==# 'use' || l:action ==# 'consume'
     let l:item = join(l:parts[1:], ' ')
     return game#player#cmd_use(a:state, l:item)

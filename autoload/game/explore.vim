@@ -10,6 +10,14 @@ function! game#explore#cmd_look(state) abort
         \ l:room.desc
         \ ]
         
+  if has_key(l:room, 'objects') && !empty(l:room.objects)
+    call add(l:lines, 'INTERACTIVE OBJECTS:')
+    for l:obj in l:room.objects
+      let l:obj_name = type(l:obj) == v:t_dict ? get(l:obj, 'name', 'Unknown Object') : l:obj
+      call add(l:lines, '  > [?] ' . l:obj_name)
+    endfor
+  endif
+        
   if !empty(l:room.entities)
     call add(l:lines, 'DETECTED ENTITIES:')
     for l:ent in l:room.entities
@@ -23,6 +31,49 @@ function! game#explore#cmd_look(state) abort
   call add(l:lines, '[HP: ' . a:state.player.hp . '/' . a:state.player.max_hp . ']')
   call add(l:lines, '--')
   return game#core#add_log(l:next_state, l:lines)
+endfunction
+
+function! game#explore#cmd_interact(state, object_name) abort
+  if empty(a:object_name)
+    return game#core#add_log(a:state, "LOG_ERR: Specify an object to interact with (e.g. 'interact Arcane Terminal').")
+  endif
+  
+  let l:room = a:state.rooms[a:state.loc]
+  if !has_key(l:room, 'objects') || empty(l:room.objects)
+    return game#core#add_log(a:state, "LOG_ERR: There is nothing to interact with here.")
+  endif
+
+  let l:found = 0
+  let l:matched_obj = {}
+  for l:obj in l:room.objects
+    let l:name = type(l:obj) == v:t_dict ? get(l:obj, 'name', '') : l:obj
+    if tolower(l:name) ==# tolower(a:object_name) || tolower(l:name) =~# '^' . tolower(a:object_name)
+      let l:found = 1
+      let l:matched_obj = l:obj
+      break
+    endif
+  endfor
+
+  if !l:found
+    return game#core#add_log(a:state, "LOG_ERR: You don't see a '" . a:object_name . "' here.")
+  endif
+
+  let l:desc = type(l:matched_obj) == v:t_dict ? get(l:matched_obj, 'desc', 'It does nothing.') : 'It does nothing.'
+  let l:name = type(l:matched_obj) == v:t_dict ? get(l:matched_obj, 'name', 'Unknown Object') : l:matched_obj
+  
+  let l:next_state = copy(a:state)
+  let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+  
+  let l:log_lines = ["INTERACT: You examine the " . l:name . ".", l:desc]
+  
+  " Trigger event chance
+  if (l:val % 100) > 70
+    call add(l:log_lines, "EVENT TRIGGERED: A hidden compartment opens!")
+    call add(l:next_state.player.inv, 'Lost Tomes')
+    call add(l:log_lines, "LOOT RECOVERED: Lost Tomes")
+  endif
+
+  return game#core#add_log(l:next_state, l:log_lines)
 endfunction
 
 function! game#explore#cmd_go(state, dir) abort
@@ -105,6 +156,19 @@ function! game#explore#generate_room(seed, entrance_dir, entrance_id) abort
           \ {'name': 'Flame Corps', 'str': 8, 'agi': 4, 'arc': 5}
           \ ]
     call add(l:room.entities, l:enemies[(a:seed / 3) % len(l:enemies)])
+  endif
+  
+  let l:room.objects = []
+  let l:object_roll = (a:seed / 4) % 100
+  if l:object_roll > 50
+    let l:interactives = [
+          \ {'name': 'Ancient Console', 'desc': 'A flickering terminal detailing recent shipments.'},
+          \ {'name': 'Chthonic Lever', 'desc': 'A heavy stone mechanism covered in sigils.'},
+          \ {'name': 'Void Rift', 'desc': 'A swirling vortex of dark energy.'},
+          \ {'name': 'Strange Altar', 'desc': 'A blood-stained altar dedicated to an unknown deity.'},
+          \ {'name': 'Broken Machinery', 'desc': 'Sparks fly from this rusted, extraterrestrial device.'}
+          \ ]
+    call add(l:room.objects, l:interactives[(a:seed / 7) % len(l:interactives)])
   endif
   
   let l:dirs = ['north', 'south', 'east', 'west']
