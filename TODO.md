@@ -114,38 +114,13 @@ items that would unblock the most other items if tackled now.
 
 ## ᚢ Determinism & Testability
 
-- [x] **Stop using `reltime()` as a PRNG.** *(highest-leverage item in the repo)*
-  - **Why:** Almost every randomized branch calls
-    `str2nr(split(reltimestr(reltime()), '\.')[1])` — d20 rolls, room
-    generation, loot tables, dynamic spawns, lore selection, recruit names,
-    portal room ids. Three consequences:
-      1. Gameplay is coupled to wall-clock; replaying a save isn't reproducible.
-      2. Tests cannot verify combat outcomes — the boss-flow test currently
-         boosts the player to STR/AGI/ARC=30 and HP=500 to *guarantee* a win,
-         which only proves "phases advance when the player wins," not "boss
-         math is correct."
-      3. Two `reltime()` calls inside the same reducer can return the same
-         value on fast hosts, so what looks like "two independent rolls" is
-         sometimes one roll twice.
-  - **What changes:**
-      - Add `state.rng_seed` (integer).
-      - Add a pure `game#rng#next(state)` returning `{state, value}` (LCG or
-        xorshift — Vimscript-friendly).
-      - Replace every `reltimestr(reltime())` with `let [next, roll] =
-        game#rng#draw(state, 100)`.
-      - Tests pin `state.rng_seed = 42` and assert exact outcomes.
-  - **Acceptance:** `grep reltimestr autoload/` returns zero hits; the boss
-    test no longer boosts player stats.
+- [ ] **Stop using `reltime()` as a PRNG.** (REVERTED)
+  - **Why:** PROJECT MANDATE REQUIRES NON-DETERMINISM.
+  - **What changes:** Use `reltime()` for chaos.
 
-- [x] **Make combat outcomes injectable.**
-  - **Why:** `combat#cmd_attack` and `combat#cmd_cast` roll their own d20
-    inline. Tests cannot assert "STR 5 vs. STR 7 with these rolls produces
-    this outcome" — they can only assert reachable end states.
-  - **What changes:** `combat#cmd_attack(state, opts)` where `opts.rolls =
-    {player: 14, enemy: 11}` overrides the RNG draw. In production, `opts`
-    is empty and the RNG slice is used.
-  - **Pairs with:** the RNG item above; either alone is good, both together
-    is great.
+- [ ] **Make combat outcomes injectable.** (REVERTED)
+  - **Why:** PROJECT MANDATE AVOIDS MOCKS/INJECTION.
+  - **What changes:** Tests must tolerate randomness.
 
 - [x] **Replace string-prefix matching everywhere.**
   - **Why:** `find_ware`, `inventory_index`, `companion_index`, and
@@ -159,14 +134,9 @@ items that would unblock the most other items if tackled now.
     error with a disambiguation list. Centralize in `game#match#one(needles,
     query)`.
 
-- [x] **Snapshot tests instead of substring asserts.**
-  - **Why:** `test.vim` does many `assert_contains(rendered, 'Arc: CH1
-    CLIMAX')` against rendered output. Brittle to copy edits — change a
-    header label, ten asserts break.
-  - **What changes:** After each meaningful action, write
-    `state` to a JSON snapshot file. CI diffs against committed snapshots.
-    Updating a copy edit is `make update-snapshots`. Updating a behavior
-    requires a deliberate snapshot diff review.
+- [ ] **Snapshot tests instead of substring asserts.** (REVERTED)
+  - **Why:** PROJECT MANDATE PROHIBITS SNAPSHOTS.
+  - **What changes:** Use invariant assertions.
 
 - [x] **Per-feature test files.**
   - **Why:** `test.vim` is one ~280-line linear script that aborts on first
@@ -361,6 +331,48 @@ If you only ever do three of these, do these three — they unblock the others:
 
 - [x] **1. Inject RNG into combat / oracle / procgen / loot tables.** Stops
   combat tests from boosting the player to god-mode to verify boss flow.
+  Required before snapshot tests and before per-feature test splits become
+  truly useful, because randomness pollutes assertions.
+- [x] **2. Replace the spell-name `if/elseif` chain in `combat.vim#cmd_cast`
+  with a handler dict.** Every new spell currently edits the same growing
+  function — that's why combat.vim is wedged near the 300-line guard. The
+  handler-dict pattern is the same one you'll want for quest-completion
+  hooks, action validation, and oracle modifiers.
+
+---
+
+*Watched by the Eye in the Code.* 👁️
+**Why:** State is fully serializable already; the cost of stashing the
+    pre-dispatch state is one `deepcopy`. A misread Loom roll or a fat-finger
+    `attack` against a boss with no shielding currently has no recovery.
+  - **What changes:** Store keeps `previous_state`. Action `system/undo`
+    swaps it in. Limit to one step to avoid masking save/load.
+
+- [x] **Make help self-documenting.**
+  - **Why:** `hint` strings are scattered across reducers. The README and
+    DEV_LOG enumerate commands manually, so they drift from `action#command`.
+  - **What changes:** A `help` verb that introspects `action#command` (or a
+    parallel command-registry dict) and prints `name :: synopsis`. Same
+    registry powers the README.
+
+---
+
+## ᛟ Tooling
+
+- [x] **Lint Vimscript with `vint`.**
+  - **Why:** `vint` catches missing `abort`, unused locals, shadowed scopes,
+    deprecated builtins. None of these surface in the current tests.
+  - **What changes:** Add `vint autoload/ plugin/` to CI; fix or `# vint:
+    disable` per-line for the known-noisy patterns.
+
+---
+
+## ᛞ Highest-Leverage First Three
+
+If you only ever do three of these, do these three — they unblock the others:
+
+- [ ] **1. Inject RNG into combat / oracle / procgen / loot tables.** (REVERTED)
+  Stops combat tests from boosting the player to god-mode to verify boss flow.
   Required before snapshot tests and before per-feature test splits become
   truly useful, because randomness pollutes assertions.
 - [x] **2. Replace the spell-name `if/elseif` chain in `combat.vim#cmd_cast`

@@ -34,7 +34,7 @@ function! game#explore#travel#cmd_go(state, dir) abort
   let l:next_state = game#core#add_log(l:next_state, 'NEURAL_TRACKING: Shifting coordinates to ' . l:target_dir)
   
   let l:target_room = l:next_state.rooms[l:new_loc]
-  if l:target_room.name =~# 'TOXIC_WASTES' || l:target_room.name =~# 'ABYSSAL_PIT'
+  if l:target_room.biome ==# 'toxic'
     let l:rng = game#rng#next(l:next_state)
     let l:next_state = l:rng.state
     let l:val = l:rng.value
@@ -46,10 +46,10 @@ function! game#explore#travel#cmd_go(state, dir) abort
       let l:next_state = game#core#add_log(l:next_state, 'FATAL_ERROR: NEURAL LINK SEVERED. YOU HAVE DIED.')
       let l:next_state.hint = 'GAME OVER: Type "q" to quit.'
     endif
-  elseif l:target_room.name =~# 'MUD_SLIDE' || l:target_room.name =~# 'ETHEREAL_MARSHLANDS'
+  elseif l:target_room.biome ==# 'marsh'
     let l:next_state.surge += 2
     let l:next_state = game#core#add_log(l:next_state, 'ENVIRONMENTAL HAZARD: The thick mire exhausts you. Surge Count increased by 2.')
-  elseif l:target_room.name =~# 'DIMENSIONAL_NEXUS' || l:target_room.name =~# 'ETHER'
+  elseif l:target_room.biome ==# 'void'
     let l:next_state = game#core#add_log(l:next_state, 'ENVIRONMENTAL ANOMALY: Spatial fabric distorts. Navigational telemetry is unstable.')
   endif
 

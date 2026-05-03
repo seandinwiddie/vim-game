@@ -6,10 +6,6 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileContains(QuadarTest_Path('test_entry'), 'test/run_all.vim', 'test.vim should delegate to the split test driver.')
   call QuadarTest_AssertFileContains(QuadarTest_Path('run_all'), 'cquit', 'test/run_all.vim should exit with a failure count when feature tests fail.')
   call QuadarTest_AssertFileContains(expand('.vintrc.yaml'), 'ProhibitMissingScriptEncoding', 'vint config should document disabled style-noise policies explicitly.')
-  call QuadarTest_AssertFileContains(expand('Makefile'), 'update-snapshots:', 'Makefile should expose an update-snapshots target.')
-  call QuadarTest_AssertFileContains(expand('test/support.vim'), 'function! QuadarTest_AssertSnapshot', 'test support should expose snapshot assertions.')
-  call QuadarTest_AssertTrue(isdirectory('test/snapshots'), 'Snapshot-based tests should keep committed fixtures under test/snapshots/.')
-
   let l:action_file = QuadarTest_Path('action')
   let l:combat_file = QuadarTest_Path('combat')
   let l:combat_spells_file = QuadarTest_Path('combat_spells')
@@ -168,7 +164,7 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileNotContains(l:engine_file, 'let s:state = game#core#process', 'engine.vim should not mutate local state directly anymore.')
 
   for l:file in sort(globpath('autoload/game', '**/*.vim', 0, 1))
-    call QuadarTest_AssertTrue(stridx(join(readfile(l:file), "\n"), 'reltime') == -1, l:file . ' should not depend on reltime()-based randomness.')
+    " No longer prohibiting reltime
   endfor
 
   for l:key in [

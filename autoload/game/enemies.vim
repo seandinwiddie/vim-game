@@ -181,17 +181,16 @@ function! game#enemies#climax_quest_definition() abort
 endfunction
 
 function! game#enemies#abyssal_throne_room() abort
-  return {
-        \ 'name': 'ᚷ ABYSSAL_THRONE_OF_QUADAR ᚷ',
-        \ 'desc': 'A monstrous throne carved from interdimensional nightmares. The Voidmaw Abyssalgeist coils upon the seat, tentacles writhing in the eldritch heart of Migdal Kudar. Reality itself recoils.',
-        \ 'exits': {'south': 'nexus'},
-        \ 'services': [],
-        \ 'entities': [game#enemies#build_boss('Abyssal Overfiend')],
-        \ 'objects': [
-        \   {'name': 'Throne Sigil', 'desc': 'The carved sigil that anchors the Abyssal Throne to mortal reality. Defile it after the kill to seal the breach.', 'effect': 'overfiend_seal'}
-        \ ],
-        \ 'difficulty': 4
-        \ }
+  return game#data#new_room('abyssal_throne', 'spire', 'ᚷ ABYSSAL_THRONE_OF_QUADAR ᚷ',
+        \ 'A monstrous throne carved from interdimensional nightmares. The Voidmaw Abyssalgeist coils upon the seat, tentacles writhing in the eldritch heart of Migdal Kudar. Reality itself recoils.',
+        \ {
+        \   'exits': {'south': 'nexus'},
+        \   'entities': [game#enemies#build_boss('Abyssal Overfiend')],
+        \   'objects': [
+        \     {'name': 'Throne Sigil', 'desc': 'The carved sigil that anchors the Abyssal Throne to mortal reality. Defile it after the kill to seal the breach.', 'effect': 'overfiend_seal'}
+        \   ],
+        \   'difficulty': 4
+        \ })
 endfunction
 
 function! s:entry(name, rank, stats, attrs) abort

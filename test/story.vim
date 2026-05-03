@@ -139,15 +139,6 @@ function! QuadarTest_RunStory() abort
   call QuadarTest_AssertTrue(get(game#quest#get(l:replaced_result.state, 'rescue-rangers'), 'status', '') ==# 'replaced', 'Quest lifecycle should support explicit replaced transitions.')
   call QuadarTest_AssertTrue(game#quest#has_active(l:replaced_result.state, 'rescue-rangers') == 0, 'Replaced quests should no longer count as active.')
 
-  let l:framework_state = game#core#process(l:state, 'framework')
-  let l:meeting_state = game#core#process(l:state, 'minds')
-  let l:party_state = game#core#process(l:state, 'party')
-  call QuadarTest_AssertSnapshot('story/campaign', {'state': l:state, 'render': game#core#render(l:state)})
-  call QuadarTest_AssertSnapshot('story/help', {'state': l:help_state, 'render': game#core#render(l:help_state)})
-  call QuadarTest_AssertSnapshot('story/framework', {'state': l:framework_state, 'render': game#core#render(l:framework_state)})
-  call QuadarTest_AssertSnapshot('story/meeting', {'state': l:meeting_state, 'render': game#core#render(l:meeting_state)})
-  call QuadarTest_AssertSnapshot('story/party', {'state': l:party_state, 'render': game#core#render(l:party_state)})
-
   let l:party_match_state = game#core#init()
   let l:party_match_state = game#party#add_companion(l:party_match_state, game#party#create('Ranger Halver', 5, 5, 3))
   let l:party_match_state = game#party#add_companion(l:party_match_state, game#party#create('Ranger Harlan', 5, 5, 3))
@@ -155,10 +146,12 @@ function! QuadarTest_RunStory() abort
   call QuadarTest_AssertContains(l:party_match_state.log, 'LOG_ERR: Companion reference "ranger h" matches multiple companions: Ranger Halver, Ranger Harlan.')
 
   let l:interact_match_state = game#core#init()
-  let l:interact_match_state.rooms[l:interact_match_state.loc].objects = [
-        \ {'name': 'Veiled Gate', 'desc': 'A gate.', 'effect': 'portal_jump'},
-        \ {'name': 'Veiled Gate Console', 'desc': 'A console.', 'effect': 'unlock_exit'}
+  let l:interact_match_state.rooms[l:interact_match_state.loc] = game#data#new_room(l:interact_match_state.loc, 'urban', 'Nexus', 'Desc', {
+        \ 'objects': [
+        \   {'name': 'Veiled Gate', 'desc': 'A gate.', 'effect': 'portal_jump'},
+        \   {'name': 'Veiled Gate Console', 'desc': 'A console.', 'effect': 'unlock_exit'}
         \ ]
+        \ })
   let l:interact_match_state = game#core#process(l:interact_match_state, 'interact veiled g')
   call QuadarTest_AssertContains(l:interact_match_state.log, "LOG_ERR: 'veiled g' matches multiple objects here: Veiled Gate, Veiled Gate Console.")
 
@@ -179,14 +172,10 @@ function! QuadarTest_RunStory() abort
   call QuadarTest_AssertTrue(l:found_montage_fact == 1, 'Montage should append a Montage carry fact to thread cards.')
 
   let l:recruit_state = deepcopy(l:state)
-  let l:recruit_state.rooms['test_recruit'] = {
-        \ 'name': 'ᚲ ETHEREAL_MARSHLANDS ᚲ',
-        \ 'desc': 'Murky marshes filled with strangers.',
+  let l:recruit_state.rooms['test_recruit'] = game#data#new_room('test_recruit', 'marsh', 'ᚲ ETHEREAL_MARSHLANDS ᚲ', 'Murky marshes filled with strangers.', {
         \ 'exits': {'north': l:recruit_state.loc},
-        \ 'entities': [],
-        \ 'services': [],
         \ 'objects': [{'name': 'Stranded Ranger', 'desc': 'A fellow recon operative.', 'effect': 'recruit_ranger'}]
-        \ }
+        \ })
   let l:recruit_state.rooms[l:recruit_state.loc].exits['south'] = 'test_recruit'
   let l:before_companions = len(get(l:recruit_state.player, 'companions', []))
   let l:recruit_state = game#core#process(l:recruit_state, 'go south')

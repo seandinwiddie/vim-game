@@ -72,7 +72,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     call add(l:log_lines, 'PARTY UPDATE: Ranger Operative joins your unit, providing Group Dynamics bonuses in combat.')
     let l:quest_progress = game#quest#advance(l:next_state, 'rescue-rangers', 1)
     let l:next_state = l:quest_progress.state
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', 'A bound ranger was extracted alive from ' . l:next_state.rooms[a:state.loc].name . '.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', 'A bound ranger was extracted alive from ' . l:next_state.rooms[a:state.loc].display_name . '.')
     let l:log_lines += l:quest_progress.log
   elseif l:effect ==# 'recover_tome'
     let l:consume_object = 1
@@ -82,7 +82,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     call add(l:log_lines, 'ARCHIVE RECOVERED: The reliquary yields a stack of codices and return sigils.')
     let l:quest_progress = game#quest#advance(l:next_state, 'recover-lost-tomes', 1)
     let l:next_state = l:quest_progress.state
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Recover the Lost Tomes', 'A sealed reliquary yielded codices and return sigils in ' . l:next_state.rooms[a:state.loc].name . '.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Recover the Lost Tomes', 'A sealed reliquary yielded codices and return sigils in ' . l:next_state.rooms[a:state.loc].display_name . '.')
     let l:log_lines += l:quest_progress.log
   elseif l:effect ==# 'purify_altar'
     let l:consume_object = 1
@@ -92,7 +92,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     call add(l:log_lines, 'RECOVERED: The holy resonance restores ' . l:heal . ' HP.')
     let l:quest_progress = game#quest#advance(l:next_state, 'purify-altars', 1)
     let l:next_state = l:quest_progress.state
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Purify the Eldritch Altars', 'A corrupted altar was purified in ' . l:next_state.rooms[a:state.loc].name . '.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Purify the Eldritch Altars', 'A corrupted altar was purified in ' . l:next_state.rooms[a:state.loc].display_name . '.')
     let l:log_lines += l:quest_progress.log
   elseif l:effect ==# 'recruit_ranger'
     let l:consume_object = 1
@@ -104,7 +104,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:next_state = game#party#add_companion(l:next_state, l:companion)
     let l:next_state = game#party#sync_scene(l:next_state)
     let l:next_state = game#story#threads#record_npc_for_thread(l:next_state, 'Find Missing Rangers', l:companion.name)
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', l:companion.name . ' rallied to the unit out of ' . l:next_state.rooms[a:state.loc].name . '.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', l:companion.name . ' rallied to the unit out of ' . l:next_state.rooms[a:state.loc].display_name . '.')
     call add(l:log_lines, 'PARTY UPDATE: ' . l:companion.name . ' joins your unit, swelling Group Dynamics.')
   elseif l:effect ==# 'field_cache'
     let l:consume_object = 1
@@ -260,7 +260,7 @@ endfunction
 function! s:traverse_portal(state, source_loc, object_index) abort
   let l:next_state = deepcopy(a:state)
   let l:source_room = l:next_state.rooms[a:source_loc]
-  let l:source_name = get(l:source_room, 'name', toupper(a:source_loc))
+  let l:source_name = get(l:source_room, 'display_name', toupper(a:source_loc))
   let l:portal = l:source_room.objects[a:object_index]
   let l:target_room = get(l:portal, 'target_room', '')
   let l:is_new_room = 0
@@ -282,7 +282,7 @@ function! s:traverse_portal(state, source_loc, object_index) abort
   let l:next_state.loc = l:target_room
   let l:next_state = game#story#enter_location(l:next_state, l:target_room, l:is_new_room)
   let l:next_state.surge += 2
-  let l:target_name = get(l:next_state.rooms[l:target_room], 'name', toupper(l:target_room))
+  let l:target_name = get(l:next_state.rooms[l:target_room], 'display_name', toupper(l:target_room))
   let l:next_state.hint = 'DIRECTIVE: Portal transit complete. Scan the impossible geometry before moving.'
   let l:next_state = game#story#record_fact(l:next_state, 'Portal transit carried the scene from ' . l:source_name . ' into ' . l:target_name . '.')
   call add(l:log_lines, 'PORTAL TRANSIT: ' . l:source_name . ' -> ' . l:target_name)

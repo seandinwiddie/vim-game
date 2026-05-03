@@ -177,7 +177,7 @@ function! s:ensure_scene_card(state, loc) abort
 endfunction
 
 function! s:scene_card_defaults(state, loc) abort
-  let l:title = has_key(get(a:state, 'rooms', {}), a:loc) ? get(a:state.rooms[a:loc], 'name', toupper(a:loc)) : toupper(a:loc)
+  let l:title = has_key(get(a:state, 'rooms', {}), a:loc) ? get(a:state.rooms[a:loc], 'display_name', toupper(a:loc)) : toupper(a:loc)
   return {
         \ 'loc': a:loc,
         \ 'title': l:title,

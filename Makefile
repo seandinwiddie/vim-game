@@ -1,7 +1,4 @@
-.PHONY: test update-snapshots
+.PHONY: test
 
 test:
 	vim -Nu NONE -n -es -S test.vim
-
-update-snapshots:
-	QUADAR_UPDATE_SNAPSHOTS=1 vim -Nu NONE -n -es -S test.vim

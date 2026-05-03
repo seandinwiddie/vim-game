@@ -6,7 +6,7 @@ function! game#explore#view#cmd_look(state) abort
   let l:next_state.hint = 'DIRECTIVE: Use "go [dir]" to explore, "interact [object]" to manipulate the scene, or "ask" the oracle.'
   let l:lines = [
         \ '---',
-        \ l:room.name,
+        \ l:room.display_name,
         \ l:room.desc
         \ ]
 
@@ -26,7 +26,7 @@ function! game#explore#view#cmd_look(state) abort
     call add(l:lines, 'DETECTED ENTITIES:')
     for l:ent in l:room.entities
       let l:ent_name = type(l:ent) == v:t_dict ? get(l:ent, 'name', 'Unknown Entity') : l:ent
-      let l:next_state = game#story#record_npc(l:next_state, l:ent_name, l:room.name)
+      let l:next_state = game#story#record_npc(l:next_state, l:ent_name, l:room.display_name)
       call add(l:lines, '  > [!!] ' . l:ent_name)
     endfor
     let l:next_state.hint = 'DIRECTIVE: Hostiles detected! Type "attack" to engage!'
