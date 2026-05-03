@@ -70,6 +70,17 @@ let s:state.rooms[s:state.loc].exits['south'] = 'test_chapel'
 let s:state = game#core#process(s:state, 'go south')
 let s:state = game#core#process(s:state, 'interact Corrupted Altar')
 
+let s:state.rooms['test_mil'] = {
+      \ 'name': 'ᚲ MILITARY_FACILITY ᚲ', 
+      \ 'desc': 'Ancient military bastion.',
+      \ 'exits': {'north': s:state.loc}, 
+      \ 'entities': [], 
+      \ 'objects': [{'name': 'Holographic Terminal', 'desc': 'A distorted projection.', 'effect': 'hidden_lore'}]
+      \ }
+let s:state.rooms[s:state.loc].exits['west'] = 'test_mil'
+let s:state = game#core#process(s:state, 'go west')
+let s:state = game#core#process(s:state, 'interact Holographic Terminal')
+
 let s:state = game#core#process(s:state, 'inventory')
 let s:state = game#core#process(s:state, 'profile')
 let s:state = game#core#process(s:state, 'notes')

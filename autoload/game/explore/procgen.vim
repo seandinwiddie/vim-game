@@ -50,6 +50,22 @@ function! game#explore#procgen#generate_room(seed, entrance_dir, entrance_id, st
             \ {'name': 'Field Cache', 'desc': 'A ranger cache tucked into broken masonry and sealed against the murk.', 'effect': 'field_cache'},
             \ {'name': 'Broken Machinery', 'desc': 'Sparks fly from this rusted, extraterrestrial device.'}
             \ ]
+            
+      if l:room.name =~# 'MILITARY_FACILITY'
+        let l:interactives += [
+              \ {'name': 'Holographic Terminal', 'desc': 'A distorted projection displaying twisted secrets of the realm.', 'effect': 'hidden_lore'},
+              \ {'name': 'Occult Display', 'desc': 'Projects twisted images mocking mortal minds.', 'effect': 'surge_rift'}
+              \ ]
+      elseif l:room.name =~# 'LABYRINTHINE_DUNGEON' || l:room.name =~# 'NARROW_PATH'
+        let l:interactives += [
+              \ {'name': 'Cyclopean Button', 'desc': 'A massive stone depressor that alters the surrounding geometry.', 'effect': 'unlock_exit'}
+              \ ]
+      elseif l:room.name =~# 'HAUNTED_CHAPEL' || l:room.name =~# 'RUNE_TEMPLE'
+        let l:interactives += [
+              \ {'name': 'Eldritch Fresco', 'desc': 'An unholy painting that whispers forgotten truths.', 'effect': 'hidden_lore'}
+              \ ]
+      endif
+
       call add(l:room.objects, deepcopy(l:interactives[(a:seed / 7) % len(l:interactives)]))
     endif
   endif

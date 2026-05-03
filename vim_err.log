@@ -166,3 +166,13 @@ not found in 'packpath': "pack/*/start/*"
 not found in 'packpath': "pack/*/start/*"
 not found in 'runtimepath': "plugin/**/*.vim"
 Writing viminfo file "/home/seandinwiddie/.viminfo"
+not found in 'packpath': "pack/*/start/*"
+                                         GetLatestVimScripts is not vi-compatible; not loaded (you need to set nocp)
+not found in 'packpath': "pack/*/start/*"
+not found in 'runtimepath': "plugin/**/*.vim"
+Writing viminfo file "/home/seandinwiddie/.viminfo"
+not found in 'packpath': "pack/*/start/*"
+                                         GetLatestVimScripts is not vi-compatible; not loaded (you need to set nocp)
+not found in 'packpath': "pack/*/start/*"
+not found in 'runtimepath': "plugin/**/*.vim"
+Writing viminfo file "/home/seandinwiddie/.viminfo"

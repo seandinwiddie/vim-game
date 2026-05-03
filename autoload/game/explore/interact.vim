@@ -77,6 +77,21 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + 20])
     call add(l:next_state.player.inv, 'Field Rations')
     call add(l:log_lines, 'CACHE BREACH: You recover field rations and patch your wounds for +20 HP.')
+  elseif l:effect ==# 'hidden_lore'
+    let l:consume_object = 1
+    let l:lore_list = [
+          \ "The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.",
+          \ "The Corrupted Altars are siphoning life force from the Ethereal Marshes.",
+          \ "Migdal Kudar predates the Rangers by eons, built by Chthonic deities.",
+          \ "The missing rangers were not captured; they surrendered willingly to the whispers.",
+          \ "The Loom of Fate weaves with strands of pure dark matter from the Dimensional Nexus."
+          \ ]
+    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:lore = l:lore_list[l:val % len(l:lore_list)]
+    call add(l:log_lines, 'HIDDEN LORE DISCOVERED: ' . l:lore)
+    let l:focus_name = game#story#focus_label(l:next_state)
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, l:focus_name, 'LORE: ' . l:lore)
+    call add(l:log_lines, 'THREAD UPDATED: Forbidden truth appended to the active focus thread.')
   elseif l:effect ==# 'surge_rift'
     let l:consume_object = 1
     let l:next_state.surge += 3

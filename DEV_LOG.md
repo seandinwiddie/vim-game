@@ -39,6 +39,7 @@
 - **Purification Quest**: Added a procedural `purify-altars` quest that generates `Corrupted Altar` interactables inside of `Haunted Chapels` and `Rune Temples`, creating location-specific quest targets to weave exploration and storytelling.
 - **Scene Focus**: The active scene now tracks a focus thread so the oracle stage, current room, and objective list reflect the note-driven scene structure from the Familiar.
 - **Dynamic Room Content**: Procedural rooms now scale threat tier from player level/progression and can spawn rescue targets, reliquaries, caches, and stronger enemy archetypes from the Qua'dar appendix.
+- **Environment-Specific Lore**: Added the `hidden_lore` mechanic via `Holographic Terminals` (Military Facilities) and `Eldritch Frescoes` (Chapels/Temples), which randomly dispense worldbuilding secrets directly into the active Thread Ledger's facts array.
 - **Merchant Economy**: The starting Merchandise Store Room now exposes a real wares ledger with buy/sell commands, trade-cache currency, and progression through weapons-grade upgrades, spells, rations, and supplies.
 - **Combat Progression**: Enemy kills now bank salvage into the trade cache, `Hunter's Mark` boosts follow-up strikes, `Dark Crystal Shielding` absorbs incoming damage, and purchased loadout changes carry through the run.
 - **Bookkeeping Layer**: Added CRGE-style notecards for scenes, thread facts, and known NPCs so discoveries persist as structured story memory instead of only scrollback.

@@ -2,10 +2,10 @@
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 0
-Scene #1: ᚲ HAUNTED_CHAPEL ᚲ
+Scene #1: ᚲ MILITARY_FACILITY ᚲ
 Focus: decode the return codex relay
 Objectives: 2 active / 1 complete
-Notes: 4 scenes / 3 NPCs
+Notes: 5 scenes / 3 NPCs
 Trade Cache: 36 | Guard: 14 | Mark: none
 DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 --- ACTIVE THREADS ---
@@ -14,20 +14,6 @@ DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
-ᚱ ENTRANCES: south, east, north
-[Threat Tier: 1 | HP: 150/150]
---
-CASTING: Hunter's Mark on Ashwalker...
-TARGET LOCK: +4 to the next strike against this hostile.
-CASTING: Explosive Barrage on Ashwalker...
-RANGED_ROLL: 30 (includes +3 PARTY bonus)
-CRITICAL HIT: The spell overwhelms the Ashwalker!
-HUNTER'S MARK: Target lock collapses with the kill.
-SALVAGE BANKED: +4 trade from Ashwalker.
-LOOT RECOVERED: Abyssal Ash
-CAST_LOG: You channel Shatterstrike Slam, but the energy dissipates in the empty air.
-FADE OUT: ashwalker resistance confirms the spire approach is still contested
-BOOKKEEPING: Review thread changes, new facts, and scene fallout before the next transition.
 THREAD SPLIT: Find Missing Rangers -> track the tower shell recon cell
 THREAD REPLACED: Recover the Lost Tomes -> decode the return codex relay
 THREAD MODIFIED: Purify the Eldritch Altars -> secure the tower shell extraction route
@@ -39,12 +25,12 @@ THREAD MODIFIED: Purify the Eldritch Altars -> secure the tower shell extraction
  - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay
 ---------------------
 NEURAL_TRACKING: Shifting coordinates to east
-ENVIRONMENTAL HAZARD: The perilous terrain inflicts 12 damage.
+ENVIRONMENTAL HAZARD: The perilous terrain inflicts 8 damage.
 ---
 ᚲ TOXIC_WASTES ᚲ
 A ghastly mire of desolation.
 ᚱ ENTRANCES: west
-[Threat Tier: 1 | HP: 138/150]
+[Threat Tier: 1 | HP: 142/150]
 --
 NEURAL_TRACKING: Shifting coordinates to south
 ---
@@ -53,13 +39,26 @@ An accursed chapel.
 INTERACTIVE OBJECTS:
   > [*] Corrupted Altar
 ᚱ ENTRANCES: north
-[Threat Tier: 1 | HP: 138/150]
+[Threat Tier: 1 | HP: 142/150]
 --
 INTERACT: You examine the Corrupted Altar.
 A desecrated monolith.
 SANCTIFICATION: You channel pure energy into the altar, cleansing the eldritch taint.
 RECOVERED: The holy resonance restores 15 HP.
 OBJECTIVE UPDATED: Purify the Eldritch Altars [1/2]
+NEURAL_TRACKING: Shifting coordinates to west
+---
+ᚲ MILITARY_FACILITY ᚲ
+Ancient military bastion.
+INTERACTIVE OBJECTS:
+  > [?] Holographic Terminal
+ᚱ ENTRANCES: north
+[Threat Tier: 1 | HP: 150/150]
+--
+INTERACT: You examine the Holographic Terminal.
+A distorted projection.
+HIDDEN LORE DISCOVERED: The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.
+THREAD UPDATED: Forbidden truth appended to the active focus thread.
 --- SECURED RELICS ---
 Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Basic Dagger
@@ -67,7 +66,6 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Abyssal Ash
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -90,12 +88,13 @@ Companions (Party):
  * Ranger Operative [STR:5 AGI:5 ARC:3]
 ----------------------
 --- FIELD NOTES ---
-Notes: 4 scenes / 3 NPCs
+Notes: 5 scenes / 3 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ
+  Scenes: ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ
   Facts:
    - Replaces Recover the Lost Tomes after scene fallout.
+   - LORE: The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.
 --- THREAD LEDGER ---
  1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell
  2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes
@@ -109,6 +108,7 @@ Scene Cards:
  * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: none
  * ᚲ TOXIC_WASTES ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
  * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
+ * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
 Known NPCs:
  * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
