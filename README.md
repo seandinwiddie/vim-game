@@ -46,6 +46,7 @@ Then run `:PlugInstall`.
 20. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
 21. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 22. **The Abyssal Throne**: Once you've completed all three core objectives (rescue rangers, recover lost tomes, purify altars), examine the Arcane Terminal again. A new `Abyssal Sigil` will bloom in the Merchandise Store Room. `interact Abyssal Sigil` to descend onto the Abyssal Throne and confront the Voidmaw Abyssalgeist in a two-phase duel. Both phases must be defeated; then `interact Throne Sigil` to seal the breach for the epilogue.
+23. **Montage**: Use `:call s:run('montage [summary]')` to montage past intervening action -- the command resets the Surge Count, advances the scene index, and stamps a `Montage carry: ...` fact on every active thread.
 
 ## Architecture
 This project follows functional programming principles:

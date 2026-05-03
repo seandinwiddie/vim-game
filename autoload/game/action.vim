@@ -37,6 +37,8 @@ function! game#action#command(input) abort
     return game#action#make('story/npcCommandRequested', {'raw': l:cmd, 'subcmd': len(l:parts) > 1 ? l:parts[1] : 'list', 'npc_name': join(l:parts[2:], ' ')})
   elseif l:head ==# 'fade'
     return game#action#make('story/fadeRequested', {'raw': l:cmd, 'summary': join(l:parts[1:], ' ')})
+  elseif l:head ==# 'montage'
+    return game#action#make('story/montageRequested', {'raw': l:cmd, 'summary': join(l:parts[1:], ' ')})
   elseif l:head ==# 'aside'
     return game#action#make('story/asideRequested', {'raw': l:cmd, 'thread_ref': len(l:parts) > 1 ? l:parts[1] : '', 'fact': join(l:parts[2:], ' ')})
   elseif l:head ==# 'quests' || l:head ==# 'objectives' || l:head ==# 'o'

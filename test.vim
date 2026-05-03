@@ -300,6 +300,23 @@ call s:assert_true(index(s:state.player.spells, 'Stellar Burst Barrage') != -1, 
 let s:flavor = game#enemies#flavor_lines('Obsidian Warden')
 call s:assert_true(!empty(s:flavor), 'Combat flavor lookup should return signature data for Obsidian Warden.')
 
+" Montage should advance the scene index, reset Surge, and append a montage carry-fact to every active thread.
+let s:montage_state = deepcopy(s:state)
+let s:montage_state.surge = 6
+let s:before_scene_idx = get(s:montage_state.scene, 'index', 1)
+let s:montage_state = game#core#process(s:montage_state, 'montage close out the rangers'' extraction across multiple corridors')
+call s:assert_true(s:montage_state.surge == 0, 'Montage should reset the Surge Count.')
+call s:assert_true(get(s:montage_state.scene, 'index', 1) == s:before_scene_idx + 1, 'Montage should advance the scene index by 1.')
+let s:found_montage_fact = 0
+for s:card in s:montage_state.notes.thread_cards
+  for s:fact in get(s:card, 'facts', [])
+    if s:fact =~# '^Montage carry'
+      let s:found_montage_fact = 1
+    endif
+  endfor
+endfor
+call s:assert_true(s:found_montage_fact == 1, 'Montage should append a Montage carry fact to thread cards.')
+
 " Counter-signature should strip an active mark when an Ashwalker wins the duel.
 let s:counter_state = deepcopy(s:state)
 let s:counter_state.player.str = 1

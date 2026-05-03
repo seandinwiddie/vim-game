@@ -30,6 +30,8 @@ function! game#reducer#reduce(state, action) abort
     return game#story#cmd_npc(a:state, get(l:payload, 'subcmd', 'list'), get(l:payload, 'npc_name', ''))
   elseif l:type ==# 'story/fadeRequested'
     return game#story#cmd_fade(a:state, get(l:payload, 'summary', ''))
+  elseif l:type ==# 'story/montageRequested'
+    return game#story#cmd_montage(a:state, get(l:payload, 'summary', ''))
   elseif l:type ==# 'story/asideRequested'
     return game#story#cmd_aside(a:state, get(l:payload, 'thread_ref', ''), get(l:payload, 'fact', ''))
   elseif l:type ==# 'story/questsRequested'

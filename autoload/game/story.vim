@@ -68,6 +68,10 @@ function! game#story#cmd_fade(state, summary) abort
   return game#story#scenes#cmd_fade(a:state, a:summary)
 endfunction
 
+function! game#story#cmd_montage(state, summary) abort
+  return game#story#scenes#cmd_montage(a:state, a:summary)
+endfunction
+
 function! game#story#cmd_aside(state, thread_ref, fact) abort
   return game#story#scenes#cmd_aside(a:state, a:thread_ref, a:fact)
 endfunction

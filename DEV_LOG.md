@@ -58,6 +58,7 @@
 - **Expanded Merchant Catalog**: The merchandise store now stocks `Stellar Burst Barrage`, `Astral Lance Thrust`, `Shadowstep Mastery`, and `Dimensional Weave Shield` so the Tapestry / Starweaver loadouts from the appendix become reachable in play.
 - **Roving Allies**: Procedurally generated rooms can now spawn a `Stranded Ranger` (interact to recruit them into the party) or a `Nomadic Merchant` (which adds a `trade` service to the room so the shop opens in the wild). This realizes the Familiar's "fresh recruits get sent here" rhythm and the appendix's wandering Gloamstrider merchants.
 - **Enemy Counter Signatures**: When an enemy wins the Shadows of Fate duel, its archetype now lands a signature follow-up: Obsidian Wardens, Cyberflux Guardians, Storm Titans, and Iron Armored Guardians shatter player guard with their named abilities; Ashwalkers, Aether Spirits, and Twilight Weavers strip Hunter's Mark; Voidwraiths, Byssalspawn, Gravewalkers, and the Abyssal Overfiend perform Soul Siphon for a Surge spike; Doomguards, Thunder Troopers, Aksov Hexe-Spinne, and Flame Corps trigger surge spikes via their explosive signatures.
+- **Montage Command**: Added a `montage [summary]` verb realizing the Familiar's montage scene-control beat. The command appends a `MONTAGE:` closing to the current scene card, records a `Montage carry: ...` fact on every active thread, advances the scene index, and resets the Surge Count so the Loom of Fate exhales between acts.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -116,6 +117,7 @@
 - `scene` / `sc`: Inspect the current scene card and recent scene closings.
 - `npc add [name]` / `npc rm [name]` / `npc`: Manage the current scene's present NPC roster.
 - `fade [summary]`: Close the current scene with a bookkeeping summary.
+- `montage [summary]`: Fast-forward through actions across all threads, reset the Surge Count, and bump the scene index.
 - `aside [thread#] [fact]`: Record an elsewhere/sidebar fact on another active thread.
 - `focus [idx]`: Promote one of the active threads as the current scene's main thread.
 - `q`: Terminate the Neural Link.

@@ -58,6 +58,27 @@ function! game#story#scenes#cmd_fade(state, summary) abort
         \ ])
 endfunction
 
+function! game#story#scenes#cmd_montage(state, summary) abort
+  if empty(a:summary)
+    return game#core#add_log(a:state, 'LOG_ERR: Use "montage [summary]" to fast-forward across threads with a montage closing line.')
+  endif
+
+  let l:next_state = deepcopy(a:state)
+  let l:next_state = game#story#records#append_scene_closing(l:next_state, l:next_state.loc, 'MONTAGE: ' . a:summary)
+  let l:next_state = game#story#threads#record_fact(l:next_state, 'Montage: ' . a:summary)
+  for l:thread in get(l:next_state, 'threads', [])
+    let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:thread, 'Montage carry: ' . a:summary)
+  endfor
+  let l:next_state.scene.index = get(l:next_state.scene, 'index', 1) + 1
+  let l:next_state.surge = 0
+  let l:next_state.hint = 'DIRECTIVE: Montage advances the scene index and resets Surge. Choose the next stage when the action settles.'
+  return game#core#add_log(l:next_state, [
+        \ 'MONTAGE: ' . a:summary,
+        \ 'TIMEFRAME_SHIFT: Multiple threads carry the action forward; new scene index = ' . l:next_state.scene.index . '.',
+        \ 'SURGE_RESET: The Loom of Fate exhales between acts.'
+        \ ])
+endfunction
+
 function! game#story#scenes#cmd_aside(state, thread_ref, fact) abort
   if empty(a:thread_ref) || empty(a:fact)
     return game#core#add_log(a:state, 'LOG_ERR: Use "aside [thread#] [fact]" to record an elsewhere sidebar fact.')
