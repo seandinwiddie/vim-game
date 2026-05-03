@@ -21,6 +21,41 @@ function! game#enemies#flavor_lines(target_name) abort
         \ ]
 endfunction
 
+function! game#enemies#counter_signature(state, target_name, log_lines) abort
+  let l:archetype = game#enemies#archetype(a:target_name)
+  if empty(l:archetype)
+    return
+  endif
+  let l:counter = get(l:archetype, 'counter', '')
+  if empty(l:counter)
+    return
+  endif
+  call add(a:log_lines, 'COUNTER_SIGNATURE: ' . a:target_name . ' lashes back with ' . get(l:archetype, 'signature', 'Unknown') . '.')
+
+  if l:counter ==# 'surge_spike'
+    let a:state.surge += 2
+    call add(a:log_lines, 'SURGE_SPIKE: The signature distortion bumps the Surge Count by +2.')
+  elseif l:counter ==# 'mark_strip'
+    if !empty(get(a:state, 'mark', ''))
+      let l:lost = a:state.mark
+      let a:state.mark = ''
+      call add(a:log_lines, 'TARGET_LOCK_LOST: The signature shatters Hunter''s Mark on ' . l:lost . '.')
+    else
+      let a:state.surge += 1
+      call add(a:log_lines, 'EM_BLEED: With no mark to strip, the signature just bumps Surge by +1.')
+    endif
+  elseif l:counter ==# 'guard_strip'
+    if get(a:state, 'guard', 0) > 0
+      let l:burned = a:state.guard
+      let a:state.guard = 0
+      call add(a:log_lines, 'WARD_SHATTER: The signature wipes ' . l:burned . ' guard from your barrier.')
+    endif
+  elseif l:counter ==# 'soul_siphon'
+    let a:state.surge += 1
+    call add(a:log_lines, 'SOUL_SIPHON: The signature drains your resolve, bumping Surge by +1.')
+  endif
+endfunction
+
 function! game#enemies#build_boss(name) abort
   if a:name ==# 'Abyssal Overfiend'
     return {
@@ -113,23 +148,23 @@ endfunction
 
 function! s:archetypes() abort
   return {
-        \ 'obsidian warden\|sentinel of terror': {'signature': 'Dark Crystal Shielding', 'flavor': 'Crystalline poison shards lash out from the obsidian form.'},
-        \ 'doomguard': {'signature': 'Explosive Barrage', 'flavor': 'Heavy zinc plate clangs as a chant of dread chains the air.'},
-        \ 'ashwalker': {'signature': 'Ember Dash', 'flavor': 'A renegade junkie streaks through ember trails wielding salvaged relics.'},
-        \ 'iron armored guardian': {'signature': 'Ironclad Charge', 'flavor': 'A medieval swordsman in iseon plate hurls explosive projectiles.'},
-        \ 'aether spirit': {'signature': 'Astral Bolt', 'flavor': 'Phasing in and out of the material plane between bursts of dark energy.'},
-        \ 'thunder trooper': {'signature': 'Shotgun Barrage', 'flavor': 'Pyroclash infantry deploy flashbangs and electroshock shielding.'},
-        \ 'voidwraith': {'signature': 'Spectral Grasp', 'flavor': 'Spectral tendrils ensnare you while a haunting moan saps morale.'},
-        \ 'cyberflux guardian': {'signature': 'Plasma Charge Launchers', 'flavor': 'Bionetic soldier vents EMP overload through nano-repair plating.'},
-        \ 'byssalspawn': {'signature': 'Eldritch Devouring Gaze', 'flavor': 'Tendrils of cosmic rage erupt from the grotesque maw.'},
-        \ 'twilight weaver': {'signature': 'Shadowstep Ambush', 'flavor': 'Dark ghost dances through electric darkness, horns serrated with shadow.'},
-        \ 'storm titan': {'signature': 'Thunderous Slam', 'flavor': 'Hulking thunderbeast unleashes electrostatic discharges between hammer blows.'},
-        \ 'aksov hexe-spinne': {'signature': 'Rocket Barrage', 'flavor': 'Rocketweaver arachnid lobs guided missiles in long-range death arcs.'},
-        \ 'flame corps': {'signature': 'Napalm Grenade Toss', 'flavor': 'Brimstone Behemoth wreathes the field in inferno overdrive.'},
-        \ 'aetherwing herald': {'signature': 'Celestial Beam', 'flavor': 'Ether-spirit angel projects translucent forms wreathed in spectral storms.'},
-        \ 'gravewalker': {'signature': 'Necrotic Strike', 'flavor': 'A reanimated corpse drags decay through every melee strike.'},
-        \ 'shadowhorn juggernaut': {'signature': 'Horned Charge of the Possessed', 'flavor': 'Shadow stalker pounces with serrated horns and crushing impact.'},
-        \ 'magma leviathan': {'signature': 'Lava Surge Breath', 'flavor': 'Molten armor radiates a core heat aura as the colossus stomps.'},
-        \ 'abyssal overfiend': {'signature': 'Void Tentacles', 'flavor': 'High Demon coils through dimensional rifts wielding abyssal cataclysms.'}
+        \ 'obsidian warden\|sentinel of terror': {'signature': 'Dark Crystal Shielding', 'flavor': 'Crystalline poison shards lash out from the obsidian form.', 'counter': 'guard_strip'},
+        \ 'doomguard': {'signature': 'Explosive Barrage', 'flavor': 'Heavy zinc plate clangs as a chant of dread chains the air.', 'counter': 'surge_spike'},
+        \ 'ashwalker': {'signature': 'Ember Dash', 'flavor': 'A renegade junkie streaks through ember trails wielding salvaged relics.', 'counter': 'mark_strip'},
+        \ 'iron armored guardian': {'signature': 'Ironclad Charge', 'flavor': 'A medieval swordsman in iseon plate hurls explosive projectiles.', 'counter': 'guard_strip'},
+        \ 'aether spirit': {'signature': 'Astral Bolt', 'flavor': 'Phasing in and out of the material plane between bursts of dark energy.', 'counter': 'mark_strip'},
+        \ 'thunder trooper': {'signature': 'Shotgun Barrage', 'flavor': 'Pyroclash infantry deploy flashbangs and electroshock shielding.', 'counter': 'surge_spike'},
+        \ 'voidwraith': {'signature': 'Soul Siphon', 'flavor': 'Spectral tendrils drain morale while a haunting moan caves the air in.', 'counter': 'soul_siphon'},
+        \ 'cyberflux guardian': {'signature': 'Magik-Shield Deflector', 'flavor': 'Bionetic soldier vents EMP overload through nano-repair plating.', 'counter': 'guard_strip'},
+        \ 'byssalspawn': {'signature': 'Eldritch Devouring Gaze', 'flavor': 'Tendrils of cosmic rage erupt from the grotesque maw.', 'counter': 'soul_siphon'},
+        \ 'twilight weaver': {'signature': 'Shadowstep Ambush', 'flavor': 'Dark ghost dances through electric darkness, horns serrated with shadow.', 'counter': 'mark_strip'},
+        \ 'storm titan': {'signature': 'Thunderous Slam', 'flavor': 'Hulking thunderbeast unleashes electrostatic discharges between hammer blows.', 'counter': 'guard_strip'},
+        \ 'aksov hexe-spinne': {'signature': 'Rocket Barrage', 'flavor': 'Rocketweaver arachnid lobs guided missiles in long-range death arcs.', 'counter': 'surge_spike'},
+        \ 'flame corps': {'signature': 'Napalm Grenade Toss', 'flavor': 'Brimstone Behemoth wreathes the field in inferno overdrive.', 'counter': 'surge_spike'},
+        \ 'aetherwing herald': {'signature': 'Celestial Beam', 'flavor': 'Ether-spirit angel projects translucent forms wreathed in spectral storms.', 'counter': 'guard_strip'},
+        \ 'gravewalker': {'signature': 'Necrotic Strike', 'flavor': 'A reanimated corpse drags decay through every melee strike.', 'counter': 'soul_siphon'},
+        \ 'shadowhorn juggernaut': {'signature': 'Horned Charge of the Possessed', 'flavor': 'Shadow stalker pounces with serrated horns and crushing impact.', 'counter': 'guard_strip'},
+        \ 'magma leviathan': {'signature': 'Lava Surge Breath', 'flavor': 'Molten armor radiates a core heat aura as the colossus stomps.', 'counter': 'guard_strip'},
+        \ 'abyssal overfiend': {'signature': 'Void Tentacles', 'flavor': 'High Demon coils through dimensional rifts wielding abyssal cataclysms.', 'counter': 'soul_siphon'}
         \ }
 endfunction

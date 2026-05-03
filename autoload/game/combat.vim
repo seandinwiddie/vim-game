@@ -81,6 +81,7 @@ function! game#combat#cmd_attack(state) abort
     endif
     
     call s:apply_damage(l:next_state, l:dmg, l:log_lines)
+    call game#enemies#counter_signature(l:next_state, l:target_name, l:log_lines)
     let l:next_state.hint = 'WARNING: Vital signs dropping. Consider retreat!'
   endif
 

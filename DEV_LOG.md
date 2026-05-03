@@ -57,6 +57,7 @@
 - **Boss Phase Telemetry**: Boss entities carry phase metadata (`phases`, `phases_done`, `phase_label`); combat surfaces phase progress in the duel log and the defeat handler routes boss kills into the Overfiend epilogue helper.
 - **Expanded Merchant Catalog**: The merchandise store now stocks `Stellar Burst Barrage`, `Astral Lance Thrust`, `Shadowstep Mastery`, and `Dimensional Weave Shield` so the Tapestry / Starweaver loadouts from the appendix become reachable in play.
 - **Roving Allies**: Procedurally generated rooms can now spawn a `Stranded Ranger` (interact to recruit them into the party) or a `Nomadic Merchant` (which adds a `trade` service to the room so the shop opens in the wild). This realizes the Familiar's "fresh recruits get sent here" rhythm and the appendix's wandering Gloamstrider merchants.
+- **Enemy Counter Signatures**: When an enemy wins the Shadows of Fate duel, its archetype now lands a signature follow-up: Obsidian Wardens, Cyberflux Guardians, Storm Titans, and Iron Armored Guardians shatter player guard with their named abilities; Ashwalkers, Aether Spirits, and Twilight Weavers strip Hunter's Mark; Voidwraiths, Byssalspawn, Gravewalkers, and the Abyssal Overfiend perform Soul Siphon for a Surge spike; Doomguards, Thunder Troopers, Aksov Hexe-Spinne, and Flame Corps trigger surge spikes via their explosive signatures.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).

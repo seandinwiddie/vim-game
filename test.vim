@@ -300,6 +300,24 @@ call s:assert_true(index(s:state.player.spells, 'Stellar Burst Barrage') != -1, 
 let s:flavor = game#enemies#flavor_lines('Obsidian Warden')
 call s:assert_true(!empty(s:flavor), 'Combat flavor lookup should return signature data for Obsidian Warden.')
 
+" Counter-signature should strip an active mark when an Ashwalker wins the duel.
+let s:counter_state = deepcopy(s:state)
+let s:counter_state.player.str = 1
+let s:counter_state.player.agi = 1
+let s:counter_state.player.arc = 1
+let s:counter_state.player.hp = 200
+let s:counter_state.mark = 'Ashwalker'
+let s:counter_state.rooms[s:counter_state.loc] = {
+      \ 'name': 'ᚲ MARSH_TEST ᚲ',
+      \ 'desc': 'Test marsh.',
+      \ 'exits': {},
+      \ 'entities': [{'name': 'Ashwalker', 'str': 99, 'agi': 99, 'arc': 99}],
+      \ 'objects': [],
+      \ 'services': []
+      \ }
+let s:counter_state = game#core#process(s:counter_state, 'attack')
+call s:assert_true(empty(get(s:counter_state, 'mark', '')), 'Ashwalker counter-signature should strip Hunter''s Mark on a duel loss.')
+
 " Roving recruitment flow.
 let s:state.rooms['test_recruit'] = {
       \ 'name': 'ᚲ ETHEREAL_MARSHLANDS ᚲ',

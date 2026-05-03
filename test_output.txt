@@ -2,7 +2,7 @@
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 2
-Scene #2: ᚲ OUTERWORLDLY_REALM ᚲ
+Scene #2: ᚲ MYSTERIOUS_PORTAL ᚲ
 Arc: CH1 CLIMAX
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus: decode the return codex relay
@@ -17,6 +17,7 @@ DIRECTIVE: Keep the social contract visible while you choose threats, fallout, a
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
+THREAD UPDATED: Forbidden truth appended to the active focus thread.
 NEURAL_TRACKING: Shifting coordinates to south
 ---
 ᚲ MYSTERIOUS_PORTAL ᚲ
@@ -29,14 +30,13 @@ INTERACTIVE OBJECTS:
 INTERACT: You examine the Veiled Gate.
 A veiled gate shivering with impossible geometry.
 VEILED_GATE: The threshold parts and reveals a path into the alien dark.
-PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ OUTERWORLDLY_REALM ᚲ
+PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ MYSTERIOUS_PORTAL ᚲ
 SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.
 ---
-ᚲ OUTERWORLDLY_REALM ᚲ
-A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defying roads.
+ᚲ MYSTERIOUS_PORTAL ᚲ
+A thin alien threshold shivering with arcane fields and extradimensional static.
 INTERACTIVE OBJECTS:
   > [?] Return Gate
-  > [?] Alien Monolith
 ᚱ ENTRANCES: north, south
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -47,7 +47,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Zinc Plating
+ [ᛟ] Corrupt Watcher Core
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -74,15 +74,15 @@ Companions (Party):
 Notes: 7 scenes / 4 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ
   NPCs: Bound Ranger | Ranger Operative
   Facts:
    - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
    - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
-   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
+   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ.
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus Themes: survivor rescue and uncanny revelation
@@ -104,11 +104,11 @@ Scene Cards:
  * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
  * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
  * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
- * ᚲ OUTERWORLDLY_REALM ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
 Known NPCs:
  * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
- * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ, ᚲ OUTERWORLDLY_REALM ᚲ
+ * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 -------------------
 --- MEETING OF MINDS ---
@@ -121,7 +121,7 @@ Assumptions: defeats should become costly consequences instead of abrupt death
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 2
-Scene #2: ᚲ OUTERWORLDLY_REALM ᚲ
+Scene #2: ᚲ MYSTERIOUS_PORTAL ᚲ
 Arc: CH1 CLIMAX
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus: decode the return codex relay
@@ -136,7 +136,8 @@ DIRECTIVE: Keep only the right companions in the main scene; fade or send the re
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
-HIDDEN LORE DISCOVERED: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
+A distorted projection.
+HIDDEN LORE DISCOVERED: The missing rangers were not captured; they surrendered willingly to the whispers.
 THREAD UPDATED: Forbidden truth appended to the active focus thread.
 NEURAL_TRACKING: Shifting coordinates to south
 ---
@@ -150,14 +151,13 @@ INTERACTIVE OBJECTS:
 INTERACT: You examine the Veiled Gate.
 A veiled gate shivering with impossible geometry.
 VEILED_GATE: The threshold parts and reveals a path into the alien dark.
-PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ OUTERWORLDLY_REALM ᚲ
+PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ MYSTERIOUS_PORTAL ᚲ
 SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.
 ---
-ᚲ OUTERWORLDLY_REALM ᚲ
-A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defying roads.
+ᚲ MYSTERIOUS_PORTAL ᚲ
+A thin alien threshold shivering with arcane fields and extradimensional static.
 INTERACTIVE OBJECTS:
   > [?] Return Gate
-  > [?] Alien Monolith
 ᚱ ENTRANCES: north, south
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -168,7 +168,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Zinc Plating
+ [ᛟ] Corrupt Watcher Core
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -195,15 +195,15 @@ Companions (Party):
 Notes: 7 scenes / 4 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ
   NPCs: Bound Ranger | Ranger Operative
   Facts:
    - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
    - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
-   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
+   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ.
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus Themes: survivor rescue and uncanny revelation
@@ -225,11 +225,11 @@ Scene Cards:
  * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
  * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
  * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
- * ᚲ OUTERWORLDLY_REALM ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
 Known NPCs:
  * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
- * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ, ᚲ OUTERWORLDLY_REALM ᚲ
+ * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 -------------------
 --- PARTY TACTICS ---
@@ -240,7 +240,7 @@ Party: 1 active / 0 faded / 0 elsewhere | Group: +3
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 2
-Scene #2: ᚲ OUTERWORLDLY_REALM ᚲ
+Scene #2: ᚲ MYSTERIOUS_PORTAL ᚲ
 Arc: CH1 CLIMAX
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus: decode the return codex relay
@@ -255,6 +255,7 @@ DIRECTIVE: Keep the vignette hook in mind while you frame the next scene.
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
+ᚲ MYSTERIOUS_PORTAL ᚲ
 A thin alien threshold trembles here.
 INTERACTIVE OBJECTS:
   > [?] Veiled Gate
@@ -264,14 +265,13 @@ INTERACTIVE OBJECTS:
 INTERACT: You examine the Veiled Gate.
 A veiled gate shivering with impossible geometry.
 VEILED_GATE: The threshold parts and reveals a path into the alien dark.
-PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ OUTERWORLDLY_REALM ᚲ
+PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ MYSTERIOUS_PORTAL ᚲ
 SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.
 ---
-ᚲ OUTERWORLDLY_REALM ᚲ
-A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defying roads.
+ᚲ MYSTERIOUS_PORTAL ᚲ
+A thin alien threshold shivering with arcane fields and extradimensional static.
 INTERACTIVE OBJECTS:
   > [?] Return Gate
-  > [?] Alien Monolith
 ᚱ ENTRANCES: north, south
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -282,7 +282,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Zinc Plating
+ [ᛟ] Corrupt Watcher Core
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -309,15 +309,15 @@ Companions (Party):
 Notes: 7 scenes / 4 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ
   NPCs: Bound Ranger | Ranger Operative
   Facts:
    - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
    - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
-   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
+   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ.
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus Themes: survivor rescue and uncanny revelation
@@ -339,11 +339,11 @@ Scene Cards:
  * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
  * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
  * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
- * ᚲ OUTERWORLDLY_REALM ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
 Known NPCs:
  * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
- * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ, ᚲ OUTERWORLDLY_REALM ᚲ
+ * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 -------------------
 --- VIGNETTE FRAMEWORK ---
@@ -359,7 +359,7 @@ Guidance: Push the decisive thread toward confrontation, closure, or revelation.
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 2
-Scene #2: ᚲ OUTERWORLDLY_REALM ᚲ
+Scene #2: ᚲ MYSTERIOUS_PORTAL ᚲ
 Arc: CH1 CLIMAX
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus: decode the return codex relay
@@ -374,11 +374,12 @@ DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
+ᚱ ENTRANCES: north
 [Threat Tier: 1 | HP: 150/150]
 --
 INTERACT: You examine the Holographic Terminal.
 A distorted projection.
-HIDDEN LORE DISCOVERED: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
+HIDDEN LORE DISCOVERED: The missing rangers were not captured; they surrendered willingly to the whispers.
 THREAD UPDATED: Forbidden truth appended to the active focus thread.
 NEURAL_TRACKING: Shifting coordinates to south
 ---
@@ -392,14 +393,13 @@ INTERACTIVE OBJECTS:
 INTERACT: You examine the Veiled Gate.
 A veiled gate shivering with impossible geometry.
 VEILED_GATE: The threshold parts and reveals a path into the alien dark.
-PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ OUTERWORLDLY_REALM ᚲ
+PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ MYSTERIOUS_PORTAL ᚲ
 SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.
 ---
-ᚲ OUTERWORLDLY_REALM ᚲ
-A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defying roads.
+ᚲ MYSTERIOUS_PORTAL ᚲ
+A thin alien threshold shivering with arcane fields and extradimensional static.
 INTERACTIVE OBJECTS:
   > [?] Return Gate
-  > [?] Alien Monolith
 ᚱ ENTRANCES: north, south
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -410,7 +410,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Zinc Plating
+ [ᛟ] Corrupt Watcher Core
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -437,15 +437,15 @@ Companions (Party):
 Notes: 7 scenes / 4 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ
   NPCs: Bound Ranger | Ranger Operative
   Facts:
    - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
    - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
-   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
+   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ.
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus Themes: survivor rescue and uncanny revelation
@@ -467,11 +467,11 @@ Scene Cards:
  * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
  * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
  * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
- * ᚲ OUTERWORLDLY_REALM ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
+ * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative
 Known NPCs:
  * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
- * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ, ᚲ OUTERWORLDLY_REALM ᚲ
+ * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 -------------------
 --- CLIMAX OK ---
