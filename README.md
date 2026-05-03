@@ -47,6 +47,7 @@ Then run `:PlugInstall`.
 21. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 22. **The Abyssal Throne**: Once you've completed all three core objectives (rescue rangers, recover lost tomes, purify altars), examine the Arcane Terminal again. A new `Abyssal Sigil` will bloom in the Merchandise Store Room. `interact Abyssal Sigil` to descend onto the Abyssal Throne and confront the Voidmaw Abyssalgeist in a two-phase duel. Both phases must be defeated; then `interact Throne Sigil` to seal the breach for the epilogue.
 23. **Montage**: Use `:call s:run('montage [summary]')` to montage past intervening action -- the command resets the Surge Count, advances the scene index, and stamps a `Montage carry: ...` fact on every active thread.
+24. **Unexpected Modifiers**: When `ask` rolls "and unexpectedly", the Table 2 result now actually mutates the world: Limelit zeroes Surge, Entering the Red spawns a hostile, Enter Stage Left adds a roving NPC, the To-X stage modifiers recalibrate the Loom, Foreshadowing/Tying Off rewrite the focus thread's trajectory, Set Change opens a hidden exit, Montage advances the scene index, and Upstaged spikes Surge.
 
 ## Architecture
 This project follows functional programming principles:

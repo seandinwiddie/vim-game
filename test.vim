@@ -300,6 +300,19 @@ call s:assert_true(index(s:state.player.spells, 'Stellar Burst Barrage') != -1, 
 let s:flavor = game#enemies#flavor_lines('Obsidian Warden')
 call s:assert_true(!empty(s:flavor), 'Combat flavor lookup should return signature data for Obsidian Warden.')
 
+" Table 2 oracle modifiers should mutate state deterministically via the public apply_modifier helper.
+let s:mod_state = deepcopy(s:state)
+let s:mod_state.surge = 7
+let s:mod_state.stage = 'knowledge'
+let s:mod_result = game#oracle#apply_modifier(s:mod_state, 'limelit')
+call s:assert_true(s:mod_result.state.surge == 0, 'Limelit modifier should zero the Surge Count.')
+let s:mod_result = game#oracle#apply_modifier(s:mod_state, 'to endings')
+call s:assert_true(s:mod_result.state.stage ==# 'endings', 'To Endings modifier should shift stage to endings.')
+let s:upstage_state = deepcopy(s:state)
+let s:upstage_state.surge = 1
+let s:mod_result = game#oracle#apply_modifier(s:upstage_state, 'upstaged')
+call s:assert_true(s:mod_result.state.surge == 5, 'Upstaged modifier should bump Surge Count by 4.')
+
 " Montage should advance the scene index, reset Surge, and append a montage carry-fact to every active thread.
 let s:montage_state = deepcopy(s:state)
 let s:montage_state.surge = 6
