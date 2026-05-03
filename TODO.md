@@ -143,7 +143,7 @@ items that would unblock the most other items if tackled now.
     Updating a copy edit is `make update-snapshots`. Updating a behavior
     requires a deliberate snapshot diff review.
 
-- [ ] **Per-feature test files.**
+- [x] **Per-feature test files.**
   - **Why:** `test.vim` is one ~280-line linear script that aborts on first
     failure. If the boss flow breaks, oracle and montage tests don't even
     run, and we don't learn whether they're independently broken.

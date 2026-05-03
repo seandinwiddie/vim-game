@@ -1,4 +1,6 @@
 --- START TESTS ---
+PASS: architecture
+PASS: economy
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 2
@@ -474,5 +476,11 @@ Known NPCs:
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
  * Storm Titan | scenes: ᚲ MYSTERIOUS_PORTAL ᚲ
 -------------------
---- CLIMAX OK ---
+PASS: story
+--- COMBAT OK ---
 ENEMY SIGNATURE: Dark Crystal Shielding -- Crystalline poison shards lash out from the obsidian form.
+PASS: combat
+PASS: oracle
+--- CLIMAX OK ---
+PASS: climax
+--- ALL TESTS OK ---

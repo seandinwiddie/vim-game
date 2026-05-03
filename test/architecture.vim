@@ -1,0 +1,131 @@
+function! QuadarTest_RunArchitecture() abort
+  call QuadarTest_AssertSubdomainLimits()
+  call QuadarTest_AssertTrue(isdirectory('test'), 'Per-feature tests should live under test/.')
+  call QuadarTest_AssertFileContains(QuadarTest_Path('test_entry'), 'test/run_all.vim', 'test.vim should delegate to the split test driver.')
+  call QuadarTest_AssertFileContains(QuadarTest_Path('run_all'), 'cquit', 'test/run_all.vim should exit with a failure count when feature tests fail.')
+
+  let l:action_file = QuadarTest_Path('action')
+  let l:combat_file = QuadarTest_Path('combat')
+  let l:combat_spells_file = QuadarTest_Path('combat_spells')
+  let l:enemies_file = QuadarTest_Path('enemies')
+  let l:procgen_file = QuadarTest_Path('procgen')
+  let l:oracle_file = QuadarTest_Path('oracle')
+  let l:match_file = QuadarTest_Path('match')
+  let l:store_file = QuadarTest_Path('store')
+  let l:reducer_file = QuadarTest_Path('reducer')
+  let l:engine_file = QuadarTest_Path('engine')
+  let l:core_file = QuadarTest_Path('core')
+  let l:rng_file = QuadarTest_Path('rng')
+  let l:tuning_file = QuadarTest_Path('tuning')
+  let l:framework_file = QuadarTest_Path('framework')
+  let l:meeting_file = QuadarTest_Path('meeting')
+  let l:party_file = QuadarTest_Path('party')
+  let l:player_file = QuadarTest_Path('player')
+  let l:economy_file = QuadarTest_Path('economy')
+  let l:interact_file = QuadarTest_Path('interact')
+
+  call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#make', 'action.vim must define the action factory.')
+  call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#command', 'action.vim must define the command-to-action mapper.')
+  call QuadarTest_AssertFileContains(l:action_file, 'explore/travelRequested', 'action.vim must centralize event-style action types.')
+  call QuadarTest_AssertFileContains(l:action_file, 'story/frameworkRequested', 'action.vim must route framework commands through typed story actions.')
+  call QuadarTest_AssertFileContains(l:action_file, 'story/meetingRequested', 'action.vim must route Meeting of Minds commands through typed story actions.')
+  call QuadarTest_AssertFileContains(l:action_file, 'party/commandRequested', 'action.vim must route party commands through typed actions.')
+  call QuadarTest_AssertFileNotContains(l:action_file, '/set', 'action.vim should use event-style action names instead of setter-style names.')
+
+  call QuadarTest_AssertFileContains(l:store_file, 'function! game#store#create', 'store.vim must define create().')
+  call QuadarTest_AssertFileContains(l:store_file, 'function! game#store#dispatch(', 'store.vim must define dispatch().')
+  call QuadarTest_AssertFileContains(l:store_file, 'function! game#store#dispatch_batch', 'store.vim must define dispatch_batch().')
+  call QuadarTest_AssertFileContains(l:store_file, 'function! game#store#subscribe', 'store.vim must define subscribe().')
+  call QuadarTest_AssertFileContains(l:store_file, 'game#reducer#reduce', 'store.vim dispatch must route through the reducer.')
+
+  call QuadarTest_AssertFileContains(l:match_file, 'function! game#match#one', 'match.vim must expose the shared exact/unique-prefix matcher.')
+  call QuadarTest_AssertFileContains(l:combat_file, 'function! game#combat#cmd_attack(state, ...) abort', 'combat.vim should expose optional attack roll injection for tests.')
+  call QuadarTest_AssertFileContains(l:combat_file, 'function! game#combat#cmd_cast(state, spell_name, ...) abort', 'combat.vim should expose optional cast roll injection for tests.')
+  call QuadarTest_AssertFileContains(l:combat_file, "get(a:opts, 'rolls', {})", 'combat.vim should honor injected combat rolls when provided.')
+  call QuadarTest_AssertFileContains(l:combat_file, 'game#combat#spells#match(', 'combat.vim should route spell-name lookup through the shared matcher flow.')
+  call QuadarTest_AssertFileContains(l:combat_file, 'game#combat#spells#cast', 'combat.vim should delegate spell execution through the spell registry.')
+  call QuadarTest_AssertFileNotContains(l:combat_file, "elseif l:matched_spell ==#", 'combat.vim should not keep inline spell-name handler chains.')
+  call QuadarTest_AssertFileContains(l:combat_spells_file, 'function! game#combat#spells#match(', 'combat/spells.vim must expose structured spell matching via the shared matcher.')
+  call QuadarTest_AssertFileContains(l:combat_spells_file, 'function! game#combat#spells#get', 'combat/spells.vim must expose the spell registry lookup.')
+  call QuadarTest_AssertFileContains(l:combat_spells_file, 'function! game#combat#spells#cast', 'combat/spells.vim must expose the spell dispatcher.')
+  call QuadarTest_AssertFileContains(l:combat_spells_file, "get(a:ctx, 'opts', {})", 'combat/spells.vim should honor injected spell rolls when provided.')
+  call QuadarTest_AssertFileContains(l:enemies_file, 'function! game#enemies#pool', 'enemies.vim must expose the canonical enemy pool helper.')
+  call QuadarTest_AssertFileContains(l:enemies_file, 'function! game#enemies#select', 'enemies.vim must expose a canonical enemy selection helper.')
+  call QuadarTest_AssertFileContains(l:enemies_file, 'game#match#one(', 'enemies.vim should route archetype lookup through the shared matcher.')
+  call QuadarTest_AssertFileContains(l:procgen_file, 'game#enemies#pool(', 'procgen.vim should source encounter pools from enemies.vim.')
+  call QuadarTest_AssertFileNotContains(l:procgen_file, 'function! s:enemy_pool', 'procgen.vim should not keep a duplicate enemy-pool definition.')
+  call QuadarTest_AssertFileContains(l:player_file, 'game#enemies#select(', 'player.vim should source dynamic rest spawns from the canonical enemy catalog.')
+  call QuadarTest_AssertFileContains(l:oracle_file, 'game#enemies#select(', 'oracle.vim should source Entering the Red spawns from the canonical enemy catalog.')
+  call QuadarTest_AssertFileContains(l:player_file, 'game#match#one(', 'player.vim should route item-name lookup through the shared matcher.')
+  call QuadarTest_AssertFileContains(l:economy_file, 'game#match#one(', 'economy.vim should route ware and inventory lookup through the shared matcher.')
+  call QuadarTest_AssertFileContains(l:party_file, 'game#match#one(', 'party.vim should route companion lookup through the shared matcher.')
+  call QuadarTest_AssertFileContains(l:interact_file, 'game#match#one(', 'interact.vim should route object lookup through the shared matcher.')
+  call QuadarTest_AssertFileContains(l:tuning_file, 'function! game#tuning#get', 'tuning.vim must expose the canonical tuning lookup.')
+  call QuadarTest_AssertFileContains(l:combat_file, 'game#tuning#get(', 'combat.vim should source combat balance numbers from tuning.vim.')
+  call QuadarTest_AssertFileContains(l:combat_spells_file, 'game#tuning#get(', 'combat/spells.vim should source spell balance numbers from tuning.vim.')
+  call QuadarTest_AssertFileContains(l:player_file, 'game#tuning#get(', 'player.vim should source consumable and rest balance numbers from tuning.vim.')
+  call QuadarTest_AssertFileContains(l:oracle_file, 'game#tuning#get(', 'oracle.vim should source oracle balance numbers from tuning.vim.')
+  call QuadarTest_AssertFileContains(l:enemies_file, 'game#tuning#get(', 'enemies.vim should source boss balance numbers from tuning.vim.')
+  call QuadarTest_AssertFileContains(l:procgen_file, 'game#tuning#get(', 'procgen.vim should source friendly spawn thresholds from tuning.vim.')
+  call QuadarTest_AssertFileContains(l:player_file, 'function! game#player#heal', 'player.vim must expose a shared HP clamp helper.')
+  call QuadarTest_AssertFileContains(l:combat_spells_file, 'game#player#heal(', 'combat/spells.vim should route healing spells through the shared HP helper.')
+  call QuadarTest_AssertFileContains(l:economy_file, 'game#player#heal(', 'economy.vim should route HP-restoring upgrades through the shared HP helper.')
+  call QuadarTest_AssertFileContains(l:interact_file, 'game#player#heal(', 'interact.vim should route healing interactions through the shared HP helper.')
+  call QuadarTest_AssertFileNotContains(l:combat_spells_file, 'player.hp = min([', 'combat/spells.vim should not inline HP clamp math.')
+  call QuadarTest_AssertFileNotContains(l:economy_file, 'player.hp = min([', 'economy.vim should not inline HP clamp math.')
+  call QuadarTest_AssertFileNotContains(l:interact_file, 'player.hp = min([', 'interact.vim should not inline HP clamp math.')
+  call QuadarTest_AssertFileNotContains(l:combat_spells_file, "=~# '^' .", 'combat/spells.vim should not keep ad hoc prefix-matching logic.')
+  call QuadarTest_AssertFileNotContains(l:economy_file, "=~# '^' .", 'economy.vim should not keep ad hoc prefix-matching logic.')
+  call QuadarTest_AssertFileNotContains(l:party_file, "=~# '^' .", 'party.vim should not keep ad hoc prefix-matching logic.')
+  call QuadarTest_AssertFileNotContains(l:player_file, "=~# '^' .", 'player.vim should not keep ad hoc prefix-matching logic.')
+  call QuadarTest_AssertFileNotContains(l:interact_file, "=~# '^' .", 'interact.vim should not keep ad hoc prefix-matching logic.')
+
+  call QuadarTest_AssertFileContains(l:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
+  call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
+  call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'story/frameworkRequested'", 'reducer.vim must route framework story actions.')
+  call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'story/meetingRequested'", 'reducer.vim must route Meeting of Minds story actions.')
+  call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'party/commandRequested'", 'reducer.vim must route party actions.')
+  call QuadarTest_AssertFileContains(l:reducer_file, "Unknown action_vector", 'reducer.vim must surface unknown actions explicitly.')
+  call QuadarTest_AssertFileContains(l:framework_file, 'function! game#story#framework#cmd_framework', 'framework.vim must define the vignette framework command handler.')
+  call QuadarTest_AssertFileContains(l:framework_file, 'framework theme', 'framework.vim must expose theme-setting guidance.')
+  call QuadarTest_AssertFileContains(l:meeting_file, 'function! game#story#meeting#cmd_meeting', 'meeting.vim must define the Meeting of Minds command handler.')
+  call QuadarTest_AssertFileContains(l:meeting_file, 'function! game#story#meeting#summary', 'meeting.vim must define the Meeting of Minds summary helper.')
+  call QuadarTest_AssertFileContains(l:party_file, 'function! game#party#cmd_party', 'party.vim must define the party command handler.')
+  call QuadarTest_AssertFileContains(l:party_file, 'function! game#party#group_bonus', 'party.vim must centralize active companion bonuses.')
+
+  call QuadarTest_AssertFileContains(l:core_file, "return game#reducer#reduce(a:state, game#action#command(a:input))", 'core.vim must delegate command processing through the action/reducer pipeline.')
+  call QuadarTest_AssertFileNotContains(l:core_file, "elseif l:action ==#", 'core.vim should not keep the legacy command router.')
+  call QuadarTest_AssertFileContains(l:core_file, "'rng_seed': game#rng#default_seed()", 'core.vim should seed new runs through the shared RNG helper.')
+  call QuadarTest_AssertFileContains(l:rng_file, 'function! game#rng#next', 'rng.vim must define the shared RNG step helper.')
+  call QuadarTest_AssertFileContains(l:rng_file, 'function! game#rng#draw', 'rng.vim must define bounded draws for command handlers.')
+
+  call QuadarTest_AssertFileContains(l:engine_file, 'game#store#create(game#core#init())', 'engine.vim must bootstrap the store from initial state.')
+  call QuadarTest_AssertFileContains(l:engine_file, 'game#store#subscribe', 'engine.vim must subscribe redraws to store changes.')
+  call QuadarTest_AssertFileContains(l:engine_file, 'game#store#dispatch_input', 'engine.vim must dispatch user input through the store.')
+  call QuadarTest_AssertFileNotContains(l:engine_file, 'let s:state = game#core#process', 'engine.vim should not mutate local state directly anymore.')
+
+  for l:file in sort(globpath('autoload/game', '**/*.vim', 0, 1))
+    call QuadarTest_AssertTrue(stridx(join(readfile(l:file), "\n"), 'reltime') == -1, l:file . ' should not depend on reltime()-based randomness.')
+  endfor
+
+  for l:key in [
+        \ 'player.consumables.pollen_vial_heal',
+        \ 'player.consumables.field_rations_heal',
+        \ 'player.consumables.ranger_field_kit',
+        \ 'player.rest',
+        \ 'combat.mark_bonus',
+        \ 'combat.attack',
+        \ 'combat.spells.dark_crystal',
+        \ 'combat.spells.dimensional_weave',
+        \ 'combat.spells.resurgence_ritual',
+        \ 'combat.spells.precision_shot',
+        \ 'combat.spells.offensive',
+        \ 'oracle',
+        \ 'enemies.boss.abyssal_overfiend',
+        \ 'procgen.friendly_spawn'
+        \ ]
+    call QuadarTest_AssertTuningKeyExists(l:key)
+  endfor
+endfunction
+
+call QuadarTest_Register('architecture', function('QuadarTest_RunArchitecture'))
