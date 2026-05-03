@@ -8,6 +8,7 @@
   - `data.vim`: Room instantiation
   - `explore.vim`: Navigational algorithms (`go`, `look`)
   - `combat.vim`: Tactical matrix (`attack`)
+  - `economy.vim`: Merchant ledger, wares, and trade-cache transactions
   - `player.vim`: Character persistence (`inventory`, `profile`, `rest`)
   - `oracle.vim`: Loom of Fate (`ask`, `stage`, `thread`)
   - `story.vim`: Scene focus, objective tracking, and quest rewards
@@ -23,6 +24,8 @@
 - **Objective Loop**: The initial missing-rangers thread now drives concrete quest progress, and terminals can surface follow-on objectives for recovering the codices needed to extract survivors.
 - **Scene Focus**: The active scene now tracks a focus thread so the oracle stage, current room, and objective list reflect the note-driven scene structure from the Familiar.
 - **Dynamic Room Content**: Procedural rooms now scale threat tier from player level/progression and can spawn rescue targets, reliquaries, caches, and stronger enemy archetypes from the Qua'dar appendix.
+- **Merchant Economy**: The starting Merchandise Store Room now exposes a real wares ledger with buy/sell commands, trade-cache currency, and progression through weapons-grade upgrades, spells, rations, and supplies.
+- **Combat Progression**: Enemy kills now bank salvage into the trade cache, `Hunter's Mark` boosts follow-up strikes, `Dark Crystal Shielding` absorbs incoming damage, and purchased loadout changes carry through the run.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -53,6 +56,9 @@
 - `ask [question]` / `a`: Consult the Loom of Fate oracle (e.g. `ask is the door locked?`).
 - `stage [name]` / `1`, `2`, `3`: Shift stage to Knowledge (1), Conflict (2), or Endings (3).
 - `thread [add/rm] [arg]`: Track narrative threads.
+- `shop` / `wares` / `trade` / `t`: Inspect merchant stock and your current trade cache.
+- `buy [item]`: Purchase wares, spells, and upgrades from the store room.
+- `sell [item]`: Convert scavenged relics into trade cache.
 - `quests` / `o`: Review active objectives, completion progress, and current scene focus.
 - `focus [idx]`: Promote one of the active threads as the current scene's main thread.
 - `q`: Terminate the Neural Link.

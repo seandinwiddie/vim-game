@@ -54,6 +54,14 @@ function! game#core#process(state, input) abort
     return game#story#cmd_focus(a:state, l:focus_arg)
   elseif l:action ==# 'quests' || l:action ==# 'objectives' || l:action ==# 'o'
     return game#story#cmd_quests(a:state)
+  elseif l:action ==# 'shop' || l:action ==# 'wares' || l:action ==# 'trade' || l:action ==# 't'
+    return game#economy#cmd_shop(a:state)
+  elseif l:action ==# 'buy'
+    let l:item = join(l:parts[1:], ' ')
+    return game#economy#cmd_buy(a:state, l:item)
+  elseif l:action ==# 'sell'
+    let l:item = join(l:parts[1:], ' ')
+    return game#economy#cmd_sell(a:state, l:item)
   elseif l:action ==# 'attack' || l:action ==# 'fight' || l:action ==# 'c'
     return game#combat#cmd_attack(a:state)
   elseif l:action ==# 'cast' || l:action ==# 'm'
@@ -104,6 +112,7 @@ function! game#core#render(state) abort
         \ "Scene #" . get(l:state.scene, 'index', 1) . ": " . game#story#scene_label(l:state),
         \ "Focus: " . game#story#focus_label(l:state),
         \ game#story#quest_summary(l:state),
+        \ game#economy#status_label(l:state),
         \ l:state.hint,
         \ "--- ACTIVE THREADS ---"
         \ ]
@@ -124,5 +133,6 @@ function! game#core#normalize(state) abort
   if !has_key(l:next_state, 'hint')
     let l:next_state.hint = 'SYSTEM_INIT: Type "look" to scan your surroundings.'
   endif
-  return game#story#hydrate(l:next_state)
+  let l:next_state = game#story#hydrate(l:next_state)
+  return game#economy#hydrate(l:next_state)
 endfunction

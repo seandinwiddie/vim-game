@@ -18,9 +18,7 @@ function! game#player#cmd_use(state, item) abort
   endif
   
   let l:matched_item = a:state.player.inv[l:idx]
-  let l:next_state = copy(a:state)
-  let l:next_state.player = copy(a:state.player)
-  let l:next_state.player.inv = copy(a:state.player.inv)
+  let l:next_state = deepcopy(a:state)
   
   call remove(l:next_state.player.inv, l:idx)
   
@@ -31,6 +29,15 @@ function! game#player#cmd_use(state, item) abort
       let l:next_state.player.hp = l:next_state.player.max_hp
     endif
     return game#core#add_log(l:next_state, ["CONSUMED: " . l:matched_item, "EFFECT: Healed " . l:heal . " HP."])
+  elseif l:matched_item ==# 'Field Rations'
+    let l:heal = 30
+    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
+    return game#core#add_log(l:next_state, ["CONSUMED: " . l:matched_item, "EFFECT: Restored " . l:heal . " HP."])
+  elseif l:matched_item ==# 'Ranger Field Kit'
+    let l:heal = 60
+    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
+    let l:next_state.guard += 6
+    return game#core#add_log(l:next_state, ["DEPLOYED: " . l:matched_item, "EFFECT: Restored " . l:heal . " HP and reinforced your guard by 6."])
   else
     return game#core#add_log(l:next_state, ["USED: " . l:matched_item, "EFFECT: Nothing happens. The relic dissipates into the ether."])
   endif
@@ -39,7 +46,7 @@ endfunction
 function! game#player#cmd_inventory(state) abort
   let l:next_state = copy(a:state)
   let l:next_state.hint = 'DIRECTIVE: Local inventory cache accessed.'
-  let l:lines = ['--- SECURED RELICS ---']
+  let l:lines = ['--- SECURED RELICS ---', game#economy#status_label(a:state)]
   for l:item in a:state.player.inv
     call add(l:lines, ' [ᛟ] ' . l:item)
   endfor
@@ -57,11 +64,19 @@ function! game#player#cmd_profile(state) abort
         \ 'Level: ' . a:state.player.level,
         \ 'HP:    ' . a:state.player.hp . ' / ' . a:state.player.max_hp,
         \ 'STR: ' . a:state.player.str . ' | AGI: ' . a:state.player.agi . ' | ARC: ' . a:state.player.arc,
+        \ 'Trade: ' . get(a:state.player, 'trade', 0) . ' | Guard: ' . get(a:state, 'guard', 0),
+        \ 'Mark: ' . (empty(get(a:state, 'mark', '')) ? 'none' : a:state.mark),
         \ 'Spells:'
         \ ]
   for l:sp in a:state.player.spells
     call add(l:lines, ' - ' . l:sp)
   endfor
+  if !empty(get(a:state.player, 'upgrades', []))
+    call add(l:lines, 'Upgrades:')
+    for l:upgrade in a:state.player.upgrades
+      call add(l:lines, ' + ' . l:upgrade)
+    endfor
+  endif
   call add(l:lines, '----------------------')
   return game#core#add_log(l:next_state, l:lines)
 endfunction

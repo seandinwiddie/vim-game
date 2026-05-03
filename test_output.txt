@@ -5,14 +5,21 @@ Stage: TO KNOWLEDGE | Surge Count: 0
 Scene #1: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
 Focus: Recover the Lost Tomes
 Objectives: 1 active / 1 complete
-DIRECTIVE: Local inventory cache accessed.
+Trade Cache: 17 | Guard: 14 | Mark: none
+DIRECTIVE: Neural diagnostic complete.
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
 2. Recover the Lost Tomes
 
-NEURAL_LINK_ESTABLISHED
-SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ
-You materialize in the Merchandise Store Room.
+Trade Cache: 36 | Guard: 0 | Mark: none
+TRANSACTION: Acquired Hunter's Mark for 12 trade.
+SPELL UPLOADED: Hunter's Mark
+Trade Cache: 24 | Guard: 0 | Mark: none
+TRANSACTION: Acquired Zinc Weave Cloak for 18 trade.
+UPGRADE INSTALLED: AGI +1
+Trade Cache: 6 | Guard: 0 | Mark: none
+TRANSACTION: Sold Gibsonian Shard for 7 trade.
+Trade Cache: 13 | Guard: 0 | Mark: none
 --- OBJECTIVES ---
 Scene #1: ᚠ MERCHANDISE_STORE_ROOM ᚠ
 Focus Thread: Find Missing Rangers
@@ -26,6 +33,7 @@ Objectives: 1 active / 0 complete
 A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.
 INTERACTIVE OBJECTS:
   > [!] Arcane Terminal
+SERVICES: trade
 ᚱ ENTRANCES: west, north
 [Threat Tier: 1 | HP: 150/150]
 --
@@ -47,7 +55,6 @@ ARCHIVE RECOVERED: The reliquary yields a stack of codices and return sigils.
 OBJECTIVE UPDATED: Recover the Lost Tomes [1/1]
 OBJECTIVE COMPLETE: Recover the Lost Tomes
 REWARD ITEM: Signal Codex
-REWARD SPELL: Dark Crystal Shielding
 --- OBJECTIVES ---
 Scene #1: ᚠ MERCHANDISE_STORE_ROOM ᚠ
 Focus Thread: Recover the Lost Tomes
@@ -59,6 +66,9 @@ Objectives: 1 active / 1 complete
   > Find an intact reliquary and recover the codices used to send captives home.
   > Targeting: Search consoles, reliquaries, and archive caches in newly generated sectors.
 ------------------
+CASTING: Dark Crystal Shielding...
+WARD STRENGTH: 14
+DEFENSIVE MATRIX: Crystalline shielding coils around the neural link.
 NEURAL_TRACKING: Shifting coordinates to north
 ---
 ᚢ UMBRAL_REACH_CORRIDOR ᚢ
@@ -68,14 +78,36 @@ DETECTED ENTITIES:
 ᚱ ENTRANCES: north, east, south
 [Threat Tier: 1 | HP: 150/150]
 --
+CASTING: Hunter's Mark on Ashwalker...
+TARGET LOCK: +4 to the next strike against this hostile.
 CASTING: Ethereal Dagger Assault on Ashwalker...
-ARCANE_ROLL: 9
-RESISTED: The Ashwalker deflects the magic and counterattacks!
-SUSTAINED DAMAGE: -9 HP.
+ARCANE_ROLL: 20
+CRITICAL HIT: The spell overwhelms the Ashwalker!
+HUNTER'S MARK: Target lock collapses with the kill.
+SALVAGE BANKED: +4 trade from Ashwalker.
+LOOT RECOVERED: Eldritch Medallion
 --- SECURED RELICS ---
+Trade Cache: 17 | Guard: 14 | Mark: none
  [ᛟ] Basic Dagger
  [ᛟ] Scout Gear
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
+ [ᛟ] Eldritch Medallion
+----------------------
+--- PLAYER PROFILE ---
+Name:  Kamenal
+Class: Rogue/Ranger
+Level: 12
+HP:    150 / 150
+STR: 5 | AGI: 9 | ARC: 4
+Trade: 17 | Guard: 14
+Mark: none
+Spells:
+ - Ethereal Dagger Assault
+ - Cloak of Shadows
+ - Dark Crystal Shielding
+ - Hunter's Mark
+Upgrades:
+ + Zinc Weave Cloak
 ----------------------

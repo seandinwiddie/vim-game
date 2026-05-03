@@ -23,6 +23,10 @@ function! game#explore#cmd_look(state) abort
       call add(l:lines, '  > ' . l:marker . ' ' . l:obj_name)
     endfor
   endif
+
+  if has_key(l:room, 'services') && !empty(l:room.services)
+    call add(l:lines, 'SERVICES: ' . join(l:room.services, ', '))
+  endif
         
   if !empty(l:room.entities)
     call add(l:lines, 'DETECTED ENTITIES:')
@@ -189,7 +193,7 @@ endfunction
 
 function! game#explore#generate_room(seed, entrance_dir, entrance_id, state) abort
   let l:roll = (a:seed % 20) + 1
-  let l:room = {'exits': {a:entrance_dir : a:entrance_id}, 'entities': [], 'objects': []}
+  let l:room = {'exits': {a:entrance_dir : a:entrance_id}, 'entities': [], 'objects': [], 'services': []}
   
   let l:envs = [
         \ {'name': 'Ethereal Marshlands', 'desc': 'Swampy, desolate marshlands stretched like a soul-devouring abyss.'},
