@@ -2,23 +2,63 @@
 ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 0
+Scene #1: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+Focus: Recover the Lost Tomes
+Objectives: 1 active / 1 complete
 DIRECTIVE: Local inventory cache accessed.
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
+2. Recover the Lost Tomes
 
 NEURAL_LINK_ESTABLISHED
 SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ
 You materialize in the Merchandise Store Room.
+--- OBJECTIVES ---
+Scene #1: ᚠ MERCHANDISE_STORE_ROOM ᚠ
+Focus Thread: Find Missing Rangers
+Objectives: 1 active / 0 complete
+[ACTIVE] Rescue the Missing Rangers [0/2]
+  > Locate stranded ranger operatives and open a route back through Quadar Tower.
+  > Targeting: Search newly opened sectors for bound recruits, distress beacons, and field caches.
+------------------
 ---
 ᚠ MERCHANDISE_STORE_ROOM ᚠ
 A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.
 INTERACTIVE OBJECTS:
-  > [?] Arcane Terminal
+  > [!] Arcane Terminal
 ᚱ ENTRANCES: west, north
-[HP: 150/150]
+[Threat Tier: 1 | HP: 150/150]
 --
 INTERACT: You examine the Arcane Terminal.
-A flickering terminal detailing recent shipments.
+A flickering terminal detailing recent shipments, missing operatives, and scavenged codices.
+MISSION UPDATE: Recon protocol refreshed. Missing rangers are still alive somewhere beyond the tower shell.
+MISSION UPDATE: Archive traces reveal codices capable of sending captives home.
+OBJECTIVE ADDED: Recover the Lost Tomes
+SCENE_FOCUS: Recover the Lost Tomes
+STAGE LOCK: TO KNOWLEDGE
+INTERACT: You examine the Bound Ranger.
+A shackled recruit calls for extraction.
+EXTRACTION: You cut a stranded ranger free and fold them back into the recon circuit.
+RECOVERED: Ranger Signal Token
+OBJECTIVE UPDATED: Rescue the Missing Rangers [1/2]
+INTERACT: You examine the Sealed Reliquary.
+An archive reliquary full of return codices.
+ARCHIVE RECOVERED: The reliquary yields a stack of codices and return sigils.
+OBJECTIVE UPDATED: Recover the Lost Tomes [1/1]
+OBJECTIVE COMPLETE: Recover the Lost Tomes
+REWARD ITEM: Signal Codex
+REWARD SPELL: Dark Crystal Shielding
+--- OBJECTIVES ---
+Scene #1: ᚠ MERCHANDISE_STORE_ROOM ᚠ
+Focus Thread: Recover the Lost Tomes
+Objectives: 1 active / 1 complete
+[ACTIVE] Rescue the Missing Rangers [1/2]
+  > Locate stranded ranger operatives and open a route back through Quadar Tower.
+  > Targeting: Search newly opened sectors for bound recruits, distress beacons, and field caches.
+[DONE] Recover the Lost Tomes [1/1]
+  > Find an intact reliquary and recover the codices used to send captives home.
+  > Targeting: Search consoles, reliquaries, and archive caches in newly generated sectors.
+------------------
 NEURAL_TRACKING: Shifting coordinates to north
 ---
 ᚢ UMBRAL_REACH_CORRIDOR ᚢ
@@ -26,13 +66,16 @@ A narrow passage of obsidian stone, crystallized in extraterrestrial resonance. 
 DETECTED ENTITIES:
   > [!!] Ashwalker
 ᚱ ENTRANCES: north, east, south
-[HP: 150/150]
+[Threat Tier: 1 | HP: 150/150]
 --
 CASTING: Ethereal Dagger Assault on Ashwalker...
-ARCANE_ROLL: 17
-CRITICAL HIT: The spell overwhelms the Ashwalker!
+ARCANE_ROLL: 9
+RESISTED: The Ashwalker deflects the magic and counterattacks!
+SUSTAINED DAMAGE: -9 HP.
 --- SECURED RELICS ---
  [ᛟ] Basic Dagger
  [ᛟ] Scout Gear
+ [ᛟ] Ranger Signal Token
+ [ᛟ] Lost Tomes
+ [ᛟ] Signal Codex
 ----------------------
-ITEM_ERR: You do not possess 'pollen vial'.

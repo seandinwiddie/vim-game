@@ -10,6 +10,7 @@
   - `combat.vim`: Tactical matrix (`attack`)
   - `player.vim`: Character persistence (`inventory`, `profile`, `rest`)
   - `oracle.vim`: Loom of Fate (`ask`, `stage`, `thread`)
+  - `story.vim`: Scene focus, objective tracking, and quest rewards
 - **Imperative Shell**: The `game#engine` handles rendering the state via `:echo` or appending to a unified `ScratchBuffer` via standard Vim mechanisms (`append()`, `setline()`).
 
 ## ᚢ THE LOOM OF FATE (GAME MECHANICS)
@@ -19,6 +20,9 @@
 - **Unexpected Modifiers**: Rolls d20 on Table 2 (foreshadowing, set change, limelit, etc.) when an "unexpectedly" result triggers.
 - **Narrative Threads**: Integrated a state array for active storylines. Threads are rendered in the Neural Link header to track active goals (e.g. "Find Missing Rangers").
 - **Combat Resolution**: Entering a sector with entities will trigger hostile alerts. The `attack` command rolls against a fixed threshold to calculate damage sustained and entity annihilation. State handles death natively.
+- **Objective Loop**: The initial missing-rangers thread now drives concrete quest progress, and terminals can surface follow-on objectives for recovering the codices needed to extract survivors.
+- **Scene Focus**: The active scene now tracks a focus thread so the oracle stage, current room, and objective list reflect the note-driven scene structure from the Familiar.
+- **Dynamic Room Content**: Procedural rooms now scale threat tier from player level/progression and can spawn rescue targets, reliquaries, caches, and stronger enemy archetypes from the Qua'dar appendix.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -49,6 +53,8 @@
 - `ask [question]` / `a`: Consult the Loom of Fate oracle (e.g. `ask is the door locked?`).
 - `stage [name]` / `1`, `2`, `3`: Shift stage to Knowledge (1), Conflict (2), or Endings (3).
 - `thread [add/rm] [arg]`: Track narrative threads.
+- `quests` / `o`: Review active objectives, completion progress, and current scene focus.
+- `focus [idx]`: Promote one of the active threads as the current scene's main thread.
 - `q`: Terminate the Neural Link.
 
 ---

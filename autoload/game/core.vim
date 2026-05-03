@@ -3,6 +3,7 @@
 " === PURE LOGIC: INITIAL STATE ===
 function! game#core#init() abort
   let l:rooms = game#data#init_rooms()
+  let l:story = game#story#bootstrap()
 
   let l:s = {
         \ 'view': 'game',
@@ -11,10 +12,15 @@ function! game#core#init() abort
         \ 'surge': 0,
         \ 'stage': 'knowledge',
         \ 'threads': ['Find Missing Rangers'],
+        \ 'scene': l:story.scene,
+        \ 'quests': l:story.quests,
+        \ 'flags': l:story.flags,
+        \ 'progress': l:story.progress,
         \ 'rooms': l:rooms,
         \ 'log': [],
         \ 'hint': 'SYSTEM_INIT: Type "look" to scan your surroundings.',
         \ }
+  let l:s = game#core#normalize(l:s)
   return game#core#add_log(l:s, ['NEURAL_LINK_ESTABLISHED', 'SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ', 'You materialize in the Merchandise Store Room.'])
 endfunction
 
@@ -43,6 +49,11 @@ function! game#core#process(state, input) abort
     let l:subcmd = tolower(l:parts[1])
     let l:args = join(l:parts[2:], ' ')
     return game#oracle#cmd_thread(a:state, l:subcmd, l:args)
+  elseif l:action ==# 'focus'
+    let l:focus_arg = len(l:parts) > 1 ? l:parts[1] : ''
+    return game#story#cmd_focus(a:state, l:focus_arg)
+  elseif l:action ==# 'quests' || l:action ==# 'objectives' || l:action ==# 'o'
+    return game#story#cmd_quests(a:state)
   elseif l:action ==# 'attack' || l:action ==# 'fight' || l:action ==# 'c'
     return game#combat#cmd_attack(a:state)
   elseif l:action ==# 'cast' || l:action ==# 'm'
@@ -85,18 +96,33 @@ function! game#core#add_log(state, msg) abort
 endfunction
 
 function! game#core#render(state) abort
+  let l:state = game#core#normalize(a:state)
   let l:header = [
         \ "ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ",
         \ "== QUA'DAR NEURAL LINK ==",
-        \ "Stage: TO " . toupper(a:state.stage) . " | Surge Count: " . a:state.surge,
-        \ a:state.hint,
+        \ "Stage: TO " . toupper(l:state.stage) . " | Surge Count: " . l:state.surge,
+        \ "Scene #" . get(l:state.scene, 'index', 1) . ": " . game#story#scene_label(l:state),
+        \ "Focus: " . game#story#focus_label(l:state),
+        \ game#story#quest_summary(l:state),
+        \ l:state.hint,
         \ "--- ACTIVE THREADS ---"
         \ ]
   let l:idx = 1
-  for l:th in a:state.threads
+  for l:th in l:state.threads
     call add(l:header, l:idx . ". " . l:th)
     let l:idx += 1
   endfor
   call add(l:header, "")
-  return l:header + a:state.log
+  return l:header + l:state.log
+endfunction
+
+function! game#core#normalize(state) abort
+  let l:next_state = deepcopy(a:state)
+  if !has_key(l:next_state, 'threads') || empty(l:next_state.threads)
+    let l:next_state.threads = ['Find Missing Rangers']
+  endif
+  if !has_key(l:next_state, 'hint')
+    let l:next_state.hint = 'SYSTEM_INIT: Type "look" to scan your surroundings.'
+  endif
+  return game#story#hydrate(l:next_state)
 endfunction

@@ -33,6 +33,7 @@ function! s:set_up_buffer() abort
   nnoremap <buffer> <silent> w :call <SID>run('go west')<CR>
   nnoremap <buffer> <silent> c :call <SID>run('attack')<CR>
   nnoremap <buffer> <silent> i :call <SID>run('inventory')<CR>
+  nnoremap <buffer> <silent> o :call <SID>run('quests')<CR>
   nnoremap <buffer> <silent> p :call <SID>run('profile')<CR>
   nnoremap <buffer> <silent> r :call <SID>run('rest')<CR>
   nnoremap <buffer> a :call <SID>prompt_ask()<CR>
@@ -40,7 +41,7 @@ function! s:set_up_buffer() abort
   nnoremap <buffer> <silent> 2 :call <SID>run('stage conflict')<CR>
   nnoremap <buffer> <silent> 3 :call <SID>run('stage endings')<CR>
   
-  echo "Press 'a' to ask, 'c' combat, 'i' inv, 'p' profile, 'r' rest. 'q' quit. 'n/s/e/w' move."
+  echo "Press 'a' ask, 'c' combat, 'i' inv, 'o' objectives, 'p' profile, 'r' rest. 'q' quit. 'n/s/e/w' move."
 endfunction
 
 function! s:prompt_ask() abort

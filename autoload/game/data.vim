@@ -7,7 +7,7 @@ function! game#data#init_rooms() abort
         \   'desc': "A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.",
         \   'exits': {'north': 'hallway', 'west': 'unexplored'},
         \   'entities': [],
-        \   'objects': [{'name': 'Arcane Terminal', 'desc': 'A flickering terminal detailing recent shipments.'}]
+        \   'objects': [{'name': 'Arcane Terminal', 'desc': 'A flickering terminal detailing recent shipments, missing operatives, and scavenged codices.', 'effect': 'briefing'}]
         \ },
         \ 'hallway': {
         \   'name': 'ᚢ UMBRAL_REACH_CORRIDOR ᚢ',
@@ -21,7 +21,7 @@ function! game#data#init_rooms() abort
         \   'desc': "The indomitable tower stands as a testament to long-ago awakening. Colossal structure vibrating with low magic of corrupt watchers. Neon blurs in the Abyssal Murk.",
         \   'exits': {'south': 'hallway', 'east': 'marshes', 'west': 'unexplored', 'north': 'unexplored'},
         \   'entities': [{'name': 'Obsidian Warden', 'str': 7, 'agi': 2, 'arc': 6}],
-        \   'objects': [{'name': 'Chthonic Lever', 'desc': 'A heavy stone mechanism covered in sigils.'}]
+        \   'objects': [{'name': 'Chthonic Lever', 'desc': 'A heavy stone mechanism covered in sigils and linked to hidden passages in the tower shell.', 'effect': 'unlock_exit'}]
         \ },
         \ 'marshes': {
         \   'name': 'ᚨ ETHEREAL_MARSHES ᚨ',
@@ -35,7 +35,7 @@ function! game#data#init_rooms() abort
         \   'desc': "The void that invaded once-holy grounds. The sacredness of the Ethereal Towerlands has given way to the blackness of heavenly damnation.",
         \   'exits': {'south': 'marshes', 'north': 'unexplored', 'east': 'unexplored', 'west': 'unexplored'},
         \   'entities': [{'name': 'Doomguard', 'str': 8, 'agi': 3, 'arc': 3}],
-        \   'objects': [{'name': 'Void Rift', 'desc': 'A swirling vortex of dark energy.'}]
+        \   'objects': [{'name': 'Void Rift', 'desc': 'A swirling vortex of dark energy that warps time, tension, and direction.', 'effect': 'surge_rift'}]
         \ }
         \ }
 endfunction

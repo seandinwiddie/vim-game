@@ -100,7 +100,7 @@ function! game#player#cmd_load(state) abort
   
   try
     let l:json = readfile(l:save_path)[0]
-    let l:next_state = json_decode(l:json)
+    let l:next_state = game#core#normalize(json_decode(l:json))
     return game#core#add_log(l:next_state, "SYSTEM_LOG: State matrix restored from neural backup.")
   catch
     return game#core#add_log(a:state, "LOG_ERR_CRITICAL: Neural backup corrupted.")

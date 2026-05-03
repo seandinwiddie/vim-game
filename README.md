@@ -27,20 +27,22 @@ Then run `:PlugInstall`.
    ```
 2. **Move**: Press `n`, `s`, `e`, or `w` to navigate the spatial nodes of the Quadar Tower.
 3. **Engage**: Press `c` to initiate combat with any hostile entities detected in your current node, or type `:call s:run('cast [spell]')` in command mode to cast a spell.
-4. **Interact**: Type `:call s:run('interact [object]')` to investigate and manipulate environmental objects (e.g. "Arcane Terminal").
+4. **Interact**: Type `:call s:run('interact [object]')` to investigate and manipulate environmental objects. Consoles can add objectives, levers can expose new exits, and special targets can complete missions.
 5. **Inventory**: Press `i` to view the relics and artifacts you've scavenged and looted. Type `:call s:run('use [item]')` to consume items.
 6. **Profile & Rest**: Press `p` to view your character stats and spells, or `r` to rest and recover HP (warning: resting increases your Surge Count!).
 7. **State Persistence**: In command mode, type `:call s:run('save')` to serialize your state to `~/.quadar_save.json`. Use `load` to restore.
 8. **Ask the Oracle**: Press `a` to consult the Loom of Fate (e.g. "is the door locked?"). The system will roll a `d100`, apply your current Surge Count, and generate an outcome.
 9. **Shift Stage**: Press `1` (To Knowledge), `2` (To Conflict), or `3` (To Endings) to alter the oracle's probability matrix based on the scene's tension.
-10. **Manage Threads**: In command mode, type `:call s:run('thread add Rescue the MIA Marine')` to track narrative goals.
-11. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
+10. **Review Objectives**: Press `o`, or type `:call s:run('quests')`, to inspect current mission progress, focus, and completed objectives.
+11. **Manage Threads**: In command mode, type `:call s:run('thread add Rescue the MIA Marine')` to track narrative goals, then `:call s:run('focus 2')` to promote a thread as the active scene focus.
+12. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 
 ## Architecture
 This project follows functional programming principles:
 - **Immutable State**: Game logic operates on a state dictionary.
 - **Pure Views**: The UI is a pure function of the current state.
 - **Side-Effect Isolation**: All buffer manipulations are sequestered in the engine layer.
+- **Story Bookkeeping**: Scene focus, active objectives, and procedural quest targets are tracked directly in state so exploration can react to narrative progress.
 
 ## License
 All rights reserved. © 2026 ForbocAI. See [LICENSE](./LICENSE) for full details.
