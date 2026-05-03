@@ -48,6 +48,8 @@ function! game#story#commands#cmd_notes(state) abort
     endif
   endif
 
+  call extend(l:lines, game#story#meeting#lines(l:next_state))
+
   call extend(l:lines, game#story#ledger#lines(l:next_state))
 
   call add(l:lines, 'Scene Cards:')

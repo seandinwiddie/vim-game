@@ -38,12 +38,13 @@ Then run `:PlugInstall`.
 12. **Open Field Notes**: Press `j`, or type `:call s:run('notes')`, to review CRGE-style notecards for scenes, known NPCs, and established thread facts, including which NPCs are tied to each thread.
 13. **Frame Scenes**: Use `:call s:run('frame [thread#] [stage]')` to explicitly set the current scene's main thread and stage before play.
 14. **Guide the Vignette**: Use `:call s:run('framework')` to inspect the current CRGE vignette card, `framework theme [subject]` to set the chapter question, `framework hook [aspiration]` to store the obscured hook, and `framework next` / `framework phase [name]` to move between Exposition, Rising Action, Climax, and Epilogue.
-15. **Direct the Party**: Use `:call s:run('party')` to inspect your companion roster, `party fade [name]` to pull someone out of the main scene, `party send [name] [thread#]` to put them on an elsewhere/sidebar assignment, and `party rally [name]` to bring them back into the action.
-16. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
-17. **Scene NPCs**: Use `:call s:run('npc add [name]')`, `npc rm [name]`, or `npc` to manage who is instantly present in the current scene.
-18. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
-19. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
-20. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
+15. **Set the Accord**: Use `:call s:run('minds')` to inspect the current Meeting of Minds, `minds focus [theme]` to record preferred material, `minds ban [theme]` to set a hard boundary, `minds note [assumption]` to store a social-contract assumption, and `minds rm [focus|ban|note] [idx]` to trim the list.
+16. **Direct the Party**: Use `:call s:run('party')` to inspect your companion roster, `party fade [name]` to pull someone out of the main scene, `party send [name] [thread#]` to put them on an elsewhere/sidebar assignment, and `party rally [name]` to bring them back into the action.
+17. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
+18. **Scene NPCs**: Use `:call s:run('npc add [name]')`, `npc rm [name]`, or `npc` to manage who is instantly present in the current scene.
+19. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
+20. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
+21. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 
 ## Architecture
 This project follows functional programming principles:
@@ -54,6 +55,7 @@ This project follows functional programming principles:
 - **Story Bookkeeping**: Scene focus, active objectives, and procedural quest targets (like recovering lost tomes or purifying eldritch altars) are tracked directly in state so exploration can react to narrative progress.
 - **Persistent Notecards**: Scene cards, thread facts, known NPCs, and thread-to-NPC links are stored in state so CRGE-style bookkeeping survives past the visible log buffer.
 - **Vignette Framework**: Story state now tracks a CRGE chapter theme, obscured hook, and current dramatic phase so scene framing can move through Exposition, Rising Action, Climax, and Epilogue instead of drifting.
+- **Meeting of Minds**: Story state now tracks preferred themes, banned themes, and table assumptions so the run can keep a visible social contract instead of relying on memory.
 - **Hidden Lore**: Discovering Holographic Terminals or Eldritch Frescoes will dynamically dispense procedural worldbuilding secrets directly into the active thread's fact ledger.
 - **Portal Realms**: Veiled gates inside Mysterious Portals, Dimensional Nexus chambers, and Outerworldly Realms can branch the run into alien pocket-zones and back again.
 - **Environmental Hazards**: Movement logic parses the procedural biome of the destination (e.g. Toxic Wastes, Mud Slides, Dimensional Nexus) to apply dynamic damage, tension spikes, or navigational warnings.

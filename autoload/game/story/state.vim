@@ -3,6 +3,7 @@
 function! game#story#state#bootstrap() abort
   return {
         \ 'scene': {'index': 1, 'location': 'nexus', 'focus': 1},
+        \ 'meeting': {'focuses': [], 'banned': [], 'assumptions': []},
         \ 'framework': {
         \   'name': 'Vignette',
         \   'chapter': 1,
@@ -53,6 +54,9 @@ function! game#story#state#hydrate(state) abort
   if !has_key(l:next_state, 'framework')
     let l:next_state.framework = deepcopy(l:defaults.framework)
   endif
+  if !has_key(l:next_state, 'meeting')
+    let l:next_state.meeting = deepcopy(l:defaults.meeting)
+  endif
   if !has_key(l:next_state, 'notes')
     let l:next_state.notes = deepcopy(l:defaults.notes)
   endif
@@ -85,6 +89,15 @@ function! game#story#state#hydrate(state) abort
   endif
   if !has_key(l:next_state.framework, 'hook')
     let l:next_state.framework.hook = l:defaults.framework.hook
+  endif
+  if !has_key(l:next_state.meeting, 'focuses')
+    let l:next_state.meeting.focuses = deepcopy(l:defaults.meeting.focuses)
+  endif
+  if !has_key(l:next_state.meeting, 'banned')
+    let l:next_state.meeting.banned = deepcopy(l:defaults.meeting.banned)
+  endif
+  if !has_key(l:next_state.meeting, 'assumptions')
+    let l:next_state.meeting.assumptions = deepcopy(l:defaults.meeting.assumptions)
   endif
   if !has_key(l:next_state.notes, 'scene_cards')
     let l:next_state.notes.scene_cards = []

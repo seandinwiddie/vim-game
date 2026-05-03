@@ -32,6 +32,10 @@ function! game#story#framework_phase_label(state) abort
   return game#story#framework#phase_label(a:state)
 endfunction
 
+function! game#story#meeting_summary(state) abort
+  return game#story#meeting#summary(a:state)
+endfunction
+
 function! game#story#cmd_quests(state) abort
   return game#story#commands#cmd_quests(a:state)
 endfunction
@@ -70,6 +74,10 @@ endfunction
 
 function! game#story#cmd_framework(state, subcmd, args) abort
   return game#story#framework#cmd_framework(a:state, a:subcmd, a:args)
+endfunction
+
+function! game#story#cmd_meeting(state, subcmd, args) abort
+  return game#story#meeting#cmd_meeting(a:state, a:subcmd, a:args)
 endfunction
 
 function! game#story#ensure_thread(state, thread_name) abort

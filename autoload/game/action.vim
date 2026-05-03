@@ -29,6 +29,8 @@ function! game#action#command(input) abort
     return game#action#make('story/frameRequested', {'raw': l:cmd, 'thread_ref': len(l:parts) > 1 ? l:parts[1] : '', 'stage': len(l:parts) > 2 ? l:parts[2] : ''})
   elseif l:head ==# 'framework' || l:head ==# 'arc'
     return game#action#make('story/frameworkRequested', {'raw': l:cmd, 'subcmd': len(l:parts) > 1 ? l:parts[1] : 'show', 'args': len(l:parts) > 2 ? join(l:parts[2:], ' ') : ''})
+  elseif l:head ==# 'minds' || l:head ==# 'meeting' || l:head ==# 'accord'
+    return game#action#make('story/meetingRequested', {'raw': l:cmd, 'subcmd': len(l:parts) > 1 ? l:parts[1] : 'show', 'args': len(l:parts) > 2 ? join(l:parts[2:], ' ') : ''})
   elseif l:head ==# 'scene' || l:head ==# 'sc'
     return game#action#make('story/sceneReviewed', {'raw': l:cmd})
   elseif l:head ==# 'npc'

@@ -47,6 +47,7 @@
 - **RTK-Style Store Layer**: Inputs now flow through event-style actions, a root reducer, and a small Vimscript store/subscription layer so the engine redraws from dispatched state changes instead of directly mutating local state.
 - **Veiled Gate Traversal**: Portal biomes now surface interactable gates that branch into generated Outerworldly / Nexus pocket-zones, preserve a return path, and write the crossing into the scene ledger.
 - **Vignette Framework Card**: Added Familiar-inspired framework tracking for theme, hook, chapter, and dramatic phase so a run can move through Exposition, Rising Action, Climax, and Epilogue with explicit scene guidance.
+- **Meeting of Minds Card**: Added a lightweight social-contract layer for focus themes, banned themes, and assumptions so the current run can keep its boundaries and intended tone visible in the UI and notes.
 - **Architecture Guard**: The Vim test harness now fails if a game module grows beyond 300 lines, forcing oversized files to be split into subdomains.
 - **Scene Lifecycle**: Added explicit scene-card review, fade-out summaries, and elsewhere/sidebar facts so the CRGE scene loop is represented directly in play.
 - **Scene Setup**: Added explicit scene framing plus NPC-presence management so the active scene can be staged around a chosen thread, stage, and cast before action begins.
@@ -97,6 +98,11 @@
 - `framework hook [aspiration]`: Store the obscured hook tugging the chapter forward.
 - `framework phase [name]`: Explicitly set the dramatic phase to exposition, rising, climax, or epilogue.
 - `framework next`: Advance the current framework to the next dramatic phase, rolling to a new chapter after epilogue.
+- `minds` / `meeting` / `accord`: Review the current Meeting of Minds card.
+- `minds focus [theme]`: Add a preferred theme or focus column entry.
+- `minds ban [theme]`: Add a banned theme or hard boundary.
+- `minds note [assumption]`: Add a current assumption or social-contract note.
+- `minds rm [focus|ban|note] [idx]`: Remove a Meeting of Minds entry by type and index.
 - `party` / `companions`: Review companion scene state and current Group Dynamics bonus.
 - `party fade [name]`: Pull a companion out of the main scene so others can react.
 - `party send [name] [thread#]`: Put a companion on an elsewhere/sidebar assignment tied to another thread.
