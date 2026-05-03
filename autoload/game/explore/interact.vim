@@ -45,7 +45,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
   elseif l:effect ==# 'overfiend_seal'
     let l:consume_object = 1
     let l:next_state.surge = 0
-    let l:next_state.player.hp = l:next_state.player.max_hp
+    let l:next_state = game#player#heal(l:next_state, l:next_state.player.max_hp)
     let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Confront the Abyssal Overfiend', 'The Throne Sigil was defiled, sealing Goeteian Chthonica out of Migdal Kudar.')
     call add(l:log_lines, 'BREACH SEALED: You defile the Throne Sigil. The Surge Count zeroes; vital signs restored to maximum.')
     call add(l:log_lines, 'ᚷ The rangers can be ferried home through the recovered codices. The vignette closes. ᚷ')
@@ -89,7 +89,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:consume_object = 1
     call add(l:log_lines, 'SANCTIFICATION: You channel pure energy into the altar, cleansing the eldritch taint.')
     let l:heal = 15
-    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
+    let l:next_state = game#player#heal(l:next_state, l:heal)
     call add(l:log_lines, 'RECOVERED: The holy resonance restores ' . l:heal . ' HP.')
     let l:quest_progress = game#story#advance_quest(l:next_state, 'purify-altars', 1)
     let l:next_state = l:quest_progress.state
@@ -109,7 +109,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     call add(l:log_lines, 'PARTY UPDATE: ' . l:companion.name . ' joins your unit, swelling Group Dynamics.')
   elseif l:effect ==# 'field_cache'
     let l:consume_object = 1
-    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + 20])
+    let l:next_state = game#player#heal(l:next_state, 20)
     call add(l:next_state.player.inv, 'Field Rations')
     call add(l:log_lines, 'CACHE BREACH: You recover field rations and patch your wounds for +20 HP.')
   elseif l:effect ==# 'hidden_lore'

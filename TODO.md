@@ -211,7 +211,7 @@ items that would unblock the most other items if tackled now.
     }
     ```
 
-- [ ] **Centralize HP clamping.**
+- [x] **Centralize HP clamping.**
   - **Why:** `let l:next_state.player.hp = min([l:next_state.player.max_hp,
     l:next_state.player.hp + heal])` appears 6+ times verbatim across
     `player.vim`, `interact.vim`, `combat.vim`.

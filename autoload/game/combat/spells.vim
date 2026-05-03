@@ -55,7 +55,7 @@ endfunction
 function! s:cast_heal(state, spell_name, spell, ctx) abort
   let l:next_state = a:state
   let l:heal = game#tuning#get(a:spell.tuning_key . '.base_heal') + a:ctx.player_arc
-  let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
+  let l:next_state = game#player#heal(l:next_state, l:heal)
   let l:next_state.hint = a:spell.hint
   return game#core#add_log(l:next_state, [
         \ 'CASTING: ' . a:spell_name . '...',

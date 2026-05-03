@@ -87,7 +87,7 @@ function! game#economy#cmd_buy(state, item_name) abort
       call add(l:log_lines, 'UPGRADE INSTALLED: STR +1')
     elseif l:ware.id ==# 'signal-booster-rig'
       let l:next_state.player.max_hp += 20
-      let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + 20])
+      let l:next_state = game#player#heal(l:next_state, 20)
       call add(l:log_lines, 'UPGRADE INSTALLED: MAX HP +20')
     endif
   else

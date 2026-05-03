@@ -1,5 +1,10 @@
 " autoload/game/player.vim - Player Mechanics
 
+function! game#player#heal(state, amount) abort
+  let a:state.player.hp = min([a:state.player.max_hp, a:state.player.hp + a:amount])
+  return a:state
+endfunction
+
 function! game#player#cmd_use(state, item) abort
   if empty(a:item)
     return game#core#add_log(a:state, "LOG_ERR: Specify an item to use (e.g. 'use Pollen Vial').")
@@ -24,18 +29,15 @@ function! game#player#cmd_use(state, item) abort
   
   if l:matched_item ==# 'Pollen Vial' || l:matched_item ==# 'Abyssal Ash'
     let l:heal = game#tuning#get('player.consumables.pollen_vial_heal')
-    let l:next_state.player.hp += l:heal
-    if l:next_state.player.hp > l:next_state.player.max_hp
-      let l:next_state.player.hp = l:next_state.player.max_hp
-    endif
+    let l:next_state = game#player#heal(l:next_state, l:heal)
     return game#core#add_log(l:next_state, ["CONSUMED: " . l:matched_item, "EFFECT: Healed " . l:heal . " HP."])
   elseif l:matched_item ==# 'Field Rations'
     let l:heal = game#tuning#get('player.consumables.field_rations_heal')
-    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
+    let l:next_state = game#player#heal(l:next_state, l:heal)
     return game#core#add_log(l:next_state, ["CONSUMED: " . l:matched_item, "EFFECT: Restored " . l:heal . " HP."])
   elseif l:matched_item ==# 'Ranger Field Kit'
     let l:field_kit = game#tuning#get('player.consumables.ranger_field_kit')
-    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:field_kit.heal])
+    let l:next_state = game#player#heal(l:next_state, l:field_kit.heal)
     let l:next_state.guard += l:field_kit.guard
     return game#core#add_log(l:next_state, ["DEPLOYED: " . l:matched_item, "EFFECT: Restored " . l:field_kit.heal . " HP and reinforced your guard by " . l:field_kit.guard . "."])
   else
@@ -100,10 +102,7 @@ function! game#player#cmd_rest(state) abort
   endif
 
   let l:heal = l:rest_tuning.heal
-  let l:next_state.player.hp += l:heal
-  if l:next_state.player.hp > l:next_state.player.max_hp
-    let l:next_state.player.hp = l:next_state.player.max_hp
-  endif
+  let l:next_state = game#player#heal(l:next_state, l:heal)
   
   let l:next_state.surge += l:rest_tuning.surge_gain
   let l:next_state.hint = 'WARNING: Resting increases the Surge Count!'

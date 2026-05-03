@@ -161,6 +161,8 @@ let s:framework_file = expand('autoload/game/story/framework.vim')
 let s:meeting_file = expand('autoload/game/story/meeting.vim')
 let s:party_file = expand('autoload/game/party.vim')
 let s:player_file = expand('autoload/game/player.vim')
+let s:economy_file = expand('autoload/game/economy.vim')
+let s:interact_file = expand('autoload/game/explore/interact.vim')
 
 call s:assert_file_contains(s:action_file, 'function! game#action#make', 'action.vim must define the action factory.')
 call s:assert_file_contains(s:action_file, 'function! game#action#command', 'action.vim must define the command-to-action mapper.')
@@ -193,6 +195,13 @@ call s:assert_file_contains(s:player_file, 'game#tuning#get(', 'player.vim shoul
 call s:assert_file_contains(s:oracle_file, 'game#tuning#get(', 'oracle.vim should source oracle balance numbers from tuning.vim.')
 call s:assert_file_contains(s:enemies_file, 'game#tuning#get(', 'enemies.vim should source boss balance numbers from tuning.vim.')
 call s:assert_file_contains(s:procgen_file, 'game#tuning#get(', 'procgen.vim should source friendly spawn thresholds from tuning.vim.')
+call s:assert_file_contains(s:player_file, 'function! game#player#heal', 'player.vim must expose a shared HP clamp helper.')
+call s:assert_file_contains(s:combat_spells_file, 'game#player#heal(', 'combat/spells.vim should route healing spells through the shared HP helper.')
+call s:assert_file_contains(s:economy_file, 'game#player#heal(', 'economy.vim should route HP-restoring upgrades through the shared HP helper.')
+call s:assert_file_contains(s:interact_file, 'game#player#heal(', 'interact.vim should route healing interactions through the shared HP helper.')
+call s:assert_file_not_contains(s:combat_spells_file, 'player.hp = min([', 'combat/spells.vim should not inline HP clamp math.')
+call s:assert_file_not_contains(s:economy_file, 'player.hp = min([', 'economy.vim should not inline HP clamp math.')
+call s:assert_file_not_contains(s:interact_file, 'player.hp = min([', 'interact.vim should not inline HP clamp math.')
 
 call s:assert_file_contains(s:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
 call s:assert_file_contains(s:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
@@ -275,6 +284,11 @@ call s:assert_true(get(get(s:meeting_action, 'payload', {}), 'subcmd', '') ==# '
 let s:trimmed_meeting = game#core#process(s:state, 'minds rm note 1')
 call s:assert_true(empty(get(get(s:trimmed_meeting, 'meeting', {}), 'assumptions', [])), 'Meeting of Minds should support removing stored assumptions.')
 
+let s:heal_state = game#core#init()
+let s:heal_state.player.hp = s:heal_state.player.max_hp - 5
+let s:heal_state = game#player#heal(s:heal_state, 20)
+call s:assert_true(s:heal_state.player.hp == s:heal_state.player.max_hp, 'game#player#heal should clamp restored HP to max HP.')
+
 let s:party_action = game#action#command('party send ranger operative 1')
 call s:assert_true(get(s:party_action, 'type', '') ==# 'party/commandRequested', 'party commands should produce party actions.')
 call s:assert_true(get(get(s:party_action, 'payload', {}), 'subcmd', '') ==# 'send', 'party action should capture the requested party subcommand.')
@@ -343,6 +357,7 @@ let s:state = game#core#process(s:state, 'attack')
 call s:assert_true(empty(s:state.rooms['abyssal_throne'].entities), 'Phase 2 defeat should remove the Overfiend from the throne room.')
 let s:state = game#core#process(s:state, 'interact Throne Sigil')
 call s:assert_true(s:state.surge == 0, 'Defiling the Throne Sigil should reset the Surge Count.')
+call s:assert_true(s:state.player.hp == s:state.player.max_hp, 'Defiling the Throne Sigil should fully restore HP through the shared heal helper.')
 let s:climax_quest = {}
 for s:q in s:state.quests
   if get(s:q, 'id', '') ==# 'confront-overfiend'
