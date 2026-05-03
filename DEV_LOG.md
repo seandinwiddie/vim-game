@@ -31,7 +31,8 @@
 - **Scene Stages**: Three matrices (To Knowledge, To Conflict, To Endings) map d100 rolls (adjusted by surge) to full spectrum responses: YES, AND UNEXPECTEDLY / YES, BUT / YES, AND / YES / NO / NO, AND / NO, BUT / NO, AND UNEXPECTEDLY.
 - **Unexpected Modifiers**: Rolls d20 on Table 2 (foreshadowing, set change, limelit, etc.) when an "unexpectedly" result triggers.
 - **Narrative Threads**: Integrated a state array for active storylines. Threads are rendered in the Neural Link header to track active goals (e.g. "Find Missing Rangers").
-- **Combat Resolution**: Entering a sector with entities will trigger hostile alerts. The `attack` command rolls against a fixed threshold to calculate damage sustained and entity annihilation. State handles death natively.
+- **Combat Resolution**: Integrated the *Shadows of Fate* duel system. The `attack` command rolls d20 against the target's STR/AGI/ARC array, factoring in *Group Dynamics* (a collective score from the remaining hostile pack) to calculate damage sustained and entity annihilation. State handles death natively.
+- **Dynamic Spawning**: The `rest` command now evaluates procedural time intervals to occasionally spawn new hostile entities in the current room, creating a persistent threat of ambush.
 - **Objective Loop**: The initial missing-rangers thread now drives concrete quest progress, and terminals can surface follow-on objectives for recovering the codices needed to extract survivors.
 - **Scene Focus**: The active scene now tracks a focus thread so the oracle stage, current room, and objective list reflect the note-driven scene structure from the Familiar.
 - **Dynamic Room Content**: Procedural rooms now scale threat tier from player level/progression and can spawn rescue targets, reliquaries, caches, and stronger enemy archetypes from the Qua'dar appendix.
