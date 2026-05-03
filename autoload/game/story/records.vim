@@ -65,10 +65,11 @@ endfunction
 
 function! game#story#records#record_scene(state, loc) abort
   let l:next_state = s:ensure_scene_card(a:state, a:loc)
-  let l:idx = game#story#records#scene_card_index(l:next_state.notes.scene_cards, a:loc)
-  let l:next_state.notes.scene_cards[l:idx].visits += 1
-  let l:title = l:next_state.notes.scene_cards[l:idx].title
-  let l:focus = l:next_state.notes.scene_cards[l:idx].focus
+  let l:scene_idx = game#story#records#scene_card_index(l:next_state.notes.scene_cards, a:loc)
+  let l:next_state.notes.scene_cards[l:scene_idx].visits += 1
+  let l:title = l:next_state.notes.scene_cards[l:scene_idx].title
+  let l:focus = l:next_state.notes.scene_cards[l:scene_idx].focus
+  let l:scene_npcs = get(l:next_state.notes.scene_cards[l:scene_idx], 'npcs', [])
 
   let l:thread_idx = game#story#threads#thread_card_index(l:next_state.notes.thread_cards, l:focus)
   if l:thread_idx == -1
@@ -80,6 +81,14 @@ function! game#story#records#record_scene(state, loc) abort
   if index(l:next_state.notes.thread_cards[l:thread_idx].scenes, l:title) == -1
     call add(l:next_state.notes.thread_cards[l:thread_idx].scenes, l:title)
   endif
+  for l:npc_name in l:scene_npcs
+    if index(l:next_state.notes.thread_cards[l:thread_idx].npcs, l:npc_name) == -1
+      call add(l:next_state.notes.thread_cards[l:thread_idx].npcs, l:npc_name)
+      if len(l:next_state.notes.thread_cards[l:thread_idx].npcs) > 6
+        let l:next_state.notes.thread_cards[l:thread_idx].npcs = l:next_state.notes.thread_cards[l:thread_idx].npcs[-6:]
+      endif
+    endif
+  endfor
 
   return l:next_state
 endfunction
@@ -143,7 +152,8 @@ function! game#story#records#assign_scene_npc(state, loc, npc_name) abort
   if index(l:next_state.notes.scene_cards[l:idx].npcs, a:npc_name) == -1
     call add(l:next_state.notes.scene_cards[l:idx].npcs, a:npc_name)
   endif
-  return game#story#records#record_npc(l:next_state, a:npc_name, l:next_state.notes.scene_cards[l:idx].title)
+  let l:next_state = game#story#records#record_npc(l:next_state, a:npc_name, l:next_state.notes.scene_cards[l:idx].title)
+  return game#story#threads#record_npc_for_thread(l:next_state, game#story#state#focus_label(l:next_state), a:npc_name)
 endfunction
 
 function! game#story#records#remove_scene_npc(state, loc, npc_name) abort

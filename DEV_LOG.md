@@ -43,6 +43,7 @@
 - **Merchant Economy**: The starting Merchandise Store Room now exposes a real wares ledger with buy/sell commands, trade-cache currency, and progression through weapons-grade upgrades, spells, rations, and supplies.
 - **Combat Progression**: Enemy kills now bank salvage into the trade cache, `Hunter's Mark` boosts follow-up strikes, `Dark Crystal Shielding` absorbs incoming damage, and purchased loadout changes carry through the run.
 - **Bookkeeping Layer**: Added CRGE-style notecards for scenes, thread facts, and known NPCs so discoveries persist as structured story memory instead of only scrollback.
+- **Thread NPC Bookkeeping**: Thread cards now retain related NPCs from scene casting and rescues, aligning the ledger more closely with the Familiar's notecard guidance.
 - **Architecture Guard**: The Vim test harness now fails if a game module grows beyond 300 lines, forcing oversized files to be split into subdomains.
 - **Scene Lifecycle**: Added explicit scene-card review, fade-out summaries, and elsewhere/sidebar facts so the CRGE scene loop is represented directly in play.
 - **Scene Setup**: Added explicit scene framing plus NPC-presence management so the active scene can be staged around a chosen thread, stage, and cast before action begins.

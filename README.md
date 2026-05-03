@@ -35,7 +35,7 @@ Then run `:PlugInstall`.
 9. **Shift Stage**: Press `1` (To Knowledge), `2` (To Conflict), or `3` (To Endings) to alter the oracle's probability matrix based on the scene's tension.
 10. **Trade Wares**: Press `t`, or type `:call s:run('shop')`, inside the Merchandise Store Room to inspect wares. Use `buy [ware]` and `sell [item]` to work the Qua'dar trade economy.
 11. **Review Objectives**: Press `o`, or type `:call s:run('quests')`, to inspect current mission progress, focus, and completed objectives.
-12. **Open Field Notes**: Press `j`, or type `:call s:run('notes')`, to review CRGE-style notecards for scenes, known NPCs, and established thread facts.
+12. **Open Field Notes**: Press `j`, or type `:call s:run('notes')`, to review CRGE-style notecards for scenes, known NPCs, and established thread facts, including which NPCs are tied to each thread.
 13. **Frame Scenes**: Use `:call s:run('frame [thread#] [stage]')` to explicitly set the current scene's main thread and stage before play.
 14. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
 15. **Scene NPCs**: Use `:call s:run('npc add [name]')`, `npc rm [name]`, or `npc` to manage who is instantly present in the current scene.
@@ -49,7 +49,7 @@ This project follows functional programming principles:
 - **Pure Views**: The UI is a pure function of the current state.
 - **Side-Effect Isolation**: All buffer manipulations are sequestered in the engine layer.
 - **Story Bookkeeping**: Scene focus, active objectives, and procedural quest targets (like recovering lost tomes or purifying eldritch altars) are tracked directly in state so exploration can react to narrative progress.
-- **Persistent Notecards**: Scene cards, thread facts, and known NPCs are stored in state so CRGE-style bookkeeping survives past the visible log buffer.
+- **Persistent Notecards**: Scene cards, thread facts, known NPCs, and thread-to-NPC links are stored in state so CRGE-style bookkeeping survives past the visible log buffer.
 - **Hidden Lore**: Discovering Holographic Terminals or Eldritch Frescoes will dynamically dispense procedural worldbuilding secrets directly into the active thread's fact ledger.
 - **Environmental Hazards**: Movement logic parses the procedural biome of the destination (e.g. Toxic Wastes, Mud Slides, Dimensional Nexus) to apply dynamic damage, tension spikes, or navigational warnings.
 - **Companions & Group Dynamics**: Rescuing NPCs from the tower allows them to join your party, applying their own aggregated `Group Dynamics` bonus to all your combat rolls, adapting the *Tapestry* TTRPG mechanics into a solo MUD environment.

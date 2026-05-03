@@ -14,23 +14,17 @@ DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
-THREAD SPLIT: Find Missing Rangers -> track the tower shell recon cell
-THREAD REPLACED: Recover the Lost Tomes -> decode the return codex relay
-THREAD MODIFIED: Purify the Eldritch Altars -> secure the tower shell extraction route
---- THREAD LEDGER ---
- 1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell
- 2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes
  3. secure the tower shell extraction route [OPEN] | aliases: Purify the Eldritch Altars
- 4. track the tower shell recon cell [OPEN] | split from: Find Missing Rangers
- - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay
+ 4. track the tower shell recon cell [OPEN] | split from: Find Missing Rangers | NPCs: iron broker, Bound Ranger
+ - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay | NPCs: Bound Ranger
 ---------------------
 NEURAL_TRACKING: Shifting coordinates to east
-ENVIRONMENTAL HAZARD: The perilous terrain inflicts 8 damage.
+ENVIRONMENTAL HAZARD: The perilous terrain inflicts 6 damage.
 ---
 ᚲ TOXIC_WASTES ᚲ
 A ghastly mire of desolation.
 ᚱ ENTRANCES: west
-[Threat Tier: 1 | HP: 142/150]
+[Threat Tier: 1 | HP: 144/150]
 --
 NEURAL_TRACKING: Shifting coordinates to south
 ---
@@ -39,7 +33,7 @@ An accursed chapel.
 INTERACTIVE OBJECTS:
   > [*] Corrupted Altar
 ᚱ ENTRANCES: north
-[Threat Tier: 1 | HP: 142/150]
+[Threat Tier: 1 | HP: 144/150]
 --
 INTERACT: You examine the Corrupted Altar.
 A desecrated monolith.
@@ -57,7 +51,7 @@ INTERACTIVE OBJECTS:
 --
 INTERACT: You examine the Holographic Terminal.
 A distorted projection.
-HIDDEN LORE DISCOVERED: The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.
+HIDDEN LORE DISCOVERED: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
 THREAD UPDATED: Forbidden truth appended to the active focus thread.
 --- SECURED RELICS ---
 Trade Cache: 36 | Guard: 14 | Mark: none
@@ -66,6 +60,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
+ [ᛟ] Obsidian Fragment
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -91,20 +86,25 @@ Companions (Party):
 Notes: 5 scenes / 3 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ
+  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ
+  NPCs: Bound Ranger
   Facts:
+   - Archive traces point to codices capable of sending captives home.
+   - Scene framed around Recover the Lost Tomes at TO KNOWLEDGE.
+   - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
+   - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The Spire Bastion was built not to keep enemies out, but to keep the Eldritch Overfiends in.
+   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
 --- THREAD LEDGER ---
- 1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell
- 2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes
+ 1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell | NPCs: iron broker, Bound Ranger
+ 2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes | NPCs: Bound Ranger
  3. secure the tower shell extraction route [OPEN] | aliases: Purify the Eldritch Altars
- 4. track the tower shell recon cell [OPEN] | split from: Find Missing Rangers
- - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay
+ 4. track the tower shell recon cell [OPEN] | split from: Find Missing Rangers | NPCs: iron broker, Bound Ranger
+ - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay | NPCs: Bound Ranger
  - Purify the Eldritch Altars [OPEN]
 ---------------------
 Scene Cards:
- * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: iron broker
+ * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: iron broker, Bound Ranger
  * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: none
  * ᚲ TOXIC_WASTES ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none
  * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | focus: decode the return codex relay | npcs: none

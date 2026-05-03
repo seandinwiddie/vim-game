@@ -37,6 +37,7 @@ function! game#story#commands#cmd_notes(state) abort
   if !empty(l:thread_card)
     call add(l:lines, '  Stage: TO ' . toupper(get(l:thread_card, 'stage', l:next_state.stage)))
     call add(l:lines, '  Scenes: ' . (empty(get(l:thread_card, 'scenes', [])) ? 'none' : join(l:thread_card.scenes, ' | ')))
+    call add(l:lines, '  NPCs: ' . (empty(get(l:thread_card, 'npcs', [])) ? 'none' : join(l:thread_card.npcs, ' | ')))
     call add(l:lines, '  Facts:')
     if empty(get(l:thread_card, 'facts', []))
       call add(l:lines, '   - No established facts yet.')

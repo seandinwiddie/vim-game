@@ -76,7 +76,7 @@ function! game#story#ledger#lines(state) abort
     else
       let l:card = game#story#threads#normalize_card(l:card, a:state.stage)
     endif
-    call add(l:lines, ' ' . l:idx . '. ' . l:card.name . ' [' . toupper(get(l:card, 'status', 'open')) . ']' . s:lineage_label(l:card))
+    call add(l:lines, ' ' . l:idx . '. ' . l:card.name . ' [' . toupper(get(l:card, 'status', 'open')) . ']' . s:lineage_label(l:card) . s:npc_label(l:card))
     let l:idx += 1
   endfor
 
@@ -85,7 +85,7 @@ function! game#story#ledger#lines(state) abort
     if index(l:active, l:card.name) != -1
       continue
     endif
-    call add(l:lines, ' - ' . l:card.name . ' [' . toupper(get(l:card, 'status', 'open')) . ']' . s:lineage_label(l:card))
+    call add(l:lines, ' - ' . l:card.name . ' [' . toupper(get(l:card, 'status', 'open')) . ']' . s:lineage_label(l:card) . s:npc_label(l:card))
   endfor
 
   call add(l:lines, '---------------------')
@@ -115,4 +115,9 @@ function! s:lineage_label(card) abort
     call add(l:parts, 'aliases: ' . join(a:card.aliases, ', '))
   endif
   return empty(l:parts) ? '' : ' | ' . join(l:parts, ' | ')
+endfunction
+
+function! s:npc_label(card) abort
+  let l:npcs = get(a:card, 'npcs', [])
+  return empty(l:npcs) ? '' : ' | NPCs: ' . join(l:npcs, ', ')
 endfunction

@@ -37,7 +37,8 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     endif
   elseif l:effect ==# 'rescue_ranger'
     let l:consume_object = 1
-    let l:next_state = game#story#record_npc(l:next_state, 'Bound Ranger', l:next_state.rooms[a:state.loc].name)
+    let l:next_state = game#story#records#assign_scene_npc(l:next_state, l:next_state.loc, 'Bound Ranger')
+    let l:next_state = game#story#threads#record_npc_for_thread(l:next_state, 'Find Missing Rangers', 'Bound Ranger')
     call add(l:log_lines, 'EXTRACTION: You cut a stranded ranger free and fold them back into the recon circuit.')
     if index(l:next_state.player.inv, 'Ranger Signal Token') == -1
       call add(l:next_state.player.inv, 'Ranger Signal Token')

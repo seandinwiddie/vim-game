@@ -1,3 +1,6 @@
+set nocompatible
+execute 'set runtimepath^=' . fnameescape(getcwd())
+
 let s:state = game#core#init()
 
 function! s:assert_subdomain_limits() abort
@@ -85,4 +88,25 @@ let s:state = game#core#process(s:state, 'inventory')
 let s:state = game#core#process(s:state, 'profile')
 let s:state = game#core#process(s:state, 'notes')
 
-call writefile(game#core#render(s:state), 'test_output.txt', 'a')
+function! s:assert_true(condition, message) abort
+  if !a:condition
+    call writefile(['ASSERTION FAILURE: ' . a:message], 'test_output.txt', 'a')
+    cquit 1
+  endif
+endfunction
+
+function! s:assert_contains(lines, needle) abort
+  call s:assert_true(stridx(join(a:lines, "\n"), a:needle) >= 0, 'Missing expected text: ' . a:needle)
+endfunction
+
+let s:find_thread = game#story#threads#get_thread_card(s:state.notes.thread_cards, 'Find Missing Rangers')
+let s:decode_thread = game#story#threads#get_thread_card(s:state.notes.thread_cards, 'decode the return codex relay')
+call s:assert_true(index(get(s:find_thread, 'npcs', []), 'iron broker') != -1, 'Iron Broker should be linked to the main thread card.')
+call s:assert_true(index(get(s:find_thread, 'npcs', []), 'Bound Ranger') != -1, 'Bound Ranger should be linked to the rescue thread card.')
+call s:assert_true(index(get(s:decode_thread, 'npcs', []), 'Bound Ranger') != -1, 'Replacement threads should inherit linked NPCs.')
+
+let s:rendered = game#core#render(s:state)
+call s:assert_contains(s:rendered, '| NPCs: iron broker')
+call s:assert_contains(s:rendered, '  NPCs: Bound Ranger')
+call writefile(s:rendered, 'test_output.txt', 'a')
+qa!

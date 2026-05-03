@@ -5,6 +5,7 @@ function! game#story#threads#default_card(thread_name, stage) abort
         \ 'name': a:thread_name,
         \ 'stage': a:stage,
         \ 'scenes': [],
+        \ 'npcs': [],
         \ 'facts': [],
         \ 'status': 'open',
         \ 'aliases': [],
@@ -72,6 +73,25 @@ function! game#story#threads#record_fact(state, fact) abort
   return game#story#threads#record_fact_for_thread(a:state, game#story#state#focus_label(a:state), a:fact)
 endfunction
 
+function! game#story#threads#record_npc_for_thread(state, thread_name, npc_name) abort
+  if empty(a:npc_name) || empty(a:thread_name) || a:thread_name ==# 'NO THREAD FOCUS'
+    return a:state
+  endif
+
+  let l:next_state = game#story#threads#ensure_thread_card(a:state, a:thread_name)
+  let l:idx = game#story#threads#thread_card_index(l:next_state.notes.thread_cards, a:thread_name)
+  let l:card = game#story#threads#normalize_card(l:next_state.notes.thread_cards[l:idx], l:next_state.stage)
+  let l:card.stage = l:next_state.stage
+  if index(l:card.npcs, a:npc_name) == -1
+    call add(l:card.npcs, a:npc_name)
+    if len(l:card.npcs) > 6
+      let l:card.npcs = l:card.npcs[-6:]
+    endif
+  endif
+  let l:next_state.notes.thread_cards[l:idx] = l:card
+  return l:next_state
+endfunction
+
 function! game#story#threads#record_fact_for_thread(state, thread_name, fact) abort
   if empty(a:fact) || empty(a:thread_name)
     return a:state
@@ -134,6 +154,7 @@ function! game#story#threads#split_thread(state, thread_ref, new_name) abort
   let l:next_state.notes.thread_cards[l:old_idx] = l:old_card
   let l:new_idx = game#story#threads#thread_card_index(l:next_state.notes.thread_cards, a:new_name)
   let l:new_card = game#story#threads#normalize_card(l:next_state.notes.thread_cards[l:new_idx], l:next_state.stage)
+  let l:new_card = s:inherit_context(l:old_card, l:new_card)
   let l:new_card.split_from = l:old_name
   let l:new_card.stage = l:next_state.stage
   let l:next_state.notes.thread_cards[l:new_idx] = l:new_card
@@ -161,6 +182,7 @@ function! game#story#threads#replace_thread(state, thread_ref, new_name) abort
   let l:next_state = game#story#threads#ensure_thread_card(l:next_state, a:new_name)
   let l:new_idx = game#story#threads#thread_card_index(l:next_state.notes.thread_cards, a:new_name)
   let l:new_card = game#story#threads#normalize_card(l:next_state.notes.thread_cards[l:new_idx], l:next_state.stage)
+  let l:new_card = s:inherit_context(l:old_card, l:new_card)
   let l:new_card.status = 'open'
   let l:new_card.replaced_from = l:old_name
   let l:new_card.stage = l:next_state.stage
@@ -190,6 +212,14 @@ endfunction
 
 function! s:thread_name_at(state, thread_ref) abort
   return (a:thread_ref >= 1 && a:thread_ref <= len(get(a:state, 'threads', []))) ? a:state.threads[a:thread_ref - 1] : ''
+endfunction
+
+function! s:inherit_context(source_card, target_card) abort
+  let l:card = deepcopy(a:target_card)
+  let l:card.scenes = deepcopy(get(a:source_card, 'scenes', []))
+  let l:card.npcs = deepcopy(get(a:source_card, 'npcs', []))
+  let l:card.facts = deepcopy(get(a:source_card, 'facts', []))
+  return l:card
 endfunction
 
 function! s:thread_name_available(state, old_name, new_name) abort
