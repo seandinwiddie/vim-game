@@ -483,4 +483,5 @@ PASS: combat
 PASS: oracle
 --- CLIMAX OK ---
 PASS: climax
+PASS: load
 --- ALL TESTS OK ---

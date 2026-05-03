@@ -8,6 +8,7 @@ source test/story.vim
 source test/combat.vim
 source test/oracle.vim
 source test/climax.vim
+source test/load.vim
 
 call QuadarTest_ResetOutput()
 

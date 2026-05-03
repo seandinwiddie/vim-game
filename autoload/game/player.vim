@@ -128,22 +128,96 @@ endfunction
 
 function! game#player#cmd_save(state) abort
   let l:json = json_encode(a:state)
-  let l:save_path = expand('~/.quadar_save.json')
+  let l:save_path = s:save_path()
   call writefile([l:json], l:save_path)
   return game#core#add_log(a:state, "SYSTEM_LOG: State matrix serialized and saved to " . l:save_path)
 endfunction
 
 function! game#player#cmd_load(state) abort
-  let l:save_path = expand('~/.quadar_save.json')
+  let l:save_path = s:save_path()
   if !filereadable(l:save_path)
-    return game#core#add_log(a:state, "LOG_ERR_CRITICAL: No neural backup detected at " . l:save_path)
+    return s:load_error(a:state, 'no_save_found', 'No neural backup detected at ' . l:save_path)
   endif
-  
+
   try
-    let l:json = readfile(l:save_path)[0]
-    let l:next_state = game#core#normalize(json_decode(l:json))
-    return game#core#add_log(l:next_state, "SYSTEM_LOG: State matrix restored from neural backup.")
+    let l:contents = readfile(l:save_path)
   catch
-    return game#core#add_log(a:state, "LOG_ERR_CRITICAL: Neural backup corrupted.")
+    return s:load_error(a:state, 'no_save_found', 'Unable to read neural backup at ' . l:save_path, s:format_exception(v:exception))
   endtry
+
+  if empty(l:contents)
+    return s:load_error(a:state, 'save_corrupted', 'Neural backup is empty.', 'DETAIL: Save file contained no JSON payload.')
+  endif
+
+  try
+    let l:decoded = json_decode(join(l:contents, "\n"))
+  catch
+    return s:load_error(a:state, 'save_corrupted', 'Neural backup JSON malformed.', 'DETAIL: ' . s:format_exception(v:exception))
+  endtry
+
+  let l:schema_issues = s:load_schema_issues(l:decoded)
+  if !empty(l:schema_issues)
+    return s:load_error(a:state, 'save_outdated', 'Neural backup schema mismatch. Older saves need a migration step before loading.', 'DETAIL: Missing or invalid fields: ' . join(l:schema_issues, ', '))
+  endif
+
+  try
+    let l:next_state = game#core#normalize(l:decoded)
+  catch
+    return s:load_error(a:state, 'save_outdated', 'Neural backup schema mismatch. Older saves need a migration step before loading.', 'DETAIL: ' . s:format_exception(v:exception))
+  endtry
+
+  return game#core#add_log(l:next_state, "SYSTEM_LOG: State matrix restored from neural backup.")
+endfunction
+
+function! s:save_path() abort
+  return expand('~/.quadar_save.json')
+endfunction
+
+function! s:load_error(state, code, message, ...) abort
+  let l:lines = ['LOG_ERR_CRITICAL: ' . a:code . ' :: ' . a:message]
+  if a:0 > 0 && !empty(a:1)
+    call add(l:lines, a:1)
+  endif
+  return game#core#add_log(a:state, l:lines)
+endfunction
+
+function! s:format_exception(exception) abort
+  return substitute(a:exception, '^Vim([^)]*):', '', '')
+endfunction
+
+function! s:load_schema_issues(decoded) abort
+  let l:issues = []
+  if type(a:decoded) != v:t_dict
+    return ['root(dict)']
+  endif
+
+  for l:key in ['player', 'loc', 'rooms']
+    if !has_key(a:decoded, l:key)
+      call add(l:issues, l:key)
+    endif
+  endfor
+
+  if has_key(a:decoded, 'player')
+    if type(a:decoded.player) != v:t_dict
+      call add(l:issues, 'player(dict)')
+    else
+      for l:key in ['name', 'class', 'level', 'hp', 'max_hp', 'inv', 'spells']
+        if !has_key(a:decoded.player, l:key)
+          call add(l:issues, 'player.' . l:key)
+        endif
+      endfor
+    endif
+  endif
+
+  if has_key(a:decoded, 'loc') && type(a:decoded.loc) != v:t_string
+    call add(l:issues, 'loc(string)')
+  endif
+  if has_key(a:decoded, 'rooms') && type(a:decoded.rooms) != v:t_dict
+    call add(l:issues, 'rooms(dict)')
+  endif
+  if has_key(a:decoded, 'rooms') && has_key(a:decoded, 'loc') && type(a:decoded.rooms) == v:t_dict && type(a:decoded.loc) == v:t_string && !has_key(a:decoded.rooms, a:decoded.loc)
+    call add(l:issues, 'rooms.' . a:decoded.loc)
+  endif
+
+  return l:issues
 endfunction

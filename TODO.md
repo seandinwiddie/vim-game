@@ -272,7 +272,7 @@ items that would unblock the most other items if tackled now.
     The renderer formats `LOG_ERR:` prefixes. Tests assert on
     `result.error == 'invalid_direction'` rather than substrings.
 
-- [ ] **Stop swallowing exceptions in `cmd_load`.**
+- [x] **Stop swallowing exceptions in `cmd_load`.**
   - **Why:** `player#cmd_load`'s bare `catch` rebrands every load failure
     as `'Neural backup corrupted'`. If `json_decode` fails because the file
     was written by an older schema version, the user has no path forward.
