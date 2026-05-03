@@ -1,4 +1,17 @@
 function! QuadarTest_RunStory() abort
+  let l:invalid_focus_action = game#action#command('focus')
+  call QuadarTest_AssertTrue(get(l:invalid_focus_action, 'type', '') ==# 'system/invalidInput', 'focus without a thread ref should be rejected at the action boundary.')
+  let l:invalid_frame_action = game#action#command('frame 1')
+  call QuadarTest_AssertTrue(get(l:invalid_frame_action, 'type', '') ==# 'system/invalidInput', 'frame without both thread and stage should be rejected at the action boundary.')
+  let l:invalid_framework_action = game#action#command('framework theme')
+  call QuadarTest_AssertTrue(get(l:invalid_framework_action, 'type', '') ==# 'system/invalidInput', 'framework theme without text should be rejected at the action boundary.')
+  let l:invalid_meeting_action = game#action#command('minds note')
+  call QuadarTest_AssertTrue(get(l:invalid_meeting_action, 'type', '') ==# 'system/invalidInput', 'minds note without text should be rejected at the action boundary.')
+  let l:invalid_party_action = game#action#command('party send ranger operative')
+  call QuadarTest_AssertTrue(get(l:invalid_party_action, 'type', '') ==# 'system/invalidInput', 'party send without a thread number should be rejected at the action boundary.')
+  let l:invalid_aside_action = game#action#command('aside 1')
+  call QuadarTest_AssertTrue(get(l:invalid_aside_action, 'type', '') ==# 'system/invalidInput', 'aside without a fact should be rejected at the action boundary.')
+
   let l:state = QuadarTest_CampaignState()
   let l:find_thread = game#story#threads#get_thread_card(l:state.notes.thread_cards, 'Find Missing Rangers')
   let l:decode_thread = game#story#threads#get_thread_card(l:state.notes.thread_cards, 'decode the return codex relay')
@@ -31,6 +44,8 @@ function! QuadarTest_RunStory() abort
 
   let l:trimmed_meeting = game#core#process(l:state, 'minds rm note 1')
   call QuadarTest_AssertTrue(empty(get(get(l:trimmed_meeting, 'meeting', {}), 'assumptions', [])), 'Meeting of Minds should support removing stored assumptions.')
+  call QuadarTest_AssertContains(game#core#process(game#core#init(), 'framework theme').log, 'LOG_ERR: Use "framework theme [subject]" to set the vignette theme.')
+  call QuadarTest_AssertContains(game#core#process(game#core#init(), 'party send ranger operative').log, 'LOG_ERR: Use "party send [name] [thread#]" to send a companion elsewhere on another thread.')
 
   let l:party_action = game#action#command('party send ranger operative 1')
   call QuadarTest_AssertTrue(get(l:party_action, 'type', '') ==# 'party/commandRequested', 'party commands should produce party actions.')

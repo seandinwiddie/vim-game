@@ -283,7 +283,7 @@ items that would unblock the most other items if tackled now.
       - schema mismatch → `'save_outdated'` with a hint that older saves
         need a migration step.
 
-- [ ] **Validate inputs at the action boundary.**
+- [x] **Validate inputs at the action boundary.**
   - **Why:** `action#command` parses raw strings into action dicts.
     Reducers re-validate the same things in different ways (or don't).
     `combat#cmd_cast` checks for empty spell name; `economy#cmd_buy` checks

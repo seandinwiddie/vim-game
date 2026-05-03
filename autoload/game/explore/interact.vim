@@ -1,10 +1,6 @@
 " autoload/game/explore/interact.vim - Interactive Objects
 
 function! game#explore#interact#cmd_interact(state, object_name) abort
-  if empty(a:object_name)
-    return game#core#add_log(a:state, "LOG_ERR: Specify an object to interact with (e.g. 'interact Arcane Terminal').")
-  endif
-
   let l:room = a:state.rooms[a:state.loc]
   if !has_key(l:room, 'objects') || empty(l:room.objects)
     return game#core#add_log(a:state, 'LOG_ERR: There is nothing to interact with here.')

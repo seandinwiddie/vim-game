@@ -63,20 +63,11 @@ function! game#party#cmd_party(state, subcmd, args) abort
     let l:next_state.hint = 'DIRECTIVE: Keep only the right companions in the main scene; fade or send the rest elsewhere.'
     return game#core#add_log(l:next_state, s:party_lines(l:next_state))
   elseif l:subcmd ==# 'fade'
-    if empty(a:args)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "party fade [name]" to pull a companion out of the main scene.')
-    endif
     return s:set_status(a:state, a:args, 'faded', '')
   elseif l:subcmd ==# 'rally' || l:subcmd ==# 'join'
-    if empty(a:args)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "party rally [name]" to bring a companion back into the main scene.')
-    endif
     return s:set_status(a:state, a:args, 'active', '')
   elseif l:subcmd ==# 'send' || l:subcmd ==# 'elsewhere'
     let l:parsed = s:parse_send_args(a:args)
-    if empty(l:parsed.name) || empty(l:parsed.thread_ref)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "party send [name] [thread#]" to send a companion elsewhere on another thread.')
-    endif
     return s:set_elsewhere(a:state, l:parsed.name, l:parsed.thread_ref)
   endif
 

@@ -79,9 +79,6 @@ function! game#story#commands#cmd_focus(state, focus_arg) abort
   if empty(l:threads)
     return game#core#add_log(a:state, 'LOG_ERR: No active threads available to focus.')
   endif
-  if empty(a:focus_arg)
-    return game#core#add_log(a:state, 'LOG_ERR: Use "focus [thread#]" to set the main thread for this scene.')
-  endif
 
   let l:idx = str2nr(a:focus_arg)
   if l:idx < 1 || l:idx > len(l:threads)

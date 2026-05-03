@@ -6,10 +6,6 @@ function! game#player#heal(state, amount) abort
 endfunction
 
 function! game#player#cmd_use(state, item) abort
-  if empty(a:item)
-    return game#core#add_log(a:state, "LOG_ERR: Specify an item to use (e.g. 'use Pollen Vial').")
-  endif
-  
   let l:match = game#match#one(a:state.player.inv, a:item)
   if get(l:match, 'ambiguous', 0)
     return game#core#add_log(a:state, "ITEM_ERR: '" . a:item . "' matches multiple items: " . join(l:match.matches, ', ') . '.')

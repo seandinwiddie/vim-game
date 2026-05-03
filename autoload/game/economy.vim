@@ -55,9 +55,6 @@ function! game#economy#cmd_buy(state, item_name) abort
   if !game#economy#has_trade_access(a:state)
     return game#core#add_log(a:state, 'TRADE_ERR: Buying is only possible from the Merchandise Store Room.')
   endif
-  if empty(a:item_name)
-    return game#core#add_log(a:state, 'TRADE_ERR: Use "buy [ware]" to acquire an item, spell, or upgrade.')
-  endif
 
   let l:ware_match = s:find_ware(a:item_name)
   if get(l:ware_match, 'ambiguous', 0)
@@ -107,9 +104,6 @@ endfunction
 function! game#economy#cmd_sell(state, item_name) abort
   if !game#economy#has_trade_access(a:state)
     return game#core#add_log(a:state, 'TRADE_ERR: Selling is only possible from the Merchandise Store Room.')
-  endif
-  if empty(a:item_name)
-    return game#core#add_log(a:state, 'TRADE_ERR: Use "sell [relic]" to liquidate scavenged wares.')
   endif
 
   let l:item_match = s:inventory_match(a:state.player.inv, a:item_name)

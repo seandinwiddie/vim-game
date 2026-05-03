@@ -98,10 +98,6 @@ endfunction
 
 function! game#combat#cmd_cast(state, spell_name, ...) abort
   let l:opts = a:0 > 0 && type(a:1) == v:t_dict ? a:1 : {}
-  if empty(a:spell_name)
-    return game#core#add_log(a:state, "LOG_ERR: Specify a spell to cast (e.g. 'cast Ethereal Dagger Assault').")
-  endif
-  
   let l:spell_match = game#combat#spells#match(a:state.player.spells, a:spell_name)
   if get(l:spell_match, 'ambiguous', 0)
     return game#core#add_log(a:state, "SPELL_ERR: '" . a:spell_name . "' matches multiple known spells: " . join(l:spell_match.matches, ', ') . '.')

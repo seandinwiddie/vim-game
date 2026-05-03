@@ -43,10 +43,6 @@ function! game#story#scenes#cmd_scene(state) abort
 endfunction
 
 function! game#story#scenes#cmd_fade(state, summary) abort
-  if empty(a:summary)
-    return game#core#add_log(a:state, 'LOG_ERR: Use "fade [summary]" to close the current scene with an effect summary.')
-  endif
-
   let l:next_state = deepcopy(a:state)
   let l:next_state = game#story#records#append_scene_closing(l:next_state, l:next_state.loc, a:summary)
   let l:next_state = game#story#threads#record_fact(l:next_state, 'Fade Out: ' . a:summary)
@@ -59,10 +55,6 @@ function! game#story#scenes#cmd_fade(state, summary) abort
 endfunction
 
 function! game#story#scenes#cmd_montage(state, summary) abort
-  if empty(a:summary)
-    return game#core#add_log(a:state, 'LOG_ERR: Use "montage [summary]" to fast-forward across threads with a montage closing line.')
-  endif
-
   let l:next_state = deepcopy(a:state)
   let l:next_state = game#story#records#append_scene_closing(l:next_state, l:next_state.loc, 'MONTAGE: ' . a:summary)
   let l:next_state = game#story#threads#record_fact(l:next_state, 'Montage: ' . a:summary)
@@ -80,10 +72,6 @@ function! game#story#scenes#cmd_montage(state, summary) abort
 endfunction
 
 function! game#story#scenes#cmd_aside(state, thread_ref, fact) abort
-  if empty(a:thread_ref) || empty(a:fact)
-    return game#core#add_log(a:state, 'LOG_ERR: Use "aside [thread#] [fact]" to record an elsewhere sidebar fact.')
-  endif
-
   let l:threads = get(a:state, 'threads', [])
   let l:idx = str2nr(a:thread_ref)
   if l:idx < 1 || l:idx > len(l:threads)

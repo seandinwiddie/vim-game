@@ -1,4 +1,14 @@
 function! QuadarTest_RunEconomy() abort
+  let l:invalid_buy_action = game#action#command('buy')
+  call QuadarTest_AssertTrue(get(l:invalid_buy_action, 'type', '') ==# 'system/invalidInput', 'buy without a ware should be rejected at the action boundary.')
+  let l:invalid_sell_action = game#action#command('sell')
+  call QuadarTest_AssertTrue(get(l:invalid_sell_action, 'type', '') ==# 'system/invalidInput', 'sell without an item should be rejected at the action boundary.')
+  let l:invalid_use_action = game#action#command('use')
+  call QuadarTest_AssertTrue(get(l:invalid_use_action, 'type', '') ==# 'system/invalidInput', 'use without an item should be rejected at the action boundary.')
+
+  let l:invalid_buy_state = game#core#process(game#core#init(), 'buy')
+  call QuadarTest_AssertContains(l:invalid_buy_state.log, 'TRADE_ERR: Use "buy [ware]" to acquire an item, spell, or upgrade.')
+
   let l:heal_state = game#core#init()
   let l:heal_state.player.hp = l:heal_state.player.max_hp - 5
   let l:heal_state = game#player#heal(l:heal_state, 20)

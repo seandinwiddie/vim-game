@@ -1,4 +1,8 @@
 function! QuadarTest_RunOracle() abort
+  let l:invalid_ask_action = game#action#command('ask')
+  call QuadarTest_AssertTrue(get(l:invalid_ask_action, 'type', '') ==# 'system/invalidInput', 'ask without a question should be rejected at the action boundary.')
+  call QuadarTest_AssertContains(game#core#process(game#core#init(), 'ask').log, "LOG_ERR: You must ask a question (e.g., 'ask is the door locked?').")
+
   let l:state = QuadarTest_CampaignState()
   let l:mod_state = deepcopy(l:state)
   let l:mod_state.surge = 7

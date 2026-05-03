@@ -8,9 +8,6 @@ function! game#story#ledger#cmd_thread(state, subcmd, args) abort
     let l:next_state.hint = 'DIRECTIVE: Use thread mod/split/replace after a fade-out to keep the fallout ledger current.'
     return game#core#add_log(l:next_state, game#story#ledger#lines(l:next_state))
   elseif l:subcmd ==# 'add'
-    if empty(a:args)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "thread add [description]".')
-    endif
     let l:next_state = game#story#threads#ensure_thread(a:state, a:args)
     let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:args, 'Thread opened for future investigation.')
     let l:next_state.hint = 'DIRECTIVE: Thread added. Use frame or focus to bring it on stage.'
@@ -30,9 +27,6 @@ function! game#story#ledger#cmd_thread(state, subcmd, args) abort
     let l:result.state.hint = 'DIRECTIVE: Thread resolved. Review the ledger before opening the next scene.'
     return game#core#add_log(l:result.state, 'THREAD RESOLVED: ' . l:result.old_name)
   elseif l:subcmd ==# 'mod' || l:subcmd ==# 'rename'
-    if empty(l:parsed.name)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "thread mod [thread#] [new thread]".')
-    endif
     let l:result = game#story#threads#rename_thread(a:state, l:parsed.idx, l:parsed.name)
     if has_key(l:result, 'error')
       return game#core#add_log(a:state, l:result.error)
@@ -40,9 +34,6 @@ function! game#story#ledger#cmd_thread(state, subcmd, args) abort
     let l:result.state.hint = 'DIRECTIVE: Thread modified. Confirm the new wording still matches the scene fallout.'
     return game#core#add_log(l:result.state, 'THREAD MODIFIED: ' . l:result.old_name . ' -> ' . l:result.new_name)
   elseif l:subcmd ==# 'split'
-    if empty(l:parsed.name)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "thread split [thread#] [new thread]".')
-    endif
     let l:result = game#story#threads#split_thread(a:state, l:parsed.idx, l:parsed.name)
     if has_key(l:result, 'error')
       return game#core#add_log(a:state, l:result.error)
@@ -50,9 +41,6 @@ function! game#story#ledger#cmd_thread(state, subcmd, args) abort
     let l:result.state.hint = 'DIRECTIVE: Split thread recorded. Decide whether the next frame follows the old or new thread.'
     return game#core#add_log(l:result.state, 'THREAD SPLIT: ' . l:result.old_name . ' -> ' . l:result.new_name)
   elseif l:subcmd ==# 'replace'
-    if empty(l:parsed.name)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "thread replace [thread#] [new thread]".')
-    endif
     let l:result = game#story#threads#replace_thread(a:state, l:parsed.idx, l:parsed.name)
     if has_key(l:result, 'error')
       return game#core#add_log(a:state, l:result.error)

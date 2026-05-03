@@ -46,10 +46,6 @@ function! game#story#setup#cmd_npc(state, subcmd, npc_name) abort
     return game#core#add_log(a:state, l:lines)
   endif
 
-  if empty(a:npc_name)
-    return game#core#add_log(a:state, 'LOG_ERR: Use "npc add [name]" or "npc rm [name]".')
-  endif
-
   let l:next_state = deepcopy(a:state)
   if a:subcmd ==# 'add'
     let l:next_state = game#story#records#assign_scene_npc(l:next_state, l:next_state.loc, a:npc_name)

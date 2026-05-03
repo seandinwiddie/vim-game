@@ -12,10 +12,6 @@ function! game#oracle#cmd_stage(state, stage_name) abort
 endfunction
 
 function! game#oracle#cmd_ask(state, question) abort
-  if empty(a:question)
-    return game#core#add_log(a:state, "LOG_ERR: You must ask a question (e.g., 'ask is the door locked?').")
-  endif
-
   let l:rng = game#rng#draw(a:state, 100)
   let l:oracle_tuning = game#tuning#get('oracle')
   let l:roll = l:rng.value

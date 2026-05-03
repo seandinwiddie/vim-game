@@ -38,10 +38,6 @@ function! game#story#meeting#lines(state) abort
 endfunction
 
 function! s:add_entry(state, list_name, args, label, hint_text) abort
-  if empty(a:args)
-    return game#core#add_log(a:state, 'LOG_ERR: Use "minds ' . s:list_command(a:list_name) . ' [text]" to record a ' . a:label . '.')
-  endif
-
   let l:next_state = deepcopy(a:state)
   if index(l:next_state.meeting[a:list_name], a:args) == -1
     call add(l:next_state.meeting[a:list_name], a:args)

@@ -8,18 +8,12 @@ function! game#story#framework#cmd_framework(state, subcmd, args) abort
     let l:next_state.hint = 'DIRECTIVE: Keep the vignette hook in mind while you frame the next scene.'
     return game#core#add_log(l:next_state, s:framework_lines(l:next_state))
   elseif l:subcmd ==# 'theme'
-    if empty(a:args)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "framework theme [subject]" to set the vignette theme.')
-    endif
     let l:next_state = deepcopy(a:state)
     let l:next_state.framework.theme = a:args
     let l:next_state.hint = 'DIRECTIVE: Framework theme set. Frame scenes that drive this subject toward closure.'
     let l:next_state = game#story#record_fact(l:next_state, 'Framework theme fixed on ' . a:args . '.')
     return game#core#add_log(l:next_state, ['FRAMEWORK THEME: ' . a:args])
   elseif l:subcmd ==# 'hook'
-    if empty(a:args)
-      return game#core#add_log(a:state, 'LOG_ERR: Use "framework hook [aspiration]" to set the vignette hook.')
-    endif
     let l:next_state = deepcopy(a:state)
     let l:next_state.framework.hook = a:args
     let l:next_state.hint = 'DIRECTIVE: Hook stored. Let it tug the next scene without turning it into rails.'

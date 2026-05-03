@@ -1,4 +1,8 @@
 function! QuadarTest_RunCombat() abort
+  let l:invalid_cast_action = game#action#command('cast')
+  call QuadarTest_AssertTrue(get(l:invalid_cast_action, 'type', '') ==# 'system/invalidInput', 'cast without a spell should be rejected at the action boundary.')
+  call QuadarTest_AssertContains(game#core#process(game#core#init(), 'cast').log, "LOG_ERR: Specify a spell to cast (e.g. 'cast Ethereal Dagger Assault').")
+
   let l:state = QuadarTest_CampaignState()
   call QuadarTest_AssertTrue(game#combat#spells#match_known(get(l:state.player, 'spells', []), 'dark crystal') ==# 'Dark Crystal Shielding', 'Spell matching should continue supporting unique prefixes.')
   call QuadarTest_AssertTrue(!empty(game#combat#spells#get('Precision Shot')), 'Spell registry should expose Precision Shot through the shared registry.')
