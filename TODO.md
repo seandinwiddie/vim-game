@@ -19,7 +19,7 @@ items that would unblock the most other items if tackled now.
 
 ## ᚠ Architecture & State Shape
 
-- [ ] **Replace ad-hoc `copy()` / `deepcopy()` with a normalized state contract.**
+- [x] **Replace ad-hoc `copy()` / `deepcopy()` with a normalized state contract.**
   - **Why:** Reducer slices currently mix shallow copies (`copy(a:state)`,
     `copy(l:room)`) with `deepcopy(a:state)` and direct in-place mutation.
     Examples:

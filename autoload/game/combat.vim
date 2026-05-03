@@ -130,9 +130,6 @@ function! game#combat#cmd_cast(state, spell_name, ...) abort
     let l:ctx.target = l:room.entities[0]
     let l:ctx.target_name = type(l:ctx.target) == v:t_dict ? get(l:ctx.target, 'name', 'Unknown Entity') : l:ctx.target
     let l:ctx.mark_bonus = s:mark_bonus(a:state, l:ctx.target_name)
-    let l:next_state.rooms = copy(a:state.rooms)
-    let l:next_state.rooms[a:state.loc] = copy(l:room)
-    let l:next_state.rooms[a:state.loc].entities = copy(l:room.entities)
   endif
 
   return game#combat#spells#cast(l:next_state, l:matched_spell, l:ctx)

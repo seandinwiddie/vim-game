@@ -95,8 +95,7 @@ function! s:apply_table2_modifier(state, modifier, log_lines) abort
       let l:val = l:rng.value
       let l:pool = game#enemies#select(['Ashwalker', 'Voidwraith', 'Doomguard', 'Twilight Weaver'])
       let l:spawn = deepcopy(l:pool[l:val % len(l:pool)])
-      let l:next_state.rooms[l:next_state.loc] = copy(l:room)
-      let l:next_state.rooms[l:next_state.loc].entities = copy(get(l:room, 'entities', [])) + [l:spawn]
+      let l:next_state.rooms[l:next_state.loc].entities = get(l:room, 'entities', []) + [l:spawn]
       let l:surge_gain = game#tuning#get('oracle.modifiers.entering_red.surge_gain')
       let l:next_state.surge += l:surge_gain
       call add(a:log_lines, 'ENTERING THE RED: A ' . l:spawn.name . ' enters the scene. Surge Count +' . l:surge_gain . '.')
@@ -127,8 +126,6 @@ function! s:apply_table2_modifier(state, modifier, log_lines) abort
     if !empty(l:room) && has_key(l:room, 'exits')
       for l:dir in ['north', 'south', 'east', 'west']
         if !has_key(l:room.exits, l:dir)
-          let l:next_state.rooms[l:next_state.loc] = copy(l:room)
-          let l:next_state.rooms[l:next_state.loc].exits = copy(l:room.exits)
           let l:next_state.rooms[l:next_state.loc].exits[l:dir] = 'unexplored'
           call add(a:log_lines, 'SET CHANGE: A new ' . l:dir . ' exit warps into existence.')
           break

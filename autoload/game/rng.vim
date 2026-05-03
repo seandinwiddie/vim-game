@@ -5,7 +5,7 @@ function! game#rng#default_seed() abort
 endfunction
 
 function! game#rng#hydrate(state) abort
-  let l:next_state = deepcopy(a:state)
+  let l:next_state = a:state
   let l:next_state.rng_seed = 0
   return l:next_state
 endfunction
