@@ -112,12 +112,12 @@ function! game#story#record_scene(state, loc) abort
   return game#story#records#record_scene(a:state, a:loc)
 endfunction
 
-function! game#story#record_fact(state, fact) abort
-  return game#story#threads#record_fact(a:state, a:fact)
+function! game#story#record_fact(state, kind, text) abort
+  return game#story#threads#record_fact(a:state, a:kind, a:text)
 endfunction
 
-function! game#story#record_fact_for_thread(state, thread_name, fact) abort
-  return game#story#threads#record_fact_for_thread(a:state, a:thread_name, a:fact)
+function! game#story#record_fact_for_thread(state, thread_name, kind, text) abort
+  return game#story#threads#record_fact_for_thread(a:state, a:thread_name, a:kind, a:text)
 endfunction
 
 function! game#story#record_npc(state, npc_name, scene_name) abort

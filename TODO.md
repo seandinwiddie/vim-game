@@ -101,7 +101,7 @@ items that would unblock the most other items if tackled now.
     support for this refactor. If a room payload does not match the new schema,
     fail loudly.
 
-- [ ] **Stop string-tagging facts.**
+- [x] **Stop string-tagging facts.**
   - **Why:** Free-text fact strings carry implicit semantics: `'LORE: ...'`,
     `'Foreshadowing: ...'`, `'Montage carry: ...'`, `'Elsewhere: ...'`,
     `'Tying off: ...'`. Anything that wants to filter must `=~#` against a

@@ -45,7 +45,7 @@ endfunction
 function! game#story#scenes#cmd_fade(state, summary) abort
   let l:next_state = a:state
   let l:next_state = game#story#records#append_scene_closing(l:next_state, l:next_state.loc, a:summary)
-  let l:next_state = game#story#threads#record_fact(l:next_state, 'Fade Out: ' . a:summary)
+  let l:next_state = game#story#threads#record_fact(l:next_state, 'fade out', a:summary)
   let l:next_state.hint = 'DIRECTIVE: Scene closed. Use thread mod/split/replace, then advance the framework when the next act is earned.'
 
   return game#core#add_log(l:next_state, [
@@ -57,9 +57,9 @@ endfunction
 function! game#story#scenes#cmd_montage(state, summary) abort
   let l:next_state = a:state
   let l:next_state = game#story#records#append_scene_closing(l:next_state, l:next_state.loc, 'MONTAGE: ' . a:summary)
-  let l:next_state = game#story#threads#record_fact(l:next_state, 'Montage: ' . a:summary)
+  let l:next_state = game#story#threads#record_fact(l:next_state, 'montage', a:summary)
   for l:thread in get(l:next_state, 'threads', [])
-    let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:thread, 'Montage carry: ' . a:summary)
+    let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:thread, 'montage carry', a:summary)
   endfor
   let l:next_state.scene.index = get(l:next_state.scene, 'index', 1) + 1
   let l:next_state.surge = 0
@@ -80,7 +80,7 @@ function! game#story#scenes#cmd_aside(state, thread_ref, fact) abort
 
   let l:thread_name = l:threads[l:idx - 1]
   let l:next_state = a:state
-  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:thread_name, 'Elsewhere: ' . a:fact)
+  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:thread_name, 'elsewhere', a:fact)
   let l:next_state.hint = 'DIRECTIVE: Elsewhere fact recorded without disrupting the active scene.'
 
   return game#core#add_log(l:next_state, [
@@ -88,3 +88,4 @@ function! game#story#scenes#cmd_aside(state, thread_ref, fact) abort
         \ 'SIDEBAR FACT: ' . a:fact
         \ ])
 endfunction
+on

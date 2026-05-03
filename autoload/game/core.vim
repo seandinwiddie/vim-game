@@ -4,7 +4,7 @@
 function! game#core#init() abort
   let l:s = game#state#bootstrap()
   let l:s = game#story#record_scene(l:s, l:s.loc)
-  let l:s = game#story#record_fact_for_thread(l:s, 'Find Missing Rangers', 'Kamenal begins in the Merchandise Store Room under orders to recover missing rangers.')
+  let l:s = game#story#record_fact_for_thread(l:s, 'Find Missing Rangers', 'general', 'Kamenal begins in the Merchandise Store Room under orders to recover missing rangers.')
   return game#core#add_log(l:s, ['NEURAL_LINK_ESTABLISHED', 'SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ', 'You materialize in the Merchandise Store Room.'])
 endfunction
 

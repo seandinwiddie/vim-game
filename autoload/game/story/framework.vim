@@ -11,13 +11,13 @@ function! game#story#framework#cmd_framework(state, subcmd, args) abort
     let l:next_state = a:state
     let l:next_state.framework.theme = a:args
     let l:next_state.hint = 'DIRECTIVE: Framework theme set. Frame scenes that drive this subject toward closure.'
-    let l:next_state = game#story#record_fact(l:next_state, 'Framework theme fixed on ' . a:args . '.')
+    let l:next_state = game#story#record_fact(l:next_state, 'general', 'Framework theme fixed on ' . a:args . '.')
     return game#core#add_log(l:next_state, ['FRAMEWORK THEME: ' . a:args])
   elseif l:subcmd ==# 'hook'
     let l:next_state = a:state
     let l:next_state.framework.hook = a:args
     let l:next_state.hint = 'DIRECTIVE: Hook stored. Let it tug the next scene without turning it into rails.'
-    let l:next_state = game#story#record_fact(l:next_state, 'Framework hook established: ' . a:args . '.')
+    let l:next_state = game#story#record_fact(l:next_state, 'general', 'Framework hook established: ' . a:args . '.')
     return game#core#add_log(l:next_state, ['FRAMEWORK HOOK: ' . a:args])
   elseif l:subcmd ==# 'phase'
     let l:phase = s:normalize_phase(a:args)
@@ -27,7 +27,7 @@ function! game#story#framework#cmd_framework(state, subcmd, args) abort
     let l:next_state = a:state
     let l:next_state.framework.phase = l:phase
     let l:next_state.hint = 'DIRECTIVE: Arc phase updated. Let the next scene match the dramatic pressure.'
-    let l:next_state = game#story#record_fact(l:next_state, 'Framework phase shifted to ' . s:phase_label(l:phase) . ' in chapter ' . l:next_state.framework.chapter . '.')
+    let l:next_state = game#story#record_fact(l:next_state, 'general', 'Framework phase shifted to ' . s:phase_label(l:phase) . ' in chapter ' . l:next_state.framework.chapter . '.')
     return game#core#add_log(l:next_state, ['FRAMEWORK PHASE: ' . s:phase_label(l:phase)])
   elseif l:subcmd ==# 'next'
     let l:next_state = a:state
@@ -38,7 +38,7 @@ function! game#story#framework#cmd_framework(state, subcmd, args) abort
     endif
     let l:next_state.framework.phase = l:next_phase
     let l:next_state.hint = 'DIRECTIVE: Advance the framework only when the current scene has earned the next act.'
-    let l:next_state = game#story#record_fact(l:next_state, 'Framework advanced to ' . s:phase_label(l:next_phase) . ' in chapter ' . l:next_state.framework.chapter . '.')
+    let l:next_state = game#story#record_fact(l:next_state, 'general', 'Framework advanced to ' . s:phase_label(l:next_phase) . ' in chapter ' . l:next_state.framework.chapter . '.')
     return game#core#add_log(l:next_state, [
           \ 'FRAMEWORK ADVANCE: ' . s:phase_label(l:current) . ' -> ' . s:phase_label(l:next_phase),
           \ 'CHAPTER: ' . l:next_state.framework.chapter

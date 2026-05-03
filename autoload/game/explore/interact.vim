@@ -37,7 +37,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:next_state.loc = l:throne_id
     let l:next_state.surge += 4
     let l:next_state = game#story#enter_location(l:next_state, l:throne_id, 1)
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Confront the Abyssal Overfiend', 'Kamenal stepped onto the Abyssal Throne to face the Voidmaw Abyssalgeist.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Confront the Abyssal Overfiend', 'general', 'Kamenal stepped onto the Abyssal Throne to face the Voidmaw Abyssalgeist.')
     let l:next_state.hint = 'BOSS_ENGAGED: The Abyssal Overfiend awaits. Use "attack" -- defeat both phases to seal the breach.'
     call add(l:log_lines, 'TRANSIT: The Abyssal Sigil yawns open beneath you, dropping you onto the Abyssal Throne.')
     return game#explore#view#cmd_look(game#core#add_log(l:next_state, l:log_lines))
@@ -45,7 +45,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:consume_object = 1
     let l:next_state.surge = 0
     let l:next_state = game#player#heal(l:next_state, l:next_state.player.max_hp)
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Confront the Abyssal Overfiend', 'The Throne Sigil was defiled, sealing Goeteian Chthonica out of Migdal Kudar.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Confront the Abyssal Overfiend', 'general', 'The Throne Sigil was defiled, sealing Goeteian Chthonica out of Migdal Kudar.')
     call add(l:log_lines, 'BREACH SEALED: You defile the Throne Sigil. The Surge Count zeroes; vital signs restored to maximum.')
     call add(l:log_lines, 'ᚷ The rangers can be ferried home through the recovered codices. The vignette closes. ᚷ')
   elseif l:effect ==# 'unlock_exit'
@@ -72,7 +72,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     call add(l:log_lines, 'PARTY UPDATE: Ranger Operative joins your unit, providing Group Dynamics bonuses in combat.')
     let l:quest_progress = game#quest#advance(l:next_state, 'rescue-rangers', 1)
     let l:next_state = l:quest_progress.state
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', 'A bound ranger was extracted alive from ' . l:next_state.rooms[a:state.loc].display_name . '.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', 'general', 'A bound ranger was extracted alive from ' . l:next_state.rooms[a:state.loc].display_name . '.')
     let l:log_lines += l:quest_progress.log
   elseif l:effect ==# 'recover_tome'
     let l:consume_object = 1
@@ -82,7 +82,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     call add(l:log_lines, 'ARCHIVE RECOVERED: The reliquary yields a stack of codices and return sigils.')
     let l:quest_progress = game#quest#advance(l:next_state, 'recover-lost-tomes', 1)
     let l:next_state = l:quest_progress.state
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Recover the Lost Tomes', 'A sealed reliquary yielded codices and return sigils in ' . l:next_state.rooms[a:state.loc].display_name . '.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Recover the Lost Tomes', 'general', 'A sealed reliquary yielded codices and return sigils in ' . l:next_state.rooms[a:state.loc].display_name . '.')
     let l:log_lines += l:quest_progress.log
   elseif l:effect ==# 'purify_altar'
     let l:consume_object = 1
@@ -92,7 +92,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     call add(l:log_lines, 'RECOVERED: The holy resonance restores ' . l:heal . ' HP.')
     let l:quest_progress = game#quest#advance(l:next_state, 'purify-altars', 1)
     let l:next_state = l:quest_progress.state
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Purify the Eldritch Altars', 'A corrupted altar was purified in ' . l:next_state.rooms[a:state.loc].display_name . '.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Purify the Eldritch Altars', 'general', 'A corrupted altar was purified in ' . l:next_state.rooms[a:state.loc].display_name . '.')
     let l:log_lines += l:quest_progress.log
   elseif l:effect ==# 'recruit_ranger'
     let l:consume_object = 1
@@ -104,7 +104,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:next_state = game#party#add_companion(l:next_state, l:companion)
     let l:next_state = game#party#sync_scene(l:next_state)
     let l:next_state = game#story#threads#record_npc_for_thread(l:next_state, 'Find Missing Rangers', l:companion.name)
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', l:companion.name . ' rallied to the unit out of ' . l:next_state.rooms[a:state.loc].display_name . '.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', 'general', l:companion.name . ' rallied to the unit out of ' . l:next_state.rooms[a:state.loc].display_name . '.')
     call add(l:log_lines, 'PARTY UPDATE: ' . l:companion.name . ' joins your unit, swelling Group Dynamics.')
   elseif l:effect ==# 'field_cache'
     let l:consume_object = 1
@@ -126,7 +126,7 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:lore = l:lore_list[l:val % len(l:lore_list)]
     call add(l:log_lines, 'HIDDEN LORE DISCOVERED: ' . l:lore)
     let l:focus_name = game#story#focus_label(l:next_state)
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, l:focus_name, 'LORE: ' . l:lore)
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, l:focus_name, 'lore', l:lore)
     call add(l:log_lines, 'THREAD UPDATED: Forbidden truth appended to the active focus thread.')
   elseif l:effect ==# 'surge_rift'
     let l:consume_object = 1
@@ -187,7 +187,7 @@ function! s:check_climax_unveil(state, log_lines) abort
     call add(a:state.rooms[a:state.loc].objects, {'name': 'Abyssal Sigil', 'desc': 'A glyph of black light has bloomed beneath the merchant''s counter, anchored to the tower''s heart. It is your route to the Abyssal Throne.', 'effect': 'descend_throne'})
   endif
 
-  let l:state2 = game#story#record_fact_for_thread(a:state, 'Confront the Abyssal Overfiend', 'With the rangers, codices, and altars secured, the terminal projects the route to the Abyssal Throne.')
+  let l:state2 = game#story#record_fact_for_thread(a:state, 'Confront the Abyssal Overfiend', 'general', 'With the rangers, codices, and altars secured, the terminal projects the route to the Abyssal Throne.')
   call extend(a:state, l:state2, 'force')
 
   call add(a:log_lines, 'FINAL_OBJECTIVE_UNLOCKED: The terminal renders the route to the Abyssal Throne.')
@@ -230,11 +230,11 @@ function! s:apply_briefing(state, log_lines) abort
         \ })
   call extend(a:state, l:altar_quest.state, 'force')
 
-  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Find Missing Rangers', 'Terminal telemetry confirms the missing rangers are still alive beyond the tower shell.')
+  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Find Missing Rangers', 'general', 'Terminal telemetry confirms the missing rangers are still alive beyond the tower shell.')
   call extend(a:state, l:updated_state, 'force')
-  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Recover the Lost Tomes', 'Archive traces point to codices capable of sending captives home.')
+  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Recover the Lost Tomes', 'general', 'Archive traces point to codices capable of sending captives home.')
   call extend(a:state, l:updated_state, 'force')
-  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Purify the Eldritch Altars', 'Demonic taint in the chapels is fueling the tower; the altars must be cleansed.')
+  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Purify the Eldritch Altars', 'general', 'Demonic taint in the chapels is fueling the tower; the altars must be cleansed.')
   call extend(a:state, l:updated_state, 'force')
 
   call add(a:log_lines, 'MISSION UPDATE: Recon protocol refreshed. Missing rangers are still alive somewhere beyond the tower shell.')
@@ -284,7 +284,7 @@ function! s:traverse_portal(state, source_loc, object_index) abort
   let l:next_state.surge += 2
   let l:target_name = get(l:next_state.rooms[l:target_room], 'display_name', toupper(l:target_room))
   let l:next_state.hint = 'DIRECTIVE: Portal transit complete. Scan the impossible geometry before moving.'
-  let l:next_state = game#story#record_fact(l:next_state, 'Portal transit carried the scene from ' . l:source_name . ' into ' . l:target_name . '.')
+  let l:next_state = game#story#record_fact(l:next_state, 'general', 'Portal transit carried the scene from ' . l:source_name . ' into ' . l:target_name . '.')
   call add(l:log_lines, 'PORTAL TRANSIT: ' . l:source_name . ' -> ' . l:target_name)
   call add(l:log_lines, 'SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.')
   return {'state': l:next_state, 'log': l:log_lines}

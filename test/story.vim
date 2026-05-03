@@ -164,7 +164,7 @@ function! QuadarTest_RunStory() abort
   let l:found_montage_fact = 0
   for l:card in l:montage_state.notes.thread_cards
     for l:fact in get(l:card, 'facts', [])
-      if l:fact =~# '^Montage carry'
+      if type(l:fact) == v:t_dict && get(l:fact, 'kind', '') ==# 'montage carry'
         let l:found_montage_fact = 1
       endif
     endfor

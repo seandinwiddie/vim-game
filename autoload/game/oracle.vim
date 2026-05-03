@@ -72,7 +72,7 @@ function! game#oracle#cmd_ask(state, question) abort
     let l:next_state = s:apply_table2_modifier(l:next_state, l:modifier, l:log_lines)
   endif
 
-  let l:next_state = game#story#record_fact(l:next_state, l:oracle_note)
+  let l:next_state = game#story#record_fact(l:next_state, 'general', l:oracle_note)
   return game#core#add_log(l:next_state, l:log_lines)
 endfunction
 
@@ -139,7 +139,7 @@ function! s:apply_table2_modifier(state, modifier, log_lines) abort
     call add(a:log_lines, 'MONTAGE: Timeframe accelerates. Scene index advanced; Surge reset.')
   elseif a:modifier ==# 'tying off'
     let l:focus_name = game#story#focus_label(l:next_state)
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, l:focus_name, 'Tying off: narrative decree pushes this thread toward resolution.')
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, l:focus_name, 'tying off', 'Tying off: narrative decree pushes this thread toward resolution.')
     call add(a:log_lines, 'TYING OFF: Current focus thread receives a narrative-decreed push toward resolution.')
   elseif a:modifier ==# 'upstaged'
     let l:surge_gain = game#tuning#get('oracle.modifiers.upstaged.surge_gain')

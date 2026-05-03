@@ -9,7 +9,7 @@ function! game#story#ledger#cmd_thread(state, subcmd, args) abort
     return game#core#add_log(l:next_state, game#story#ledger#lines(l:next_state))
   elseif l:subcmd ==# 'add'
     let l:next_state = game#story#threads#ensure_thread(a:state, a:args)
-    let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:args, 'Thread opened for future investigation.')
+    let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:args, 'general', 'Thread opened for future investigation.')
     let l:next_state.hint = 'DIRECTIVE: Thread added. Use frame or focus to bring it on stage.'
     return game#core#add_log(l:next_state, 'THREAD ADDED: ' . a:args)
   endif

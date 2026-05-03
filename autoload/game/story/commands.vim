@@ -43,7 +43,12 @@ function! game#story#commands#cmd_notes(state) abort
       call add(l:lines, '   - No established facts yet.')
     else
       for l:fact in l:thread_card.facts
-        call add(l:lines, '   - ' . l:fact)
+        if type(l:fact) == v:t_dict
+          let l:prefix = l:fact.kind ==# 'general' ? '' : toupper(l:fact.kind) . ': '
+          call add(l:lines, '   - ' . l:prefix . l:fact.text)
+        else
+          call add(l:lines, '   - ' . l:fact)
+        endif
       endfor
     endif
   endif

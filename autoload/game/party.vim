@@ -114,7 +114,7 @@ function! s:set_status(state, name, status, assignment) abort
   if a:status ==# 'active'
     let l:next_state = game#story#records#assign_scene_npc(l:next_state, l:next_state.loc, l:companion.name)
     let l:next_state.hint = 'DIRECTIVE: Companion rallied into the main scene.'
-    let l:next_state = game#story#record_fact(l:next_state, l:companion.name . ' rallied back into the main scene.')
+    let l:next_state = game#story#record_fact(l:next_state, 'general', l:companion.name . ' rallied back into the main scene.')
     return game#core#add_log(l:next_state, [
           \ 'PARTY UPDATE: ' . l:companion.name . ' rallies to the front.',
           \ 'GROUP DYNAMICS: +' . game#party#group_bonus(l:next_state)
@@ -128,7 +128,7 @@ function! s:set_status(state, name, status, assignment) abort
   let l:note = a:status ==# 'faded'
         \ ? l:companion.name . ' faded from the main scene.'
         \ : l:companion.name . ' peeled away from the main scene to operate elsewhere.'
-  let l:next_state = game#story#record_fact(l:next_state, l:note)
+  let l:next_state = game#story#record_fact(l:next_state, 'general', l:note)
   return game#core#add_log(l:next_state, [
         \ 'PARTY UPDATE: ' . l:companion.name . (a:status ==# 'faded' ? ' fades to the edge of the scene.' : ' breaks away from the scene to handle a sidebar thread.'),
         \ 'GROUP DYNAMICS: +' . game#party#group_bonus(l:next_state)
@@ -149,7 +149,7 @@ function! s:set_elsewhere(state, name, thread_ref) abort
   endif
   let l:companion_name = s:resolved_name(l:next_state, a:name)
   let l:next_state.hint = 'DIRECTIVE: Companion is handling a sidebar thread elsewhere.'
-  let l:next_state = game#story#record_fact_for_thread(l:next_state, l:thread_name, l:companion_name . ' is operating elsewhere while the main scene continues.')
+  let l:next_state = game#story#record_fact_for_thread(l:next_state, l:thread_name, 'elsewhere', l:companion_name . ' is operating elsewhere while the main scene continues.')
   return game#core#add_log(l:next_state, [
         \ 'ELSEWHERE UNIT: ' . l:companion_name,
         \ 'THREAD SUPPORT: ' . l:thread_name

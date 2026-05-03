@@ -50,8 +50,8 @@ function! game#story#threads#ensure_thread(state, thread_name) abort
   return l:next_state
 endfunction
 
-function! game#story#threads#record_fact(state, fact) abort
-  return game#story#threads#record_fact_for_thread(a:state, game#story#state#focus_label(a:state), a:fact)
+function! game#story#threads#record_fact(state, kind, text) abort
+  return game#story#threads#record_fact_for_thread(a:state, game#story#state#focus_label(a:state), a:kind, a:text)
 endfunction
 
 function! game#story#threads#record_npc_for_thread(state, thread_name, npc_name) abort
@@ -73,8 +73,8 @@ function! game#story#threads#record_npc_for_thread(state, thread_name, npc_name)
   return l:next_state
 endfunction
 
-function! game#story#threads#record_fact_for_thread(state, thread_name, fact) abort
-  if empty(a:fact) || empty(a:thread_name)
+function! game#story#threads#record_fact_for_thread(state, thread_name, kind, text) abort
+  if empty(a:text) || empty(a:thread_name)
     return a:state
   endif
 
@@ -82,8 +82,23 @@ function! game#story#threads#record_fact_for_thread(state, thread_name, fact) ab
   let l:idx = game#story#threads#thread_card_index(l:next_state.notes.thread_cards, a:thread_name)
   let l:card = game#story#threads#normalize_card(l:next_state.notes.thread_cards[l:idx], l:next_state.stage)
   let l:card.stage = l:next_state.stage
-  if index(l:card.facts, a:fact) == -1
-    call add(l:card.facts, a:fact)
+  
+  let l:scene_idx = get(get(a:state, 'scene', {}), 'index', 1)
+  let l:fact_record = {'kind': a:kind, 'text': a:text, 'scene_idx': l:scene_idx}
+  
+  let l:found = 0
+  for l:f in l:card.facts
+    if type(l:f) == v:t_dict && get(l:f, 'text', '') ==# a:text
+      let l:found = 1
+      break
+    elseif type(l:f) == v:t_string && l:f ==# a:text
+      let l:found = 1
+      break
+    endif
+  endfor
+
+  if !l:found
+    call add(l:card.facts, l:fact_record)
     if len(l:card.facts) > 6
       let l:card.facts = l:card.facts[-6:]
     endif
@@ -113,7 +128,7 @@ function! game#story#threads#rename_thread(state, thread_ref, new_name) abort
   let l:card.name = a:new_name
   let l:card.stage = l:next_state.stage
   let l:next_state.notes.thread_cards[l:idx] = l:card
-  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:new_name, 'Thread modified from ' . l:old_name . '.')
+  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:new_name, 'general', 'Thread modified from ' . l:old_name . '.')
   return {'state': l:next_state, 'old_name': l:old_name, 'new_name': a:new_name}
 endfunction
 
@@ -139,8 +154,8 @@ function! game#story#threads#split_thread(state, thread_ref, new_name) abort
   let l:new_card.split_from = l:old_name
   let l:new_card.stage = l:next_state.stage
   let l:next_state.notes.thread_cards[l:new_idx] = l:new_card
-  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:old_name, 'Thread split into ' . a:new_name . '.')
-  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:new_name, 'Split from ' . l:old_name . ' after scene fallout.')
+  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:old_name, 'general', 'Thread split into ' . a:new_name . '.')
+  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:new_name, 'general', 'Split from ' . l:old_name . ' after scene fallout.')
   return {'state': l:next_state, 'old_name': l:old_name, 'new_name': a:new_name}
 endfunction
 
@@ -168,8 +183,8 @@ function! game#story#threads#replace_thread(state, thread_ref, new_name) abort
   let l:new_card.replaced_from = l:old_name
   let l:new_card.stage = l:next_state.stage
   let l:next_state.notes.thread_cards[l:new_idx] = l:new_card
-  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:old_name, 'Thread replaced by ' . a:new_name . '.')
-  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:new_name, 'Replaces ' . l:old_name . ' after scene fallout.')
+  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:old_name, 'general', 'Thread replaced by ' . a:new_name . '.')
+  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, a:new_name, 'general', 'Replaces ' . l:old_name . ' after scene fallout.')
   return {'state': l:next_state, 'old_name': l:old_name, 'new_name': a:new_name}
 endfunction
 
@@ -187,7 +202,7 @@ function! game#story#threads#resolve_thread(state, thread_ref) abort
   let l:card.status = 'resolved'
   let l:card.stage = l:next_state.stage
   let l:next_state.notes.thread_cards[l:idx] = l:card
-  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:old_name, 'Thread resolved and removed from the active ledger.')
+  let l:next_state = game#story#threads#record_fact_for_thread(l:next_state, l:old_name, 'general', 'Thread resolved and removed from the active ledger.')
   return {'state': l:next_state, 'old_name': l:old_name}
 endfunction
 

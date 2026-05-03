@@ -151,7 +151,7 @@ function! game#enemies#trigger_overfiend_epilogue(state, log_lines) abort
   let l:quest_progress = game#quest#advance(a:state, 'confront-overfiend', 1)
   call extend(a:state, l:quest_progress.state, 'force')
   call extend(a:log_lines, l:quest_progress.log)
-  let l:state2 = game#story#record_fact_for_thread(a:state, 'Confront the Abyssal Overfiend', 'The Voidmaw Abyssalgeist was annihilated atop the Abyssal Throne, severing Goeteian Chthonica''s anchor to Quadar Tower.')
+  let l:state2 = game#story#record_fact_for_thread(a:state, 'Confront the Abyssal Overfiend', 'general', 'The Voidmaw Abyssalgeist was annihilated atop the Abyssal Throne, severing Goeteian Chthonica''s anchor to Quadar Tower.')
   call extend(a:state, l:state2, 'force')
   call add(a:log_lines, 'ᚷ EPILOGUE: The tower trembles. The Loom of Fate untangles. The missing rangers can be ferried home. ᚷ')
 endfunction
