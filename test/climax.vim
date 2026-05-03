@@ -1,5 +1,7 @@
 function! QuadarTest_RunClimax() abort
   let l:state = QuadarTest_CampaignState()
+  let l:boss_seed = game#enemies#build_boss('Abyssal Overfiend')
+  let l:boss_tuning = game#tuning#get('enemies.boss.abyssal_overfiend')
 
   for l:climax_id in ['rescue-rangers', 'recover-lost-tomes', 'purify-altars']
     for l:i in range(len(l:state.quests))
@@ -32,6 +34,10 @@ function! QuadarTest_RunClimax() abort
   let l:boss_room = l:state.rooms[l:state.loc]
   call QuadarTest_AssertTrue(!empty(l:boss_room.entities), 'After phase 1, the Abyssal Overfiend should still occupy the throne room.')
   call QuadarTest_AssertTrue(get(l:boss_room.entities[0], 'phases_done', 0) == 1, 'Phase 1 defeat should advance phases_done to 1.')
+  call QuadarTest_AssertTrue(get(l:boss_room.entities[0], 'phase_label', '') ==# 'Tyrant of the Abyss', 'Phase shifts should source the next boss label from the enemy catalog.')
+  call QuadarTest_AssertTrue(get(l:boss_room.entities[0], 'str', 0) == get(l:boss_seed, 'str', 0) + l:boss_tuning.phase_delta.str, 'Boss phase transitions should reuse the catalog-backed STR delta.')
+  call QuadarTest_AssertTrue(get(l:boss_room.entities[0], 'agi', 0) == get(l:boss_seed, 'agi', 0) + l:boss_tuning.phase_delta.agi, 'Boss phase transitions should reuse the catalog-backed AGI delta.')
+  call QuadarTest_AssertTrue(get(l:boss_room.entities[0], 'arc', 0) == get(l:boss_seed, 'arc', 0) + l:boss_tuning.phase_delta.arc, 'Boss phase transitions should reuse the catalog-backed ARC delta.')
 
   let l:state = game#core#process(l:state, 'attack')
   call QuadarTest_AssertTrue(empty(l:state.rooms['abyssal_throne'].entities), 'Phase 2 defeat should remove the Overfiend from the throne room.')

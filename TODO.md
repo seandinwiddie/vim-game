@@ -189,7 +189,7 @@ items that would unblock the most other items if tackled now.
   - **What changes:** `game#enemies#pool(rank)` returns one canonical
     rank-tier list; everyone calls it.
 
-- [ ] **Consolidate enemy data into one catalog.**
+- [x] **Consolidate enemy data into one catalog.**
   - **Why:** Enemy info is split across three files: stat blocks live in
     `procgen.vim#s:enemy_pool`, signature spell + counter live in
     `enemies.vim#s:archetypes`, boss-phase metadata is constructed inline in

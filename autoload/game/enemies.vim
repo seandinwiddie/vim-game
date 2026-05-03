@@ -1,9 +1,37 @@
 " autoload/game/enemies.vim - Enemy archetype lore and boss mechanics
 
+function! game#enemies#catalog() abort
+  let l:boss_tuning = game#tuning#get('enemies.boss.abyssal_overfiend')
+  let l:crystal_guard = {
+        \ 'signature': 'Dark Crystal Shielding',
+        \ 'flavor': 'Crystalline poison shards lash out from the obsidian form.',
+        \ 'counter': 'guard_strip'
+        \ }
+  return {
+        \ 'storm-titan': s:entry('Storm Titan', 4, {'str': 10, 'agi': 3, 'arc': 8}, {'pool_order': 0, 'signature': 'Thunderous Slam', 'flavor': 'Hulking thunderbeast unleashes electrostatic discharges between hammer blows.', 'counter': 'guard_strip'}),
+        \ 'shadowhorn-juggernaut': s:entry('Shadowhorn Juggernaut', 4, {'str': 11, 'agi': 3, 'arc': 5}, {'pool_order': 1, 'signature': 'Horned Charge of the Possessed', 'flavor': 'Shadow stalker pounces with serrated horns and crushing impact.', 'counter': 'guard_strip'}),
+        \ 'magma-leviathan': s:entry('Magma Leviathan', 4, {'str': 11, 'agi': 2, 'arc': 8}, {'pool_order': 2, 'signature': 'Lava Surge Breath', 'flavor': 'Molten armor radiates a core heat aura as the colossus stomps.', 'counter': 'guard_strip'}),
+        \ 'abyssal-overfiend': s:entry('Abyssal Overfiend', 4, {'str': l:boss_tuning.str, 'agi': l:boss_tuning.agi, 'arc': l:boss_tuning.arc}, {'pool_order': 3, 'signature': 'Void Tentacles', 'flavor': 'High Demon coils through dimensional rifts wielding abyssal cataclysms.', 'counter': 'soul_siphon', 'boss': {'phases': [{'label': 'Voidmaw Form', 'delta': {'str': 0, 'agi': 0, 'arc': 0}}, {'label': 'Tyrant of the Abyss', 'delta': l:boss_tuning.phase_delta}]}}),
+        \ 'aksov-hexe-spinne': s:entry('Aksov Hexe-Spinne', 4, {'str': 8, 'agi': 10, 'arc': 10}, {'pool_order': 4, 'signature': 'Rocket Barrage', 'flavor': 'Rocketweaver arachnid lobs guided missiles in long-range death arcs.', 'counter': 'surge_spike'}),
+        \ 'byssalspawn': s:entry('Byssalspawn', 3, {'str': 9, 'agi': 2, 'arc': 7}, {'pool_order': 0, 'signature': 'Eldritch Devouring Gaze', 'flavor': 'Tendrils of cosmic rage erupt from the grotesque maw.', 'counter': 'soul_siphon'}),
+        \ 'twilight-weaver': s:entry('Twilight Weaver', 3, {'str': 4, 'agi': 9, 'arc': 6}, {'pool_order': 1, 'signature': 'Shadowstep Ambush', 'flavor': 'Dark ghost dances through electric darkness, horns serrated with shadow.', 'counter': 'mark_strip'}),
+        \ 'gravewalker': s:entry('Gravewalker', 3, {'str': 7, 'agi': 4, 'arc': 6}, {'pool_order': 2, 'signature': 'Necrotic Strike', 'flavor': 'A reanimated corpse drags decay through every melee strike.', 'counter': 'soul_siphon'}),
+        \ 'flame-corps': s:entry('Flame Corps', 3, {'str': 8, 'agi': 4, 'arc': 5}, {'pool_order': 3, 'signature': 'Napalm Grenade Toss', 'flavor': 'Brimstone Behemoth wreathes the field in inferno overdrive.', 'counter': 'surge_spike'}),
+        \ 'aetherwing-herald': s:entry('Aetherwing Herald', 3, {'str': 5, 'agi': 9, 'arc': 8}, {'pool_order': 4, 'signature': 'Celestial Beam', 'flavor': 'Ether-spirit angel projects translucent forms wreathed in spectral storms.', 'counter': 'guard_strip'}),
+        \ 'obsidian-warden': s:entry('Obsidian Warden', 2, {'str': 7, 'agi': 2, 'arc': 6}, extend({'pool_order': 0}, l:crystal_guard)),
+        \ 'doomguard': s:entry('Doomguard', 2, {'str': 8, 'agi': 3, 'arc': 3}, {'pool_order': 1, 'signature': 'Explosive Barrage', 'flavor': 'Heavy zinc plate clangs as a chant of dread chains the air.', 'counter': 'surge_spike'}),
+        \ 'voidwraith': s:entry('Voidwraith', 2, {'str': 3, 'agi': 6, 'arc': 9}, {'pool_order': 2, 'signature': 'Soul Siphon', 'flavor': 'Spectral tendrils drain morale while a haunting moan caves the air in.', 'counter': 'soul_siphon'}),
+        \ 'cyberflux-guardian': s:entry('Cyberflux Guardian', 2, {'str': 6, 'agi': 6, 'arc': 5}, {'pool_order': 3, 'signature': 'Magik-Shield Deflector', 'flavor': 'Bionetic soldier vents EMP overload through nano-repair plating.', 'counter': 'guard_strip'}),
+        \ 'sentinel-of-terror': s:entry('Sentinel of Terror', 2, {'str': 8, 'agi': 5, 'arc': 4}, extend({'pool_order': 4}, l:crystal_guard)),
+        \ 'ashwalker': s:entry('Ashwalker', 1, {'str': 4, 'agi': 7, 'arc': 4}, {'pool_order': 0, 'signature': 'Ember Dash', 'flavor': 'A renegade junkie streaks through ember trails wielding salvaged relics.', 'counter': 'mark_strip'}),
+        \ 'aether-spirit': s:entry('Aether Spirit', 1, {'str': 2, 'agi': 8, 'arc': 8}, {'pool_order': 1, 'signature': 'Astral Bolt', 'flavor': 'Phasing in and out of the material plane between bursts of dark energy.', 'counter': 'mark_strip'}),
+        \ 'thunder-trooper': s:entry('Thunder Trooper', 1, {'str': 5, 'agi': 5, 'arc': 4}, {'pool_order': 2, 'signature': 'Shotgun Barrage', 'flavor': 'Pyroclash infantry deploy flashbangs and electroshock shielding.', 'counter': 'surge_spike'}),
+        \ 'iron-armored-guardian': s:entry('Iron Armored Guardian', 1, {'str': 6, 'agi': 2, 'arc': 2}, {'pool_order': 3, 'signature': 'Ironclad Charge', 'flavor': 'A medieval swordsman in iseon plate hurls explosive projectiles.', 'counter': 'guard_strip'})
+        \ }
+endfunction
+
 function! game#enemies#archetype(name) abort
-  let l:lookup = s:archetypes()
-  let l:match = game#match#one(keys(l:lookup), a:name)
-  return get(l:match, 'found', 0) ? l:lookup[tolower(l:match.value)] : {}
+  return s:catalog_match(a:name)
 endfunction
 
 function! game#enemies#flavor_lines(target_name) abort
@@ -17,22 +45,27 @@ function! game#enemies#flavor_lines(target_name) abort
 endfunction
 
 function! game#enemies#pool(rank) abort
-  let l:key = a:rank >= 4 ? '4' : string(max([1, a:rank]))
-  return deepcopy(get(s:pools(), l:key, s:pools()['1']))
+  let l:entries = []
+  let l:rank = a:rank >= 4 ? 4 : max([1, a:rank])
+  for l:entry in values(game#enemies#catalog())
+    if get(l:entry, 'rank', 0) == l:rank
+      call add(l:entries, deepcopy(l:entry))
+    endif
+  endfor
+  call sort(l:entries, 's:compare_pool_order')
+  let l:pool = []
+  for l:entry in l:entries
+    call add(l:pool, s:enemy(l:entry))
+  endfor
+  return l:pool
 endfunction
 
 function! game#enemies#select(names) abort
-  let l:catalog = {}
-  for l:pool in values(s:pools())
-    for l:enemy in l:pool
-      let l:catalog[l:enemy.name] = l:enemy
-    endfor
-  endfor
-
   let l:selected = []
   for l:name in a:names
-    if has_key(l:catalog, l:name)
-      call add(l:selected, deepcopy(l:catalog[l:name]))
+    let l:entry = s:catalog_by_name(l:name)
+    if !empty(l:entry)
+      call add(l:selected, s:enemy(l:entry))
     endif
   endfor
   return l:selected
@@ -74,36 +107,41 @@ function! game#enemies#counter_signature(state, target_name, log_lines) abort
 endfunction
 
 function! game#enemies#build_boss(name) abort
-  if a:name ==# 'Abyssal Overfiend'
-    let l:boss_tuning = game#tuning#get('enemies.boss.abyssal_overfiend')
-    return {
-          \ 'name': 'Abyssal Overfiend',
-          \ 'str': l:boss_tuning.str,
-          \ 'agi': l:boss_tuning.agi,
-          \ 'arc': l:boss_tuning.arc,
-          \ 'is_boss': 1,
-          \ 'phases': 2,
-          \ 'phases_done': 0,
-          \ 'phase_label': 'Voidmaw Form'
-          \ }
+  let l:entry = s:catalog_by_name(a:name)
+  let l:phases = s:boss_phases(l:entry)
+  if empty(l:phases)
+    return {}
   endif
-  return {}
+
+  let l:boss = s:enemy(l:entry)
+  let l:phase = l:phases[0]
+  let l:stats = s:phase_stats(l:entry, 0)
+  let l:boss.str = l:stats.str
+  let l:boss.agi = l:stats.agi
+  let l:boss.arc = l:stats.arc
+  let l:boss.is_boss = 1
+  let l:boss.phases = len(l:phases)
+  let l:boss.phases_done = 0
+  let l:boss.phase_label = get(l:phase, 'label', 'First Form')
+  return l:boss
 endfunction
 
 function! game#enemies#handle_boss_defeat(state, room_key, target, log_lines) abort
-  let l:phases = get(a:target, 'phases', 1)
+  let l:entry = s:catalog_by_name(get(a:target, 'name', ''))
+  let l:phases = s:boss_phases(l:entry)
   let l:done = get(a:target, 'phases_done', 0) + 1
-  if l:done < l:phases
-    let l:boss_tuning = game#tuning#get('enemies.boss.abyssal_overfiend')
+  if l:done < len(l:phases)
     let l:next_target = copy(a:target)
+    let l:next_phase = l:phases[l:done]
+    let l:next_stats = s:phase_stats(l:entry, l:done)
     let l:next_target.phases_done = l:done
-    let l:next_target.str = get(a:target, 'str', l:boss_tuning.str) + l:boss_tuning.phase_delta.str
-    let l:next_target.agi = get(a:target, 'agi', l:boss_tuning.agi) + l:boss_tuning.phase_delta.agi
-    let l:next_target.arc = get(a:target, 'arc', l:boss_tuning.arc) + l:boss_tuning.phase_delta.arc
-    let l:next_target.phase_label = 'Tyrant of the Abyss'
+    let l:next_target.str = l:next_stats.str
+    let l:next_target.agi = l:next_stats.agi
+    let l:next_target.arc = l:next_stats.arc
+    let l:next_target.phase_label = get(l:next_phase, 'label', 'Next Form')
     let a:state.rooms[a:room_key].entities[0] = l:next_target
     call add(a:log_lines, 'PHASE_SHIFT: The ' . a:target.name . ' tears its physical form apart and reconstitutes as the ' . l:next_target.phase_label . '.')
-    call add(a:log_lines, 'BOSS_TRACE: STR+' . l:boss_tuning.phase_delta.str . ' AGI+' . l:boss_tuning.phase_delta.agi . ' ARC+' . l:boss_tuning.phase_delta.arc . '. The duel resumes -- attack again.')
+    call add(a:log_lines, 'BOSS_TRACE: STR+' . get(get(l:next_phase, 'delta', {}), 'str', 0) . ' AGI+' . get(get(l:next_phase, 'delta', {}), 'agi', 0) . ' ARC+' . get(get(l:next_phase, 'delta', {}), 'arc', 0) . '. The duel resumes -- attack again.')
     return {'fully_defeated': 0}
   endif
   return {'fully_defeated': 1}
@@ -156,6 +194,55 @@ function! game#enemies#abyssal_throne_room() abort
         \ }
 endfunction
 
+function! s:entry(name, rank, stats, attrs) abort
+  let l:entry = {'name': a:name, 'rank': a:rank, 'stats': deepcopy(a:stats)}
+  return extend(l:entry, deepcopy(a:attrs))
+endfunction
+
+function! s:enemy(entry) abort
+  let l:stats = get(a:entry, 'stats', {})
+  return {
+        \ 'name': get(a:entry, 'name', ''),
+        \ 'str': get(l:stats, 'str', 0),
+        \ 'agi': get(l:stats, 'agi', 0),
+        \ 'arc': get(l:stats, 'arc', 0)
+        \ }
+endfunction
+
+function! s:catalog_by_name(name) abort
+  for l:entry in values(game#enemies#catalog())
+    if get(l:entry, 'name', '') ==# a:name
+      return deepcopy(l:entry)
+    endif
+  endfor
+  return {}
+endfunction
+
+function! s:catalog_match(name) abort
+  let l:entries = values(game#enemies#catalog())
+  let l:names = map(copy(l:entries), "get(v:val, 'name', '')")
+  let l:match = game#match#one(l:names, a:name)
+  return get(l:match, 'found', 0) ? deepcopy(l:entries[l:match.index]) : {}
+endfunction
+
+function! s:boss_phases(entry) abort
+  return get(get(a:entry, 'boss', {}), 'phases', [])
+endfunction
+
+function! s:phase_stats(entry, phase_idx) abort
+  let l:stats = deepcopy(get(a:entry, 'stats', {}))
+  let l:phase = get(s:boss_phases(a:entry), a:phase_idx, {})
+  let l:delta = get(l:phase, 'delta', {})
+  let l:stats.str += get(l:delta, 'str', 0)
+  let l:stats.agi += get(l:delta, 'agi', 0)
+  let l:stats.arc += get(l:delta, 'arc', 0)
+  return l:stats
+endfunction
+
+function! s:compare_pool_order(left, right) abort
+  return get(a:left, 'pool_order', 0) - get(a:right, 'pool_order', 0)
+endfunction
+
 function! s:quest_complete(state, quest_id) abort
   for l:quest in get(a:state, 'quests', [])
     if get(l:quest, 'id', '') ==# a:quest_id
@@ -163,60 +250,4 @@ function! s:quest_complete(state, quest_id) abort
     endif
   endfor
   return 0
-endfunction
-
-function! s:pools() abort
-  return {
-        \ '4': [
-        \   {'name': 'Storm Titan', 'str': 10, 'agi': 3, 'arc': 8},
-        \   {'name': 'Shadowhorn Juggernaut', 'str': 11, 'agi': 3, 'arc': 5},
-        \   {'name': 'Magma Leviathan', 'str': 11, 'agi': 2, 'arc': 8},
-        \   {'name': 'Abyssal Overfiend', 'str': 10, 'agi': 4, 'arc': 9},
-        \   {'name': 'Aksov Hexe-Spinne', 'str': 8, 'agi': 10, 'arc': 10}
-        \ ],
-        \ '3': [
-        \   {'name': 'Byssalspawn', 'str': 9, 'agi': 2, 'arc': 7},
-        \   {'name': 'Twilight Weaver', 'str': 4, 'agi': 9, 'arc': 6},
-        \   {'name': 'Gravewalker', 'str': 7, 'agi': 4, 'arc': 6},
-        \   {'name': 'Flame Corps', 'str': 8, 'agi': 4, 'arc': 5},
-        \   {'name': 'Aetherwing Herald', 'str': 5, 'agi': 9, 'arc': 8}
-        \ ],
-        \ '2': [
-        \   {'name': 'Obsidian Warden', 'str': 7, 'agi': 2, 'arc': 6},
-        \   {'name': 'Doomguard', 'str': 8, 'agi': 3, 'arc': 3},
-        \   {'name': 'Voidwraith', 'str': 3, 'agi': 6, 'arc': 9},
-        \   {'name': 'Cyberflux Guardian', 'str': 6, 'agi': 6, 'arc': 5},
-        \   {'name': 'Sentinel of Terror', 'str': 8, 'agi': 5, 'arc': 4}
-        \ ],
-        \ '1': [
-        \   {'name': 'Ashwalker', 'str': 4, 'agi': 7, 'arc': 4},
-        \   {'name': 'Aether Spirit', 'str': 2, 'agi': 8, 'arc': 8},
-        \   {'name': 'Thunder Trooper', 'str': 5, 'agi': 5, 'arc': 4},
-        \   {'name': 'Iron Armored Guardian', 'str': 6, 'agi': 2, 'arc': 2}
-        \ ]
-        \ }
-endfunction
-
-function! s:archetypes() abort
-  return {
-        \ 'obsidian warden': {'signature': 'Dark Crystal Shielding', 'flavor': 'Crystalline poison shards lash out from the obsidian form.', 'counter': 'guard_strip'},
-        \ 'sentinel of terror': {'signature': 'Dark Crystal Shielding', 'flavor': 'Crystalline poison shards lash out from the obsidian form.', 'counter': 'guard_strip'},
-        \ 'doomguard': {'signature': 'Explosive Barrage', 'flavor': 'Heavy zinc plate clangs as a chant of dread chains the air.', 'counter': 'surge_spike'},
-        \ 'ashwalker': {'signature': 'Ember Dash', 'flavor': 'A renegade junkie streaks through ember trails wielding salvaged relics.', 'counter': 'mark_strip'},
-        \ 'iron armored guardian': {'signature': 'Ironclad Charge', 'flavor': 'A medieval swordsman in iseon plate hurls explosive projectiles.', 'counter': 'guard_strip'},
-        \ 'aether spirit': {'signature': 'Astral Bolt', 'flavor': 'Phasing in and out of the material plane between bursts of dark energy.', 'counter': 'mark_strip'},
-        \ 'thunder trooper': {'signature': 'Shotgun Barrage', 'flavor': 'Pyroclash infantry deploy flashbangs and electroshock shielding.', 'counter': 'surge_spike'},
-        \ 'voidwraith': {'signature': 'Soul Siphon', 'flavor': 'Spectral tendrils drain morale while a haunting moan caves the air in.', 'counter': 'soul_siphon'},
-        \ 'cyberflux guardian': {'signature': 'Magik-Shield Deflector', 'flavor': 'Bionetic soldier vents EMP overload through nano-repair plating.', 'counter': 'guard_strip'},
-        \ 'byssalspawn': {'signature': 'Eldritch Devouring Gaze', 'flavor': 'Tendrils of cosmic rage erupt from the grotesque maw.', 'counter': 'soul_siphon'},
-        \ 'twilight weaver': {'signature': 'Shadowstep Ambush', 'flavor': 'Dark ghost dances through electric darkness, horns serrated with shadow.', 'counter': 'mark_strip'},
-        \ 'storm titan': {'signature': 'Thunderous Slam', 'flavor': 'Hulking thunderbeast unleashes electrostatic discharges between hammer blows.', 'counter': 'guard_strip'},
-        \ 'aksov hexe-spinne': {'signature': 'Rocket Barrage', 'flavor': 'Rocketweaver arachnid lobs guided missiles in long-range death arcs.', 'counter': 'surge_spike'},
-        \ 'flame corps': {'signature': 'Napalm Grenade Toss', 'flavor': 'Brimstone Behemoth wreathes the field in inferno overdrive.', 'counter': 'surge_spike'},
-        \ 'aetherwing herald': {'signature': 'Celestial Beam', 'flavor': 'Ether-spirit angel projects translucent forms wreathed in spectral storms.', 'counter': 'guard_strip'},
-        \ 'gravewalker': {'signature': 'Necrotic Strike', 'flavor': 'A reanimated corpse drags decay through every melee strike.', 'counter': 'soul_siphon'},
-        \ 'shadowhorn juggernaut': {'signature': 'Horned Charge of the Possessed', 'flavor': 'Shadow stalker pounces with serrated horns and crushing impact.', 'counter': 'guard_strip'},
-        \ 'magma leviathan': {'signature': 'Lava Surge Breath', 'flavor': 'Molten armor radiates a core heat aura as the colossus stomps.', 'counter': 'guard_strip'},
-        \ 'abyssal overfiend': {'signature': 'Void Tentacles', 'flavor': 'High Demon coils through dimensional rifts wielding abyssal cataclysms.', 'counter': 'soul_siphon'}
-        \ }
 endfunction

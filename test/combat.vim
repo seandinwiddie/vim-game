@@ -4,12 +4,19 @@ function! QuadarTest_RunCombat() abort
   call QuadarTest_AssertContains(game#core#process(game#core#init(), 'cast').log, "LOG_ERR: Specify a spell to cast (e.g. 'cast Ethereal Dagger Assault').")
 
   let l:state = QuadarTest_CampaignState()
+  let l:catalog = game#enemies#catalog()
+  call QuadarTest_AssertTrue(has_key(l:catalog, 'obsidian-warden'), 'Enemy catalog should expose canonical keyed entries.')
+  call QuadarTest_AssertTrue(get(get(l:catalog['obsidian-warden'], 'stats', {}), 'str', 0) == 7, 'Enemy catalog should retain canonical stat blocks.')
+  call QuadarTest_AssertTrue(len(get(get(l:catalog['abyssal-overfiend'], 'boss', {}), 'phases', [])) == 2, 'Enemy catalog should carry boss phase metadata.')
   call QuadarTest_AssertTrue(game#combat#spells#match_known(get(l:state.player, 'spells', []), 'dark crystal') ==# 'Dark Crystal Shielding', 'Spell matching should continue supporting unique prefixes.')
   call QuadarTest_AssertTrue(!empty(game#combat#spells#get('Precision Shot')), 'Spell registry should expose Precision Shot through the shared registry.')
   call QuadarTest_AssertTrue(len(game#enemies#pool(2)) == 5, 'Enemy rank pools should stay centrally defined by difficulty tier.')
+  call QuadarTest_AssertTrue(get(game#enemies#pool(4)[0], 'name', '') ==# 'Storm Titan', 'Enemy rank pools should preserve their canonical spawn order for deterministic room generation.')
   let l:oracle_pool = game#enemies#select(['Ashwalker', 'Voidwraith', 'Doomguard', 'Twilight Weaver'])
   call QuadarTest_AssertTrue(len(l:oracle_pool) == 4 && get(l:oracle_pool[3], 'name', '') ==# 'Twilight Weaver', 'Canonical enemy selection should preserve requested spawn subsets in order.')
   call QuadarTest_AssertTrue(get(game#enemies#archetype('Sentinel of Terror'), 'signature', '') ==# 'Dark Crystal Shielding', 'Enemy archetype lookup should still support alias names through the shared matcher.')
+  let l:boss = game#enemies#build_boss('Abyssal Overfiend')
+  call QuadarTest_AssertTrue(get(l:boss, 'is_boss', 0) == 1 && get(l:boss, 'phase_label', '') ==# 'Voidmaw Form', 'Boss construction should now derive its opening phase from the enemy catalog.')
 
   let l:cast_match_state = game#core#init()
   let l:cast_match_state.player.spells += ['Shatterstrike Slam', 'Shadowstep Mastery']
