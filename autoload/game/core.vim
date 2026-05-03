@@ -51,7 +51,7 @@ function! game#core#add_log(state, msg) abort
   endif
   if len(l:next_state.log) > 100
     let l:overflow = len(l:next_state.log) - 100
-    let l:next_state.log = l:next_state.log[l:overflow:]
+    call remove(l:next_state.log, 0, l:overflow - 1)
     let l:next_state.log_cursor = max([0, l:next_state.log_cursor - l:overflow])
   endif
   return l:next_state
@@ -98,7 +98,10 @@ endfunction
 function! game#core#render(state) abort
   let l:state = game#core#normalize(a:state)
   let l:cursor = s:log_cursor(l:state)
-  let l:unread = l:cursor >= len(l:state.log) ? [] : l:state.log[l:cursor:]
+  let l:unread = copy(l:state.log)
+  if l:cursor > 0 && !empty(l:unread)
+    call remove(l:unread, 0, l:cursor - 1)
+  endif
   let l:header = game#core#header(l:state)
   return l:header + l:unread
 endfunction

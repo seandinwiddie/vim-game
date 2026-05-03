@@ -1,0 +1,8 @@
+cmdargs:
+  severity: style_problem
+
+policies:
+  ProhibitMissingScriptEncoding:
+    enabled: no
+  ProhibitUnnecessaryDoubleQuote:
+    enabled: no

@@ -322,7 +322,7 @@ items that would unblock the most other items if tackled now.
 
 ## ᛟ Tooling
 
-- [ ] **Lint Vimscript with `vint`.**
+- [x] **Lint Vimscript with `vint`.**
   - **Why:** `vint` catches missing `abort`, unused locals, shadowed scopes,
     deprecated builtins. None of these surface in the current tests.
   - **What changes:** Add `vint autoload/ plugin/` to CI; fix or `# vint:

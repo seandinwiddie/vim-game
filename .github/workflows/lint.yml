@@ -1,0 +1,27 @@
+name: lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  vint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install vint
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'setuptools<81' vim-vint
+
+      - name: Run vint
+        env:
+          PYTHONWARNINGS: ignore::UserWarning
+        run: python -m vint autoload plugin

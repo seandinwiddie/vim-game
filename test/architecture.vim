@@ -1,8 +1,12 @@
 function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertSubdomainLimits()
   call QuadarTest_AssertTrue(isdirectory('test'), 'Per-feature tests should live under test/.')
+  call QuadarTest_AssertTrue(filereadable('.vintrc.yaml'), 'Repo should carry a vint project config.')
+  call QuadarTest_AssertTrue(filereadable('.github/workflows/lint.yml'), 'Repo should carry a GitHub Actions lint workflow.')
   call QuadarTest_AssertFileContains(QuadarTest_Path('test_entry'), 'test/run_all.vim', 'test.vim should delegate to the split test driver.')
   call QuadarTest_AssertFileContains(QuadarTest_Path('run_all'), 'cquit', 'test/run_all.vim should exit with a failure count when feature tests fail.')
+  call QuadarTest_AssertFileContains(expand('.vintrc.yaml'), 'ProhibitMissingScriptEncoding', 'vint config should document disabled style-noise policies explicitly.')
+  call QuadarTest_AssertFileContains(expand('.github/workflows/lint.yml'), 'vint autoload plugin', 'Lint workflow should run vint against autoload/ and plugin/.')
 
   let l:action_file = QuadarTest_Path('action')
   let l:combat_file = QuadarTest_Path('combat')
