@@ -122,3 +122,42 @@ not found in 'packpath': "pack/*/start/*"
 not found in 'packpath': "pack/*/start/*"
 not found in 'runtimepath': "plugin/**/*.vim"
 Writing viminfo file "/home/seandinwiddie/.viminfo"
+not found in 'packpath': "pack/*/start/*"
+                                         GetLatestVimScripts is not vi-compatible; not loaded (you need to set nocp)
+not found in 'packpath': "pack/*/start/*"
+not found in 'runtimepath': "plugin/**/*.vim"
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[60]..function game#core#process[10]..game#explore#cmd_go[1]..game#explore#travel#cmd_go[49]..game#explore#view#cmd_look:
+line    4:
+E716: Key not present in Dictionary: "desc"
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim:
+line   62:
+E121: Undefined variable: loc
+line   68:
+E1203: Dot not allowed after a number: s:state.rooms[s:state.loc].exits['south'] = 'test_chapel'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[69]..function game#core#process[10]..game#explore#cmd_go[1]..game#explore#travel#cmd_go:
+line    1:
+E121: Undefined variable: rooms
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[70]..function game#core#process[60]..game#explore#cmd_interact[1]..game#explore#interact#cmd_interact:
+line    5:
+E121: Undefined variable: rooms
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[72]..function game#core#process[65]..game#player#cmd_inventory:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Local inventory cache accessed.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[73]..function game#core#process[67]..game#player#cmd_profile:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Neural diagnostic complete.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[74]..function game#core#process[44]..game#story#cmd_notes[1]..game#story#commands#cmd_notes:
+line    2:
+E1203: Dot not allowed after a number: l:next_state.hint = 'DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.'
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim[76]..function game#core#render[1]..game#core#normalize:
+line    2:
+E1206: Dictionary required for argument 1
+Error detected while processing command line..script /mnt/c/Users/Sean Dinwiddie/GitHub/Forboc.AI/vim-game/test.vim:
+line   76:
+E475: Invalid argument: writefile() first argument must be a List or a Blob
+Writing viminfo file "/home/seandinwiddie/.viminfo"
+not found in 'packpath': "pack/*/start/*"
+                                         GetLatestVimScripts is not vi-compatible; not loaded (you need to set nocp)
+not found in 'packpath': "pack/*/start/*"
+not found in 'runtimepath': "plugin/**/*.vim"
+Writing viminfo file "/home/seandinwiddie/.viminfo"

@@ -57,6 +57,16 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:next_state = l:quest_progress.state
     let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Recover the Lost Tomes', 'A sealed reliquary yielded codices and return sigils in ' . l:next_state.rooms[a:state.loc].name . '.')
     let l:log_lines += l:quest_progress.log
+  elseif l:effect ==# 'purify_altar'
+    let l:consume_object = 1
+    call add(l:log_lines, 'SANCTIFICATION: You channel pure energy into the altar, cleansing the eldritch taint.')
+    let l:heal = 15
+    let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + l:heal])
+    call add(l:log_lines, 'RECOVERED: The holy resonance restores ' . l:heal . ' HP.')
+    let l:quest_progress = game#story#advance_quest(l:next_state, 'purify-altars', 1)
+    let l:next_state = l:quest_progress.state
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Purify the Eldritch Altars', 'A corrupted altar was purified in ' . l:next_state.rooms[a:state.loc].name . '.')
+    let l:log_lines += l:quest_progress.log
   elseif l:effect ==# 'field_cache'
     let l:consume_object = 1
     let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + 20])
@@ -96,7 +106,7 @@ endfunction
 
 function! s:apply_briefing(state, log_lines) abort
   if get(a:state.flags, 'terminal_briefed', 0)
-    call add(a:log_lines, 'BRIEFING CACHE: The terminal still points toward the missing rangers and scattered codices.')
+    call add(a:log_lines, 'BRIEFING CACHE: The terminal still points toward the missing rangers, scattered codices, and unholy altars.')
     return
   endif
 
@@ -114,14 +124,36 @@ function! s:apply_briefing(state, log_lines) abort
         \ 'reward_spell': 'Dark Crystal Shielding'
         \ })
   call extend(a:state, l:quest_result.state, 'force')
+  
+  let l:altar_quest = game#story#ensure_quest(a:state, {
+        \ 'id': 'purify-altars',
+        \ 'title': 'Purify the Eldritch Altars',
+        \ 'thread': 'Purify the Eldritch Altars',
+        \ 'objective': 'Sanctify corrupted altars found in accursed chapels and temples to weaken the abyss.',
+        \ 'target_hint': 'Search for Corrupted Altars in Haunted Chapels or Rune Temples.',
+        \ 'status': 'active',
+        \ 'progress': 0,
+        \ 'goal': 2,
+        \ 'reward_item': 'Eldritch Medallion',
+        \ 'reward_spell': 'Resurgence Ritual'
+        \ })
+  call extend(a:state, l:altar_quest.state, 'force')
+
   let l:updated_state = game#story#record_fact_for_thread(a:state, 'Find Missing Rangers', 'Terminal telemetry confirms the missing rangers are still alive beyond the tower shell.')
   call extend(a:state, l:updated_state, 'force')
   let l:updated_state = game#story#record_fact_for_thread(a:state, 'Recover the Lost Tomes', 'Archive traces point to codices capable of sending captives home.')
   call extend(a:state, l:updated_state, 'force')
+  let l:updated_state = game#story#record_fact_for_thread(a:state, 'Purify the Eldritch Altars', 'Demonic taint in the chapels is fueling the tower; the altars must be cleansed.')
+  call extend(a:state, l:updated_state, 'force')
+
   call add(a:log_lines, 'MISSION UPDATE: Recon protocol refreshed. Missing rangers are still alive somewhere beyond the tower shell.')
   call add(a:log_lines, 'MISSION UPDATE: Archive traces reveal codices capable of sending captives home.')
+  call add(a:log_lines, 'MISSION UPDATE: Demonic taint detected. Purify the altars in chapels and temples.')
   if l:quest_result.added
     call add(a:log_lines, 'OBJECTIVE ADDED: Recover the Lost Tomes')
+  endif
+  if l:altar_quest.added
+    call add(a:log_lines, 'OBJECTIVE ADDED: Purify the Eldritch Altars')
   endif
 endfunction
 

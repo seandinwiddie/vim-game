@@ -125,6 +125,20 @@ function! s:story_object(state, seed) abort
           \ }
   endif
 
+  let l:room_name_approx = ''
+  if has_key(a:state, 'rooms') && has_key(a:state.rooms, get(a:state, 'loc', ''))
+    let l:room_name_approx = get(a:state.rooms[a:state.loc], 'name', '')
+  endif
+
+  if game#story#has_active_quest(a:state, 'purify-altars') && ((a:seed + get(a:state.progress, 'rooms_explored', 1)) % 3 == 0)
+    return {
+          \ 'name': 'Corrupted Altar',
+          \ 'desc': 'A desecrated monolith pulsating with the eldritch taint of daemons.',
+          \ 'effect': 'purify_altar',
+          \ 'quest_id': 'purify-altars'
+          \ }
+  endif
+
   if ((a:seed + get(a:state.player, 'level', 1)) % 6 == 0)
     return {
           \ 'name': 'Field Cache',

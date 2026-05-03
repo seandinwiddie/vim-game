@@ -30,5 +30,24 @@ function! game#explore#travel#cmd_go(state, dir) abort
   let l:next_state = game#story#enter_location(l:next_state, l:new_loc, l:is_new_room)
   let l:next_state.hint = 'DIRECTIVE: Area change detected. "look" to update sensor data.'
   let l:next_state = game#core#add_log(l:next_state, 'NEURAL_TRACKING: Shifting coordinates to ' . l:target_dir)
+  
+  let l:target_room = l:next_state.rooms[l:new_loc]
+  if l:target_room.name =~# 'TOXIC_WASTES' || l:target_room.name =~# 'ABYSSAL_PIT'
+    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:dmg = (l:val % 10) + 5
+    let l:next_state.player.hp -= l:dmg
+    let l:next_state = game#core#add_log(l:next_state, 'ENVIRONMENTAL HAZARD: The perilous terrain inflicts ' . l:dmg . ' damage.')
+    if l:next_state.player.hp <= 0
+      let l:next_state.player.hp = 0
+      let l:next_state = game#core#add_log(l:next_state, 'FATAL_ERROR: NEURAL LINK SEVERED. YOU HAVE DIED.')
+      let l:next_state.hint = 'GAME OVER: Type "q" to quit.'
+    endif
+  elseif l:target_room.name =~# 'MUD_SLIDE' || l:target_room.name =~# 'ETHEREAL_MARSHLANDS'
+    let l:next_state.surge += 2
+    let l:next_state = game#core#add_log(l:next_state, 'ENVIRONMENTAL HAZARD: The thick mire exhausts you. Surge Count increased by 2.')
+  elseif l:target_room.name =~# 'DIMENSIONAL_NEXUS' || l:target_room.name =~# 'ETHER'
+    let l:next_state = game#core#add_log(l:next_state, 'ENVIRONMENTAL ANOMALY: Spatial fabric distorts. Navigational telemetry is unstable.')
+  endif
+
   return game#explore#view#cmd_look(l:next_state)
 endfunction

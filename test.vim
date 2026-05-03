@@ -54,6 +54,22 @@ let s:state = game#core#process(s:state, 'thread split 1 Track the tower shell r
 let s:state = game#core#process(s:state, 'thread replace 2 Decode the return codex relay')
 let s:state = game#core#process(s:state, 'thread mod 3 Secure the tower shell extraction route')
 let s:state = game#core#process(s:state, 'thread')
+
+let s:state.rooms['test_wastes'] = {'name': 'ᚲ TOXIC_WASTES ᚲ', 'desc': 'A ghastly mire of desolation.', 'exits': {'west': s:state.loc}, 'entities': [], 'objects': []}
+let s:state.rooms[s:state.loc].exits['east'] = 'test_wastes'
+let s:state = game#core#process(s:state, 'go east')
+
+let s:state.rooms['test_chapel'] = {
+      \ 'name': 'ᚲ HAUNTED_CHAPEL ᚲ', 
+      \ 'desc': 'An accursed chapel.',
+      \ 'exits': {'north': s:state.loc}, 
+      \ 'entities': [], 
+      \ 'objects': [{'name': 'Corrupted Altar', 'desc': 'A desecrated monolith.', 'effect': 'purify_altar', 'quest_id': 'purify-altars'}]
+      \ }
+let s:state.rooms[s:state.loc].exits['south'] = 'test_chapel'
+let s:state = game#core#process(s:state, 'go south')
+let s:state = game#core#process(s:state, 'interact Corrupted Altar')
+
 let s:state = game#core#process(s:state, 'inventory')
 let s:state = game#core#process(s:state, 'profile')
 let s:state = game#core#process(s:state, 'notes')
