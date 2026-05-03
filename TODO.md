@@ -80,6 +80,26 @@ items that would unblock the most other items if tackled now.
     enum), and `display_name` (decorated). Hazard logic switches on `biome`.
     Renderer uses `display_name`. Tests assert on `id`/`biome` and ignore
     decoration.
+  - **Refactor surface:**
+      - Add a shared room-schema constructor/validator and use it from
+        `autoload/game/data.vim`, `autoload/game/explore/procgen.vim`, and
+        `autoload/game/enemies.vim` so every authored/generated room has the
+        same required shape.
+      - Update room consumers in `autoload/game/explore/travel.vim`,
+        `autoload/game/explore/view.vim`, `autoload/game/explore/interact.vim`,
+        `autoload/game/story/state.vim`, and `autoload/game/story/records.vim`
+        so logic stops branching on decorated labels and scene/NPC bookkeeping
+        stores display text separately from room identity.
+      - Tighten save/schema validation in `autoload/game/player.vim` so room
+        payloads missing the new required fields are rejected instead of being
+        backfilled.
+      - Update room fixtures and assertions in `test/support.vim`,
+        `test/story.vim`, `test/combat.vim`, `test/climax.vim`, and
+        `test/architecture.vim` so they build full room records and assert on
+        `id`/`biome` for logic.
+  - **Constraint:** No fallback hydration, migration shim, or legacy room-shape
+    support for this refactor. If a room payload does not match the new schema,
+    fail loudly.
 
 - [ ] **Stop string-tagging facts.**
   - **Why:** Free-text fact strings carry implicit semantics: `'LORE: ...'`,
