@@ -76,10 +76,14 @@ function! game#story#state#hydrate(state) abort
   endif
 
   for l:thread in get(l:next_state, 'threads', [])
-    if game#story#records#thread_card_index(l:next_state.notes.thread_cards, l:thread) == -1
-      call add(l:next_state.notes.thread_cards, {'name': l:thread, 'stage': l:next_state.stage, 'scenes': [], 'facts': []})
-    endif
+    let l:next_state = game#story#threads#ensure_thread_card(l:next_state, l:thread)
   endfor
+
+  let l:idx = 0
+  while l:idx < len(l:next_state.notes.thread_cards)
+    let l:next_state.notes.thread_cards[l:idx] = game#story#threads#normalize_card(l:next_state.notes.thread_cards[l:idx], l:next_state.stage)
+    let l:idx += 1
+  endwhile
 
   return l:next_state
 endfunction

@@ -1,23 +1,5 @@
 " autoload/game/story/records.vim - Story Records and Notecards
 
-function! game#story#records#ensure_thread(state, thread_name) abort
-  if index(get(a:state, 'threads', []), a:thread_name) != -1
-    let l:next_state = deepcopy(a:state)
-    if game#story#records#thread_card_index(l:next_state.notes.thread_cards, a:thread_name) == -1
-      call add(l:next_state.notes.thread_cards, {'name': a:thread_name, 'stage': l:next_state.stage, 'scenes': [], 'facts': []})
-    endif
-    return l:next_state
-  endif
-
-  let l:next_state = deepcopy(a:state)
-  call add(l:next_state.threads, a:thread_name)
-  call add(l:next_state.notes.thread_cards, {'name': a:thread_name, 'stage': l:next_state.stage, 'scenes': [], 'facts': []})
-  if get(l:next_state.scene, 'focus', 0) == 0
-    let l:next_state.scene.focus = len(l:next_state.threads)
-  endif
-  return l:next_state
-endfunction
-
 function! game#story#records#ensure_quest(state, quest) abort
   if s:quest_index(a:state, a:quest.id) != -1
     return {'state': a:state, 'added': 0}
@@ -25,7 +7,7 @@ function! game#story#records#ensure_quest(state, quest) abort
 
   let l:next_state = deepcopy(a:state)
   call add(l:next_state.quests, deepcopy(a:quest))
-  let l:next_state = game#story#records#ensure_thread(l:next_state, a:quest.thread)
+  let l:next_state = game#story#threads#ensure_thread(l:next_state, a:quest.thread)
   return {'state': l:next_state, 'added': 1}
 endfunction
 
@@ -88,11 +70,12 @@ function! game#story#records#record_scene(state, loc) abort
   let l:title = l:next_state.notes.scene_cards[l:idx].title
   let l:focus = l:next_state.notes.scene_cards[l:idx].focus
 
-  let l:thread_idx = game#story#records#thread_card_index(l:next_state.notes.thread_cards, l:focus)
+  let l:thread_idx = game#story#threads#thread_card_index(l:next_state.notes.thread_cards, l:focus)
   if l:thread_idx == -1
-    call add(l:next_state.notes.thread_cards, {'name': l:focus, 'stage': l:next_state.stage, 'scenes': [], 'facts': []})
+    call add(l:next_state.notes.thread_cards, game#story#threads#default_card(l:focus, l:next_state.stage))
     let l:thread_idx = len(l:next_state.notes.thread_cards) - 1
   endif
+  let l:next_state.notes.thread_cards[l:thread_idx] = game#story#threads#normalize_card(l:next_state.notes.thread_cards[l:thread_idx], l:next_state.stage)
   let l:next_state.notes.thread_cards[l:thread_idx].stage = l:next_state.stage
   if index(l:next_state.notes.thread_cards[l:thread_idx].scenes, l:title) == -1
     call add(l:next_state.notes.thread_cards[l:thread_idx].scenes, l:title)
@@ -132,34 +115,6 @@ function! game#story#records#append_scene_opening(state, loc, summary) abort
   if len(l:next_state.notes.scene_cards[l:idx].openings) > 4
     let l:next_state.notes.scene_cards[l:idx].openings = l:next_state.notes.scene_cards[l:idx].openings[-4:]
   endif
-  return l:next_state
-endfunction
-
-function! game#story#records#record_fact(state, fact) abort
-  return game#story#records#record_fact_for_thread(a:state, game#story#state#focus_label(a:state), a:fact)
-endfunction
-
-function! game#story#records#record_fact_for_thread(state, thread_name, fact) abort
-  if empty(a:fact)
-    return a:state
-  endif
-
-  let l:next_state = deepcopy(a:state)
-  let l:next_state = game#story#records#ensure_thread(l:next_state, a:thread_name)
-  let l:idx = game#story#records#thread_card_index(l:next_state.notes.thread_cards, a:thread_name)
-  if l:idx == -1
-    return l:next_state
-  endif
-
-  let l:card = l:next_state.notes.thread_cards[l:idx]
-  let l:card.stage = l:next_state.stage
-  if index(l:card.facts, a:fact) == -1
-    call add(l:card.facts, a:fact)
-    if len(l:card.facts) > 6
-      let l:card.facts = l:card.facts[-6:]
-    endif
-  endif
-  let l:next_state.notes.thread_cards[l:idx] = l:card
   return l:next_state
 endfunction
 
@@ -205,17 +160,6 @@ function! game#story#records#remove_scene_npc(state, loc, npc_name) abort
   return l:next_state
 endfunction
 
-function! game#story#records#thread_card_index(cards, thread_name) abort
-  let l:idx = 0
-  for l:card in a:cards
-    if get(l:card, 'name', '') ==# a:thread_name
-      return l:idx
-    endif
-    let l:idx += 1
-  endfor
-  return -1
-endfunction
-
 function! game#story#records#scene_card_index(cards, loc) abort
   let l:idx = 0
   for l:card in a:cards
@@ -236,11 +180,6 @@ function! game#story#records#npc_card_index(cards, npc_name) abort
     let l:idx += 1
   endfor
   return -1
-endfunction
-
-function! game#story#records#get_thread_card(cards, thread_name) abort
-  let l:idx = game#story#records#thread_card_index(a:cards, a:thread_name)
-  return l:idx == -1 ? {} : a:cards[l:idx]
 endfunction
 
 function! game#story#records#get_scene_card(cards, loc) abort

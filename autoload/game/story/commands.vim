@@ -27,7 +27,7 @@ function! game#story#commands#cmd_notes(state) abort
   let l:next_state = deepcopy(a:state)
   let l:next_state.hint = 'DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.'
   let l:focus = game#story#state#focus_label(l:next_state)
-  let l:thread_card = game#story#records#get_thread_card(l:next_state.notes.thread_cards, l:focus)
+  let l:thread_card = game#story#threads#get_thread_card(l:next_state.notes.thread_cards, l:focus)
   let l:lines = [
         \ '--- FIELD NOTES ---',
         \ game#story#state#notes_summary(l:next_state),
@@ -46,6 +46,8 @@ function! game#story#commands#cmd_notes(state) abort
       endfor
     endif
   endif
+
+  call extend(l:lines, game#story#ledger#lines(l:next_state))
 
   call add(l:lines, 'Scene Cards:')
   if empty(l:next_state.notes.scene_cards)

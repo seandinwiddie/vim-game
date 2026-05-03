@@ -45,12 +45,9 @@ function! game#core#process(state, input) abort
     let l:new_stage = (len(l:parts) > 1) ? tolower(l:parts[1]) : ''
     return game#oracle#cmd_stage(a:state, l:new_stage)
   elseif l:action ==# 'thread'
-    if len(l:parts) < 2
-      return game#core#add_log(a:state, "LOG_ERR: 'thread add <desc>' or 'thread rm <idx>'.")
-    endif
-    let l:subcmd = tolower(l:parts[1])
-    let l:args = join(l:parts[2:], ' ')
-    return game#oracle#cmd_thread(a:state, l:subcmd, l:args)
+    let l:subcmd = len(l:parts) > 1 ? tolower(l:parts[1]) : 'list'
+    let l:args = len(l:parts) > 2 ? join(l:parts[2:], ' ') : ''
+    return game#story#cmd_thread(a:state, l:subcmd, l:args)
   elseif l:action ==# 'focus'
     let l:focus_arg = len(l:parts) > 1 ? l:parts[1] : ''
     return game#story#cmd_focus(a:state, l:focus_arg)

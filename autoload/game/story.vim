@@ -36,6 +36,10 @@ function! game#story#cmd_focus(state, focus_arg) abort
   return game#story#commands#cmd_focus(a:state, a:focus_arg)
 endfunction
 
+function! game#story#cmd_thread(state, subcmd, args) abort
+  return game#story#ledger#cmd_thread(a:state, a:subcmd, a:args)
+endfunction
+
 function! game#story#cmd_scene(state) abort
   return game#story#scenes#cmd_scene(a:state)
 endfunction
@@ -57,7 +61,7 @@ function! game#story#cmd_aside(state, thread_ref, fact) abort
 endfunction
 
 function! game#story#ensure_thread(state, thread_name) abort
-  return game#story#records#ensure_thread(a:state, a:thread_name)
+  return game#story#threads#ensure_thread(a:state, a:thread_name)
 endfunction
 
 function! game#story#ensure_quest(state, quest) abort
@@ -81,11 +85,11 @@ function! game#story#record_scene(state, loc) abort
 endfunction
 
 function! game#story#record_fact(state, fact) abort
-  return game#story#records#record_fact(a:state, a:fact)
+  return game#story#threads#record_fact(a:state, a:fact)
 endfunction
 
 function! game#story#record_fact_for_thread(state, thread_name, fact) abort
-  return game#story#records#record_fact_for_thread(a:state, a:thread_name, a:fact)
+  return game#story#threads#record_fact_for_thread(a:state, a:thread_name, a:fact)
 endfunction
 
 function! game#story#record_npc(state, npc_name, scene_name) abort

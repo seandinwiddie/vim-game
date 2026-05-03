@@ -11,23 +11,6 @@ function! game#oracle#cmd_stage(state, stage_name) abort
   return game#core#add_log(l:next_state, "NARRATIVE_SHIFT: Loom of Fate probabilities calibrated to " . toupper(a:stage_name) . ".")
 endfunction
 
-function! game#oracle#cmd_thread(state, subcmd, args) abort
-  if a:subcmd ==# 'add'
-    let l:next_state = game#story#ensure_thread(a:state, a:args)
-    let l:next_state = game#story#record_fact_for_thread(l:next_state, a:args, 'Thread opened for future investigation.')
-    return game#core#add_log(l:next_state, 'THREAD ADDED: ' . a:args)
-  elseif a:subcmd ==# 'rm' || a:subcmd ==# 'del'
-    let l:next_state = copy(a:state)
-    let l:idx = str2nr(a:args) - 1
-    if l:idx >= 0 && l:idx < len(l:next_state.threads)
-      let l:removed = remove(l:next_state.threads, l:idx)
-      return game#core#add_log(l:next_state, "THREAD RESOLVED: " . l:removed)
-    endif
-    return game#core#add_log(a:state, "LOG_ERR: Invalid thread index.")
-  endif
-  return game#core#add_log(a:state, "LOG_ERR: Unknown thread subcommand.")
-endfunction
-
 function! game#oracle#cmd_ask(state, question) abort
   if empty(a:question)
     return game#core#add_log(a:state, "LOG_ERR: You must ask a question (e.g., 'ask is the door locked?').")

@@ -40,7 +40,7 @@ Then run `:PlugInstall`.
 14. **Review and Close Scenes**: Use `:call s:run('scene')` to inspect the active scene card, and `:call s:run('fade [summary]')` to record its outcome before pivoting.
 15. **Scene NPCs**: Use `:call s:run('npc add [name]')`, `npc rm [name]`, or `npc` to manage who is instantly present in the current scene.
 16. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
-17. **Manage Threads**: In command mode, type `:call s:run('thread add Rescue the MIA Marine')` to track narrative goals, then `:call s:run('focus 2')` to promote a thread as the active scene focus.
+17. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
 18. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
 
 ## Architecture

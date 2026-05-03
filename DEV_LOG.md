@@ -18,9 +18,11 @@
   - `story.vim`: Story facade
   - `story/state.vim`: Story bootstrap, hydration, and summaries
   - `story/commands.vim`: Objective, note, and focus commands
+  - `story/ledger.vim`: Thread-ledger rendering and fallout command handling
   - `story/records.vim`: Thread, scene, NPC, and fact bookkeeping
   - `story/scenes.vim`: Scene review, fade-out, and elsewhere/sidebar commands
   - `story/setup.vim`: Explicit scene framing and present-NPC management
+  - `story/threads.vim`: Thread lineage, status, and mutation bookkeeping
 - **Imperative Shell**: The `game#engine` handles rendering the state via `:echo` or appending to a unified `ScratchBuffer` via standard Vim mechanisms (`append()`, `setline()`).
 
 ## ᚢ THE LOOM OF FATE (GAME MECHANICS)
@@ -39,6 +41,7 @@
 - **Architecture Guard**: The Vim test harness now fails if a game module grows beyond 300 lines, forcing oversized files to be split into subdomains.
 - **Scene Lifecycle**: Added explicit scene-card review, fade-out summaries, and elsewhere/sidebar facts so the CRGE scene loop is represented directly in play.
 - **Scene Setup**: Added explicit scene framing plus NPC-presence management so the active scene can be staged around a chosen thread, stage, and cast before action begins.
+- **Thread Fallout Ledger**: Added explicit post-scene thread mutation commands (`thread mod`, `thread split`, `thread replace`) plus lineage/status tracking so scene fallout questions become persistent bookkeeping instead of memory work.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
@@ -68,7 +71,12 @@
 - `load`: Restore game state from neural backup.
 - `ask [question]` / `a`: Consult the Loom of Fate oracle (e.g. `ask is the door locked?`).
 - `stage [name]` / `1`, `2`, `3`: Shift stage to Knowledge (1), Conflict (2), or Endings (3).
-- `thread [add/rm] [arg]`: Track narrative threads.
+- `thread`: Inspect the active and archived thread ledger.
+- `thread add [goal]`: Open a new narrative thread.
+- `thread mod [idx] [goal]`: Rewrite an active thread after scene fallout changes its direction.
+- `thread split [idx] [goal]`: Branch a new thread out of an existing one.
+- `thread replace [idx] [goal]`: Swap an exhausted thread for the new direction that replaces it.
+- `thread rm [idx]`: Resolve and archive a thread.
 - `shop` / `wares` / `trade` / `t`: Inspect merchant stock and your current trade cache.
 - `buy [item]`: Purchase wares, spells, and upgrades from the store room.
 - `sell [item]`: Convert scavenged relics into trade cache.

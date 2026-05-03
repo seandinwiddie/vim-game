@@ -3,27 +3,16 @@
 == QUA'DAR NEURAL LINK ==
 Stage: TO KNOWLEDGE | Surge Count: 0
 Scene #1: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
-Focus: Recover the Lost Tomes
+Focus: decode the return codex relay
 Objectives: 1 active / 1 complete
 Notes: 2 scenes / 3 NPCs
 Trade Cache: 17 | Guard: 14 | Mark: none
 DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 --- ACTIVE THREADS ---
 1. Find Missing Rangers
-2. Recover the Lost Tomes
+2. decode the return codex relay
+3. secure the tower shell extraction route
 
-ᚱ ENTRANCES: west, north
-[Threat Tier: 1 | HP: 150/150]
---
-INTERACT: You examine the Arcane Terminal.
-A flickering terminal detailing recent shipments, missing operatives, and scavenged codices.
-MISSION UPDATE: Recon protocol refreshed. Missing rangers are still alive somewhere beyond the tower shell.
-MISSION UPDATE: Archive traces reveal codices capable of sending captives home.
-OBJECTIVE ADDED: Recover the Lost Tomes
-FADE IN: ᚠ MERCHANDISE_STORE_ROOM ᚠ
-MAIN THREAD: Recover the Lost Tomes
-STAGE: TO KNOWLEDGE
-ELSEWHERE: Find Missing Rangers
 SIDEBAR FACT: another recon team was seen near the tower shell
 INTERACT: You examine the Bound Ranger.
 A shackled recruit calls for extraction.
@@ -62,13 +51,22 @@ DETECTED ENTITIES:
 CASTING: Hunter's Mark on Ashwalker...
 TARGET LOCK: +4 to the next strike against this hostile.
 CASTING: Ethereal Dagger Assault on Ashwalker...
-ARCANE_ROLL: 20
+ARCANE_ROLL: 23
 CRITICAL HIT: The spell overwhelms the Ashwalker!
 HUNTER'S MARK: Target lock collapses with the kill.
 SALVAGE BANKED: +4 trade from Ashwalker.
-LOOT RECOVERED: Abyssal Ash
+LOOT RECOVERED: Corrupt Watcher Core
 FADE OUT: ashwalker resistance confirms the spire approach is still contested
 BOOKKEEPING: Review thread changes, new facts, and scene fallout before the next transition.
+THREAD SPLIT: Find Missing Rangers -> track the tower shell recon cell
+THREAD REPLACED: Recover the Lost Tomes -> decode the return codex relay
+THREAD MODIFIED: track the tower shell recon cell -> secure the tower shell extraction route
+--- THREAD LEDGER ---
+ 1. Find Missing Rangers [OPEN] | splits: secure the tower shell extraction route
+ 2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes
+ 3. secure the tower shell extraction route [OPEN] | split from: Find Missing Rangers | aliases: track the tower shell recon cell
+ - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay
+---------------------
 --- SECURED RELICS ---
 Trade Cache: 17 | Guard: 14 | Mark: none
  [ᛟ] Basic Dagger
@@ -76,7 +74,7 @@ Trade Cache: 17 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
- [ᛟ] Abyssal Ash
+ [ᛟ] Corrupt Watcher Core
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -96,14 +94,17 @@ Upgrades:
 ----------------------
 --- FIELD NOTES ---
 Notes: 2 scenes / 3 NPCs
-Focus Thread Card: Recover the Lost Tomes
+Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
-  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+  Scenes: none
   Facts:
-   - Archive traces point to codices capable of sending captives home.
-   - Scene framed around Recover the Lost Tomes at TO KNOWLEDGE.
-   - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.
-   - Fade Out: ashwalker resistance confirms the spire approach is still contested
+   - Replaces Recover the Lost Tomes after scene fallout.
+--- THREAD LEDGER ---
+ 1. Find Missing Rangers [OPEN] | splits: secure the tower shell extraction route
+ 2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes
+ 3. secure the tower shell extraction route [OPEN] | split from: Find Missing Rangers | aliases: track the tower shell recon cell
+ - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay
+---------------------
 Scene Cards:
  * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: iron broker
  * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | focus: Recover the Lost Tomes | npcs: none
