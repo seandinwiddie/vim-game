@@ -4,3 +4,7 @@ please keep building C:\Users\Sean Dinwiddie\GitHub\Forboc.AI\vim-game based on 
 ---
 
 please commit, push, test, and continue
+
+---
+
+C:\Users\Sean Dinwiddie\GitHub\Forboc.AI\vim-game\TODO.md continue implementing, test, commit, and push please
