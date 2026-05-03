@@ -168,6 +168,10 @@ function! s:catalog() abort
         \ {'id': 'explosive-barrage', 'name': 'Explosive Barrage', 'kind': 'spell', 'price': 16, 'desc': 'A rapid-fire ranged technique covering a wide impact zone.'},
         \ {'id': 'ethereal-siren-imprisonment', 'name': 'Ethereal Siren Imprisonment', 'kind': 'spell', 'price': 18, 'desc': 'A binding arcane ritual that targets the soul.'},
         \ {'id': 'plasma-charge-launchers', 'name': 'Plasma Charge Launchers', 'kind': 'spell', 'price': 22, 'desc': 'High-tech ranged payload linked via neural circuitry.'},
+        \ {'id': 'stellar-burst-barrage', 'name': 'Stellar Burst Barrage', 'kind': 'spell', 'price': 24, 'desc': 'Starweaver projectile spread that applies celestial debuffs on impact.'},
+        \ {'id': 'astral-lance-thrust', 'name': 'Astral Lance Thrust', 'kind': 'spell', 'price': 17, 'desc': 'Aetherwing melee strike keyed to physical strength and precision.'},
+        \ {'id': 'shadowstep-mastery', 'name': 'Shadowstep Mastery', 'kind': 'spell', 'price': 14, 'desc': 'Interloper teleport that closes distance and opens an opportunistic strike.'},
+        \ {'id': 'dimensional-weave-shield', 'name': 'Dimensional Weave Shield', 'kind': 'spell', 'price': 19, 'desc': 'Starweaver ward that fortifies the neural link with extradimensional energy.'},
         \ {'id': 'zinc-weave-cloak', 'name': 'Zinc Weave Cloak', 'kind': 'upgrade', 'price': 18, 'desc': 'Reactive scout gear that sharpens your evasive edge.'},
         \ {'id': 'obsidian-edge', 'name': 'Obsidian Edge', 'kind': 'upgrade', 'price': 18, 'desc': 'A serrated weapons retrofit that adds brutal striking power.'},
         \ {'id': 'signal-booster-rig', 'name': 'Signal Booster Rig', 'kind': 'upgrade', 'price': 20, 'desc': 'An uplink rig that strengthens your vital envelope and field resilience.'}

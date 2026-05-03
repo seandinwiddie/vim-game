@@ -50,6 +50,11 @@ function! game#combat#cmd_attack(state) abort
         \ "PLAYER: Roll[d20]=" . l:p_roll . " + STR(" . l:p_str . ")+AGI(" . l:p_agi . ")+ARC(" . l:p_arc . ")" . (l:mark_bonus > 0 ? "+MARK(" . l:mark_bonus . ")" : '') . (l:p_group_score > 0 ? "+PARTY(" . l:p_group_score . ")" : '') . " = " . l:p_score,
         \ "ENEMY : Roll[d20]=" . l:e_roll . " + STR(" . l:e_str . ")+AGI(" . l:e_agi . ")+ARC(" . l:e_arc . ")" . (l:e_group_score > 0 ? "+GROUP(" . l:e_group_score . ")" : '') . " = " . l:e_score
         \ ]
+  call extend(l:log_lines, game#enemies#flavor_lines(l:target_name))
+  if type(l:target) == v:t_dict && get(l:target, 'is_boss', 0)
+    let l:phase_label = get(l:target, 'phase_label', 'First Form')
+    call add(l:log_lines, 'BOSS_TRACE: ' . l:target_name . ' [' . l:phase_label . '] phase ' . (get(l:target, 'phases_done', 0) + 1) . '/' . get(l:target, 'phases', 1))
+  endif
   
   if l:p_score >= l:e_score
     let l:diff = l:p_score - l:e_score
@@ -127,6 +132,14 @@ function! game#combat#cmd_cast(state, spell_name) abort
     return game#core#add_log(l:next_state, [
           \ 'CASTING: Resurgence Ritual...',
           \ 'RESTORED: +' . l:heal . ' HP.'
+          \ ])
+  elseif l:matched_spell ==# 'Dimensional Weave Shield'
+    let l:next_state.guard = 14 + l:p_arc
+    let l:next_state.hint = 'DIRECTIVE: Extradimensional ward fortified.'
+    return game#core#add_log(l:next_state, [
+          \ 'CASTING: Dimensional Weave Shield...',
+          \ 'WARD STRENGTH: ' . l:next_state.guard,
+          \ 'STARWEAVE: A protective lattice of dimensional energy guards the link.'
           \ ])
   endif
 
@@ -218,6 +231,15 @@ endfunction
 
 function! s:defeat_target(state, room_key, target, seed, log_lines) abort
   let l:target_name = type(a:target) == v:t_dict ? get(a:target, 'name', 'Unknown Entity') : a:target
+
+  if type(a:target) == v:t_dict && get(a:target, 'is_boss', 0)
+    let l:result = game#enemies#handle_boss_defeat(a:state, a:room_key, a:target, a:log_lines)
+    if !l:result.fully_defeated
+      return
+    endif
+    call game#enemies#trigger_overfiend_epilogue(a:state, a:log_lines)
+  endif
+
   call remove(a:state.rooms[a:room_key].entities, 0)
 
   if get(a:state, 'mark', '') ==# l:target_name

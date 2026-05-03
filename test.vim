@@ -245,4 +245,59 @@ call s:assert_contains(s:rendered, '| arc: CH1')
 call s:assert_contains(s:rendered, 'Banned Themes: gratuitous cruelty toward rescued rangers')
 call s:assert_contains(s:rendered, '  NPCs: Bound Ranger')
 call writefile(s:meeting_view + [''] + s:party_view + [''] + s:framework_view + [''] + s:rendered, 'test_output.txt', 'a')
+
+" --- Climax: Abyssal Throne flow ---
+" Force-complete the three core climax quests, then verify the Abyssal Throne flow.
+for s:climax_id in ['rescue-rangers', 'recover-lost-tomes', 'purify-altars']
+  for s:i in range(len(s:state.quests))
+    if get(s:state.quests[s:i], 'id', '') ==# s:climax_id
+      let s:state.quests[s:i].status = 'complete'
+      let s:state.quests[s:i].progress = s:state.quests[s:i].goal
+    endif
+  endfor
+endfor
+let s:state.loc = 'nexus'
+let s:state.rooms.nexus.objects = [{'name': 'Arcane Terminal', 'desc': 'A flickering terminal.', 'effect': 'briefing'}]
+let s:state.flags.terminal_briefed = 1
+" Boost stats so the boss-defeat test path is deterministic regardless of d20 rolls.
+let s:state.player.str = 30
+let s:state.player.agi = 30
+let s:state.player.arc = 30
+let s:state.player.hp = 500
+let s:state.player.max_hp = 500
+let s:state = game#core#process(s:state, 'interact Arcane Terminal')
+call s:assert_true(get(s:state.flags, 'climax_unveiled', 0) == 1, 'Re-examining the terminal with all three quests done should unveil the climax.')
+let s:nexus_objects = s:state.rooms.nexus.objects
+let s:has_sigil = 0
+for s:obj in s:nexus_objects
+  if get(s:obj, 'effect', '') ==# 'descend_throne'
+    let s:has_sigil = 1
+  endif
+endfor
+call s:assert_true(s:has_sigil, 'Climax unveil should spawn an Abyssal Sigil interactable in the Merchandise Store Room.')
+let s:state = game#core#process(s:state, 'interact Abyssal Sigil')
+call s:assert_true(s:state.loc ==# 'abyssal_throne', 'Abyssal Sigil should descend the player onto the Abyssal Throne.')
+let s:state = game#core#process(s:state, 'attack')
+let s:boss_room = s:state.rooms[s:state.loc]
+call s:assert_true(!empty(s:boss_room.entities), 'After phase 1, the Abyssal Overfiend should still occupy the throne room.')
+call s:assert_true(get(s:boss_room.entities[0], 'phases_done', 0) == 1, 'Phase 1 defeat should advance phases_done to 1.')
+let s:state = game#core#process(s:state, 'attack')
+call s:assert_true(empty(s:state.rooms['abyssal_throne'].entities), 'Phase 2 defeat should remove the Overfiend from the throne room.')
+let s:state = game#core#process(s:state, 'interact Throne Sigil')
+call s:assert_true(s:state.surge == 0, 'Defiling the Throne Sigil should reset the Surge Count.')
+let s:climax_quest = {}
+for s:q in s:state.quests
+  if get(s:q, 'id', '') ==# 'confront-overfiend'
+    let s:climax_quest = s:q
+    break
+  endif
+endfor
+call s:assert_true(get(s:climax_quest, 'status', '') ==# 'complete', 'Boss defeat should complete the confront-overfiend quest.')
+call s:assert_true(index(s:state.player.inv, 'Voidmaw Sigil') != -1, 'Climax quest should award the Voidmaw Sigil reward.')
+call s:assert_true(index(s:state.player.spells, 'Stellar Burst Barrage') != -1, 'Climax quest should award the Stellar Burst Barrage reward spell.')
+
+" Enemy archetype flavor lines should be available for combat narration.
+let s:flavor = game#enemies#flavor_lines('Obsidian Warden')
+call s:assert_true(!empty(s:flavor), 'Combat flavor lookup should return signature data for Obsidian Warden.')
+call writefile(['--- CLIMAX OK ---'] + s:flavor, 'test_output.txt', 'a')
 qa!

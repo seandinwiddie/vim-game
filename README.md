@@ -45,6 +45,7 @@ Then run `:PlugInstall`.
 19. **Elsewhere Facts**: Use `:call s:run('aside [thread#] [fact]')` to record sidebar facts against another thread without stealing focus from the active scene.
 20. **Manage Threads**: Use `:call s:run('thread')` to inspect the fallout ledger, `thread add [goal]` to open a thread, `thread mod [thread#] [new wording]` to revise it, `thread split [thread#] [new thread]` to branch it, and `thread replace [thread#] [new thread]` when a scene closes out one direction and points to a new one.
 21. **Quit**: Press `q` at any time to terminate the Neural Link buffer.
+22. **The Abyssal Throne**: Once you've completed all three core objectives (rescue rangers, recover lost tomes, purify altars), examine the Arcane Terminal again. A new `Abyssal Sigil` will bloom in the Merchandise Store Room. `interact Abyssal Sigil` to descend onto the Abyssal Throne and confront the Voidmaw Abyssalgeist in a two-phase duel. Both phases must be defeated; then `interact Throne Sigil` to seal the breach for the epilogue.
 
 ## Architecture
 This project follows functional programming principles:
@@ -62,6 +63,8 @@ This project follows functional programming principles:
 - **Companions & Group Dynamics**: Rescuing NPCs from the tower allows them to join your party, and only companions still active in the main scene contribute their aggregated `Group Dynamics` bonus to combat rolls.
 - **Tapestry Overlay**: Party members can now fade from the scene or be sent elsewhere on another thread, giving the solo MUD a lightweight version of the Familiar's scene-holder / sidebar rhythm.
 - **Economy Loop**: Trade cache, wares, salvage, and persistent upgrades now turn recovered relics into concrete progression.
+- **Climax Boss**: An Abyssal Throne is procedurally bound to the Merchandise Store Room once the three core quests resolve, anchoring the Voidmaw Abyssalgeist as a multi-phase climactic encounter that ends the vignette.
+- **Enemy Archetype Lore**: Combat output now narrates each archetype's signature spell from the Qua'dar appendix (e.g., Storm Titans flash `Thunderous Slam`, Voidwraiths haunt with `Spectral Grasp`).
 
 ## License
 All rights reserved. © 2026 ForbocAI. See [LICENSE](./LICENSE) for full details.

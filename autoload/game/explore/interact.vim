@@ -26,6 +26,29 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
 
   if l:effect ==# 'briefing'
     call s:apply_briefing(l:next_state, l:log_lines)
+    call s:check_climax_unveil(l:next_state, l:log_lines)
+  elseif l:effect ==# 'descend_throne'
+    let l:consume_object = 1
+    let l:throne_id = 'abyssal_throne'
+    if !has_key(l:next_state.rooms, l:throne_id)
+      let l:next_state.rooms[l:throne_id] = game#enemies#abyssal_throne_room()
+    endif
+    let l:next_state.rooms[l:throne_id].exits = copy(get(l:next_state.rooms[l:throne_id], 'exits', {}))
+    let l:next_state.rooms[l:throne_id].exits.south = a:state.loc
+    let l:next_state.loc = l:throne_id
+    let l:next_state.surge += 4
+    let l:next_state = game#story#enter_location(l:next_state, l:throne_id, 1)
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Confront the Abyssal Overfiend', 'Kamenal stepped onto the Abyssal Throne to face the Voidmaw Abyssalgeist.')
+    let l:next_state.hint = 'BOSS_ENGAGED: The Abyssal Overfiend awaits. Use "attack" -- defeat both phases to seal the breach.'
+    call add(l:log_lines, 'TRANSIT: The Abyssal Sigil yawns open beneath you, dropping you onto the Abyssal Throne.')
+    return game#explore#view#cmd_look(game#core#add_log(l:next_state, l:log_lines))
+  elseif l:effect ==# 'overfiend_seal'
+    let l:consume_object = 1
+    let l:next_state.surge = 0
+    let l:next_state.player.hp = l:next_state.player.max_hp
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Confront the Abyssal Overfiend', 'The Throne Sigil was defiled, sealing Goeteian Chthonica out of Migdal Kudar.')
+    call add(l:log_lines, 'BREACH SEALED: You defile the Throne Sigil. The Surge Count zeroes; vital signs restored to maximum.')
+    call add(l:log_lines, 'ᚷ The rangers can be ferried home through the recovered codices. The vignette closes. ᚷ')
   elseif l:effect ==# 'unlock_exit'
     let l:new_dir = s:first_hidden_exit(l:next_state.rooms[a:state.loc].exits)
     if empty(l:new_dir)
@@ -127,6 +150,39 @@ function! s:match_object(objects, object_name) abort
     let l:idx += 1
   endfor
   return {'found': 0, 'object': {}, 'index': -1}
+endfunction
+
+function! s:check_climax_unveil(state, log_lines) abort
+  if !game#enemies#all_climax_quests_complete(a:state)
+    return
+  endif
+  if get(a:state.flags, 'climax_unveiled', 0)
+    return
+  endif
+  let a:state.flags.climax_unveiled = 1
+
+  let l:quest_def = game#enemies#climax_quest_definition()
+  let l:quest_result = game#story#ensure_quest(a:state, l:quest_def)
+  call extend(a:state, l:quest_result.state, 'force')
+
+  let l:room = a:state.rooms[a:state.loc]
+  let l:has_sigil = 0
+  for l:obj in l:room.objects
+    if type(l:obj) == v:t_dict && get(l:obj, 'effect', '') ==# 'descend_throne'
+      let l:has_sigil = 1
+      break
+    endif
+  endfor
+  if !l:has_sigil
+    call add(a:state.rooms[a:state.loc].objects, {'name': 'Abyssal Sigil', 'desc': 'A glyph of black light has bloomed beneath the merchant''s counter, anchored to the tower''s heart. It is your route to the Abyssal Throne.', 'effect': 'descend_throne'})
+  endif
+
+  let l:state2 = game#story#record_fact_for_thread(a:state, 'Confront the Abyssal Overfiend', 'With the rangers, codices, and altars secured, the terminal projects the route to the Abyssal Throne.')
+  call extend(a:state, l:state2, 'force')
+
+  call add(a:log_lines, 'FINAL_OBJECTIVE_UNLOCKED: The terminal renders the route to the Abyssal Throne.')
+  call add(a:log_lines, 'OBJECTIVE ADDED: Confront the Abyssal Overfiend')
+  call add(a:log_lines, 'INTERACTABLE_SPAWNED: An Abyssal Sigil has bloomed in the Merchandise Store Room.')
 endfunction
 
 function! s:apply_briefing(state, log_lines) abort

@@ -52,6 +52,10 @@
 - **Scene Lifecycle**: Added explicit scene-card review, fade-out summaries, and elsewhere/sidebar facts so the CRGE scene loop is represented directly in play.
 - **Scene Setup**: Added explicit scene framing plus NPC-presence management so the active scene can be staged around a chosen thread, stage, and cast before action begins.
 - **Thread Fallout Ledger**: Added explicit post-scene thread mutation commands (`thread mod`, `thread split`, `thread replace`) plus lineage/status tracking so scene fallout questions become persistent bookkeeping instead of memory work.
+- **Abyssal Throne Climax**: Completing the rescue, codex, and altar quests unveils a new `Abyssal Sigil` interactable that descends Kamenal onto the `Abyssal Throne` for a multi-phase duel against the `Abyssal Overfiend`. Surviving both phases of the Voidmaw Abyssalgeist completes the new `confront-overfiend` quest, restores HP/Surge via the Throne Sigil, and rewards the `Voidmaw Sigil` and `Stellar Burst Barrage` spell.
+- **Enemy Archetype Flavor**: Each Qua'dar appendix archetype (Obsidian Wardens, Doomguards, Voidwraiths, Storm Titans, Magma Leviathan, Abyssal Overfiend, etc.) now contributes a signature spell and lore flavor line to the combat log so encounters echo the source notes.
+- **Boss Phase Telemetry**: Boss entities carry phase metadata (`phases`, `phases_done`, `phase_label`); combat surfaces phase progress in the duel log and the defeat handler routes boss kills into the Overfiend epilogue helper.
+- **Expanded Merchant Catalog**: The merchandise store now stocks `Stellar Burst Barrage`, `Astral Lance Thrust`, `Shadowstep Mastery`, and `Dimensional Weave Shield` so the Tapestry / Starweaver loadouts from the appendix become reachable in play.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).

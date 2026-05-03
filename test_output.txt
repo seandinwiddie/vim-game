@@ -7,7 +7,7 @@ Arc: CH1 CLIMAX
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus: decode the return codex relay
 Objectives: 2 active / 1 complete
-Notes: 7 scenes / 4 NPCs
+Notes: 7 scenes / 5 NPCs
 Party: 1 active / 0 faded / 0 elsewhere | Group: +3
 Trade Cache: 36 | Guard: 14 | Mark: none
 DIRECTIVE: Keep the social contract visible while you choose threats, fallout, and scene pressure.
@@ -17,10 +17,6 @@ DIRECTIVE: Keep the social contract visible while you choose threats, fallout, a
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
-THREAD UPDATED: Forbidden truth appended to the active focus thread.
-NEURAL_TRACKING: Shifting coordinates to south
----
-ᚲ MYSTERIOUS_PORTAL ᚲ
 A thin alien threshold trembles here.
 INTERACTIVE OBJECTS:
   > [?] Veiled Gate
@@ -38,6 +34,8 @@ A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defy
 INTERACTIVE OBJECTS:
   > [?] Return Gate
   > [?] Alien Monolith
+DETECTED ENTITIES:
+  > [!!] Storm Titan
 ᚱ ENTRANCES: north, south
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -48,6 +46,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
+ [ᛟ] Gibsonian Shard
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -71,7 +70,7 @@ Companions (Party):
  * Ranger Operative [ACTIVE] [STR:5 AGI:5 ARC:3]
 ----------------------
 --- FIELD NOTES ---
-Notes: 7 scenes / 4 NPCs
+Notes: 7 scenes / 5 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
   Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
@@ -81,7 +80,7 @@ Focus Thread Card: decode the return codex relay
    - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
    - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
@@ -110,6 +109,7 @@ Known NPCs:
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ, ᚲ OUTERWORLDLY_REALM ᚲ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+ * Storm Titan | scenes: ᚲ OUTERWORLDLY_REALM ᚲ
 -------------------
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
@@ -126,7 +126,7 @@ Arc: CH1 CLIMAX
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus: decode the return codex relay
 Objectives: 2 active / 1 complete
-Notes: 7 scenes / 4 NPCs
+Notes: 7 scenes / 5 NPCs
 Party: 1 active / 0 faded / 0 elsewhere | Group: +3
 Trade Cache: 36 | Guard: 14 | Mark: none
 DIRECTIVE: Keep only the right companions in the main scene; fade or send the rest elsewhere.
@@ -136,10 +136,6 @@ DIRECTIVE: Keep only the right companions in the main scene; fade or send the re
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
-A distorted projection.
-HIDDEN LORE DISCOVERED: The missing rangers were not captured; they surrendered willingly to the whispers.
-THREAD UPDATED: Forbidden truth appended to the active focus thread.
-NEURAL_TRACKING: Shifting coordinates to south
 ---
 ᚲ MYSTERIOUS_PORTAL ᚲ
 A thin alien threshold trembles here.
@@ -159,6 +155,8 @@ A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defy
 INTERACTIVE OBJECTS:
   > [?] Return Gate
   > [?] Alien Monolith
+DETECTED ENTITIES:
+  > [!!] Storm Titan
 ᚱ ENTRANCES: north, south
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -169,6 +167,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
+ [ᛟ] Gibsonian Shard
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -192,7 +191,7 @@ Companions (Party):
  * Ranger Operative [ACTIVE] [STR:5 AGI:5 ARC:3]
 ----------------------
 --- FIELD NOTES ---
-Notes: 7 scenes / 4 NPCs
+Notes: 7 scenes / 5 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
   Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
@@ -202,7 +201,7 @@ Focus Thread Card: decode the return codex relay
    - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
    - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
@@ -231,6 +230,7 @@ Known NPCs:
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ, ᚲ OUTERWORLDLY_REALM ᚲ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+ * Storm Titan | scenes: ᚲ OUTERWORLDLY_REALM ᚲ
 -------------------
 --- PARTY TACTICS ---
 Party: 1 active / 0 faded / 0 elsewhere | Group: +3
@@ -245,7 +245,7 @@ Arc: CH1 CLIMAX
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus: decode the return codex relay
 Objectives: 2 active / 1 complete
-Notes: 7 scenes / 4 NPCs
+Notes: 7 scenes / 5 NPCs
 Party: 1 active / 0 faded / 0 elsewhere | Group: +3
 Trade Cache: 36 | Guard: 14 | Mark: none
 DIRECTIVE: Keep the vignette hook in mind while you frame the next scene.
@@ -255,10 +255,6 @@ DIRECTIVE: Keep the vignette hook in mind while you frame the next scene.
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
-ᚲ MYSTERIOUS_PORTAL ᚲ
-A thin alien threshold trembles here.
-INTERACTIVE OBJECTS:
-  > [?] Veiled Gate
 ᚱ ENTRANCES: east
 [Threat Tier: 1 | HP: 150/150]
 --
@@ -273,6 +269,8 @@ A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defy
 INTERACTIVE OBJECTS:
   > [?] Return Gate
   > [?] Alien Monolith
+DETECTED ENTITIES:
+  > [!!] Storm Titan
 ᚱ ENTRANCES: north, south
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -283,6 +281,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
+ [ᛟ] Gibsonian Shard
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -306,7 +305,7 @@ Companions (Party):
  * Ranger Operative [ACTIVE] [STR:5 AGI:5 ARC:3]
 ----------------------
 --- FIELD NOTES ---
-Notes: 7 scenes / 4 NPCs
+Notes: 7 scenes / 5 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
   Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
@@ -316,7 +315,7 @@ Focus Thread Card: decode the return codex relay
    - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
    - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
@@ -345,6 +344,7 @@ Known NPCs:
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ, ᚲ OUTERWORLDLY_REALM ᚲ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+ * Storm Titan | scenes: ᚲ OUTERWORLDLY_REALM ᚲ
 -------------------
 --- VIGNETTE FRAMEWORK ---
 Framework: Vignette
@@ -364,7 +364,7 @@ Arc: CH1 CLIMAX
 Accord: 1 focus / 1 banned / 1 assumptions
 Focus: decode the return codex relay
 Objectives: 2 active / 1 complete
-Notes: 7 scenes / 4 NPCs
+Notes: 7 scenes / 5 NPCs
 Party: 1 active / 0 faded / 0 elsewhere | Group: +3
 Trade Cache: 36 | Guard: 14 | Mark: none
 DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
@@ -374,12 +374,8 @@ DIRECTIVE: Notecards synchronized. Use these facts to steer the next scene.
 3. secure the tower shell extraction route
 4. track the tower shell recon cell
 
-ᚱ ENTRANCES: north
-[Threat Tier: 1 | HP: 150/150]
---
-INTERACT: You examine the Holographic Terminal.
 A distorted projection.
-HIDDEN LORE DISCOVERED: The missing rangers were not captured; they surrendered willingly to the whispers.
+HIDDEN LORE DISCOVERED: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
 THREAD UPDATED: Forbidden truth appended to the active focus thread.
 NEURAL_TRACKING: Shifting coordinates to south
 ---
@@ -401,6 +397,8 @@ A macrocosmic nightmare of abstract structures, hostile angles, and gravity-defy
 INTERACTIVE OBJECTS:
   > [?] Return Gate
   > [?] Alien Monolith
+DETECTED ENTITIES:
+  > [!!] Storm Titan
 ᚱ ENTRANCES: north, south
 [Threat Tier: 4 | HP: 150/150]
 --
@@ -411,6 +409,7 @@ Trade Cache: 36 | Guard: 14 | Mark: none
  [ᛟ] Ranger Signal Token
  [ᛟ] Lost Tomes
  [ᛟ] Signal Codex
+ [ᛟ] Gibsonian Shard
 ----------------------
 --- PLAYER PROFILE ---
 Name:  Kamenal
@@ -434,7 +433,7 @@ Companions (Party):
  * Ranger Operative [ACTIVE] [STR:5 AGI:5 ARC:3]
 ----------------------
 --- FIELD NOTES ---
-Notes: 7 scenes / 4 NPCs
+Notes: 7 scenes / 5 NPCs
 Focus Thread Card: decode the return codex relay
   Stage: TO KNOWLEDGE
   Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ | ᚲ OUTERWORLDLY_REALM ᚲ
@@ -444,7 +443,7 @@ Focus Thread Card: decode the return codex relay
    - Framework phase shifted to CLIMAX in chapter 1.
    - Fade Out: ashwalker resistance confirms the spire approach is still contested
    - Replaces Recover the Lost Tomes after scene fallout.
-   - LORE: The missing rangers were not captured; they surrendered willingly to the whispers.
+   - LORE: The Corrupted Altars are siphoning life force from the Ethereal Marshes.
    - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ OUTERWORLDLY_REALM ᚲ.
 --- MEETING OF MINDS ---
 Accord: 1 focus / 1 banned / 1 assumptions
@@ -473,4 +472,7 @@ Known NPCs:
  * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ
  * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ, ᚲ OUTERWORLDLY_REALM ᚲ
  * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ
+ * Storm Titan | scenes: ᚲ OUTERWORLDLY_REALM ᚲ
 -------------------
+--- CLIMAX OK ---
+ENEMY SIGNATURE: Dark Crystal Shielding -- Crystalline poison shards lash out from the obsidian form.
