@@ -304,7 +304,7 @@ items that would unblock the most other items if tackled now.
     rendered. The renderer emits only `state.log[cursor:]` and the header.
     Free perf win, also makes scrollback in the buffer behave better.
 
-- [ ] **Add a 1-deep undo.**
+- [x] **Add a 1-deep undo.**
   - **Why:** State is fully serializable already; the cost of stashing the
     pre-dispatch state is one `deepcopy`. A misread Loom roll or a fat-finger
     `attack` against a boss with no shielding currently has no recovery.

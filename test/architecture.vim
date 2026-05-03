@@ -29,6 +29,7 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#registry', 'action.vim must expose the self-documenting command registry.')
   call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#help_lines', 'action.vim must expose formatted help lines from the command registry.')
   call QuadarTest_AssertFileContains(l:action_file, 'function! game#action#command', 'action.vim must define the command-to-action mapper.')
+  call QuadarTest_AssertFileContains(l:action_file, 'system/undoRequested', 'action.vim should expose a typed undo action.')
   call QuadarTest_AssertFileContains(l:action_file, 'system/helpRequested', 'action.vim should expose a typed help action.')
   call QuadarTest_AssertFileContains(l:action_file, 'system/invalidInput', 'action.vim should emit invalid-input actions for malformed commands.')
   call QuadarTest_AssertFileContains(l:action_file, 'explore/travelRequested', 'action.vim must centralize event-style action types.')
@@ -41,6 +42,7 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileContains(l:store_file, 'function! game#store#dispatch(', 'store.vim must define dispatch().')
   call QuadarTest_AssertFileContains(l:store_file, 'function! game#store#dispatch_batch', 'store.vim must define dispatch_batch().')
   call QuadarTest_AssertFileContains(l:store_file, 'function! game#store#subscribe', 'store.vim must define subscribe().')
+  call QuadarTest_AssertFileContains(l:store_file, "'previous_state': {}", 'store.vim should keep one-step undo history.')
   call QuadarTest_AssertFileContains(l:store_file, 'game#reducer#reduce', 'store.vim dispatch must route through the reducer.')
 
   call QuadarTest_AssertFileContains(l:match_file, 'function! game#match#one', 'match.vim must expose the shared exact/unique-prefix matcher.')
@@ -97,6 +99,8 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileNotContains(l:interact_file, "=~# '^' .", 'interact.vim should not keep ad hoc prefix-matching logic.')
 
   call QuadarTest_AssertFileContains(l:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
+  call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'system/undo'", 'reducer.vim should support restoring a previous state.')
+  call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'system/undoRequested'", 'reducer.vim should surface exhausted undo history cleanly.')
   call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'system/helpRequested'", 'reducer.vim should route help actions through the core help command.')
   call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'system/invalidInput'", 'reducer.vim should render invalid-input actions without reaching reducer handlers.')
   call QuadarTest_AssertFileContains(l:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
@@ -121,6 +125,7 @@ function! QuadarTest_RunArchitecture() abort
   call QuadarTest_AssertFileContains(l:engine_file, 'game#store#create(game#core#init())', 'engine.vim must bootstrap the store from initial state.')
   call QuadarTest_AssertFileContains(l:engine_file, 'game#store#subscribe', 'engine.vim must subscribe redraws to store changes.')
   call QuadarTest_AssertFileContains(l:engine_file, 'game#store#dispatch_input', 'engine.vim must dispatch user input through the store.')
+  call QuadarTest_AssertFileContains(l:engine_file, "run('undo')", 'engine.vim should expose a quick undo mapping in the game buffer.')
   call QuadarTest_AssertFileNotContains(l:engine_file, 'let s:state = game#core#process', 'engine.vim should not mutate local state directly anymore.')
 
   for l:file in sort(globpath('autoload/game', '**/*.vim', 0, 1))

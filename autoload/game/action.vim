@@ -11,6 +11,7 @@ endfunction
 function! game#action#registry() abort
   return [
         \ s:command('help', ['commands', '?'], 'show the current command reference.'),
+        \ s:command('undo', ['u'], 'revert the last dispatched turn.'),
         \ s:command('look', ['l'], 'scan the current room, exits, entities, and interactables.'),
         \ s:command('go [dir]', ['n', 's', 'e', 'w'], 'travel to a connected room.'),
         \ s:command('ask [question]', [], 'consult the Loom of Fate.'),
@@ -63,7 +64,9 @@ function! game#action#command(input) abort
   endif
 
   let l:head = l:parts[0]
-  if l:head ==# 'help' || l:head ==# 'commands' || l:head ==# '?'
+  if l:head ==# 'undo' || l:head ==# 'u'
+    return game#action#make('system/undoRequested', {'raw': l:cmd})
+  elseif l:head ==# 'help' || l:head ==# 'commands' || l:head ==# '?'
     return game#action#make('system/helpRequested', {'raw': l:cmd})
   elseif l:head ==# 'look' || l:head ==# 'l'
     return game#action#make('explore/lookRequested', {'raw': l:cmd})
