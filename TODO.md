@@ -122,7 +122,7 @@ items that would unblock the most other items if tackled now.
   - **Pairs with:** the RNG item above; either alone is good, both together
     is great.
 
-- [ ] **Replace string-prefix matching everywhere.**
+- [x] **Replace string-prefix matching everywhere.**
   - **Why:** `find_ware`, `inventory_index`, `companion_index`, and
     `enemies#archetype` all do `tolower(name) =~# '^' . needle`. So:
       - Typing `s` for `sell s` would match `Shatterstrike Slam` (a spell, not

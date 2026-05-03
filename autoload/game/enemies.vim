@@ -2,13 +2,8 @@
 
 function! game#enemies#archetype(name) abort
   let l:lookup = s:archetypes()
-  let l:key = tolower(a:name)
-  for l:k in keys(l:lookup)
-    if l:key =~# l:k
-      return l:lookup[l:k]
-    endif
-  endfor
-  return {}
+  let l:match = game#match#one(keys(l:lookup), a:name)
+  return get(l:match, 'found', 0) ? l:lookup[tolower(l:match.value)] : {}
 endfunction
 
 function! game#enemies#flavor_lines(target_name) abort
@@ -204,7 +199,8 @@ endfunction
 
 function! s:archetypes() abort
   return {
-        \ 'obsidian warden\|sentinel of terror': {'signature': 'Dark Crystal Shielding', 'flavor': 'Crystalline poison shards lash out from the obsidian form.', 'counter': 'guard_strip'},
+        \ 'obsidian warden': {'signature': 'Dark Crystal Shielding', 'flavor': 'Crystalline poison shards lash out from the obsidian form.', 'counter': 'guard_strip'},
+        \ 'sentinel of terror': {'signature': 'Dark Crystal Shielding', 'flavor': 'Crystalline poison shards lash out from the obsidian form.', 'counter': 'guard_strip'},
         \ 'doomguard': {'signature': 'Explosive Barrage', 'flavor': 'Heavy zinc plate clangs as a chant of dread chains the air.', 'counter': 'surge_spike'},
         \ 'ashwalker': {'signature': 'Ember Dash', 'flavor': 'A renegade junkie streaks through ember trails wielding salvaged relics.', 'counter': 'mark_strip'},
         \ 'iron armored guardian': {'signature': 'Ironclad Charge', 'flavor': 'A medieval swordsman in iseon plate hurls explosive projectiles.', 'counter': 'guard_strip'},

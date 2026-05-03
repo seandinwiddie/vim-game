@@ -23,7 +23,7 @@ endfunction
 
 function! game#party#add_companion(state, companion) abort
   let l:next_state = game#party#hydrate(a:state)
-  if s:companion_index(get(l:next_state.player, 'companions', []), get(a:companion, 'name', '')) != -1
+  if get(s:companion_match(get(l:next_state.player, 'companions', []), get(a:companion, 'name', '')), 'found', 0)
     return l:next_state
   endif
   call add(l:next_state.player.companions, s:normalize_companion(a:companion))
@@ -107,11 +107,15 @@ endfunction
 
 function! s:set_status(state, name, status, assignment) abort
   let l:next_state = game#party#hydrate(a:state)
-  let l:idx = s:companion_index(get(l:next_state.player, 'companions', []), a:name)
-  if l:idx == -1
+  let l:match = s:companion_match(get(l:next_state.player, 'companions', []), a:name)
+  if get(l:match, 'ambiguous', 0)
+    return game#core#add_log(a:state, 'LOG_ERR: Companion reference "' . a:name . '" matches multiple companions: ' . join(l:match.matches, ', ') . '.')
+  endif
+  if !get(l:match, 'found', 0)
     return game#core#add_log(a:state, 'LOG_ERR: Unknown companion "' . a:name . '".')
   endif
-
+  let l:idx = l:match.index
+ 
   let l:companion = l:next_state.player.companions[l:idx]
   let l:next_state.player.companions[l:idx].status = a:status
   let l:next_state.player.companions[l:idx].assignment = a:assignment
@@ -172,15 +176,10 @@ function! s:normalize_companion(companion) abort
   return l:companion
 endfunction
 
-function! s:companion_index(companions, name) abort
-  let l:idx = 0
-  for l:companion in a:companions
-    if tolower(get(l:companion, 'name', '')) ==# tolower(a:name) || tolower(get(l:companion, 'name', '')) =~# '^' . tolower(a:name)
-      return l:idx
-    endif
-    let l:idx += 1
-  endfor
-  return -1
+function! s:companion_match(companions, name) abort
+  let l:match = game#match#one(map(copy(a:companions), "get(v:val, 'name', '')"), a:name)
+  let l:match.companion = get(l:match, 'found', 0) ? a:companions[l:match.index] : {}
+  return l:match
 endfunction
 
 function! s:parse_send_args(args) abort
@@ -192,8 +191,8 @@ function! s:parse_send_args(args) abort
 endfunction
 
 function! s:resolved_name(state, name) abort
-  let l:idx = s:companion_index(get(get(a:state, 'player', {}), 'companions', []), a:name)
-  return l:idx == -1 ? a:name : a:state.player.companions[l:idx].name
+  let l:match = s:companion_match(get(get(a:state, 'player', {}), 'companions', []), a:name)
+  return get(l:match, 'found', 0) ? l:match.value : a:name
 endfunction
 
 function! s:status_counts(state) abort

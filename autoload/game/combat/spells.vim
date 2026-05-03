@@ -1,13 +1,12 @@
 " autoload/game/combat/spells.vim - Spell registry and cast handlers
 
+function! game#combat#spells#match(known_spells, spell_name) abort
+  return game#match#one(a:known_spells, a:spell_name)
+endfunction
+
 function! game#combat#spells#match_known(known_spells, spell_name) abort
-  let l:needle = tolower(a:spell_name)
-  for l:spell in a:known_spells
-    if tolower(l:spell) ==# l:needle || tolower(l:spell) =~# '^' . l:needle
-      return l:spell
-    endif
-  endfor
-  return ''
+  let l:match = game#combat#spells#match(a:known_spells, a:spell_name)
+  return get(l:match, 'found', 0) ? l:match.value : ''
 endfunction
 
 function! game#combat#spells#get(spell_name) abort

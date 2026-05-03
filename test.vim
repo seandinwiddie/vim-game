@@ -151,6 +151,7 @@ let s:combat_spells_file = expand('autoload/game/combat/spells.vim')
 let s:enemies_file = expand('autoload/game/enemies.vim')
 let s:procgen_file = expand('autoload/game/explore/procgen.vim')
 let s:oracle_file = expand('autoload/game/oracle.vim')
+let s:match_file = expand('autoload/game/match.vim')
 let s:store_file = expand('autoload/game/store.vim')
 let s:reducer_file = expand('autoload/game/reducer.vim')
 let s:engine_file = expand('autoload/game/engine.vim')
@@ -178,20 +179,28 @@ call s:assert_file_contains(s:store_file, 'function! game#store#dispatch_batch',
 call s:assert_file_contains(s:store_file, 'function! game#store#subscribe', 'store.vim must define subscribe().')
 call s:assert_file_contains(s:store_file, 'game#reducer#reduce', 'store.vim dispatch must route through the reducer.')
 
+call s:assert_file_contains(s:match_file, 'function! game#match#one', 'match.vim must expose the shared exact/unique-prefix matcher.')
 call s:assert_file_contains(s:combat_file, 'function! game#combat#cmd_attack(state, ...) abort', 'combat.vim should expose optional attack roll injection for tests.')
 call s:assert_file_contains(s:combat_file, 'function! game#combat#cmd_cast(state, spell_name, ...) abort', 'combat.vim should expose optional cast roll injection for tests.')
 call s:assert_file_contains(s:combat_file, "get(a:opts, 'rolls', {})", 'combat.vim should honor injected combat rolls when provided.')
+call s:assert_file_contains(s:combat_file, 'game#combat#spells#match(', 'combat.vim should route spell-name lookup through the shared matcher flow.')
 call s:assert_file_contains(s:combat_file, 'game#combat#spells#cast', 'combat.vim should delegate spell execution through the spell registry.')
 call s:assert_file_not_contains(s:combat_file, "elseif l:matched_spell ==#", 'combat.vim should not keep inline spell-name handler chains.')
+call s:assert_file_contains(s:combat_spells_file, 'function! game#combat#spells#match(', 'combat/spells.vim must expose structured spell matching via the shared matcher.')
 call s:assert_file_contains(s:combat_spells_file, 'function! game#combat#spells#get', 'combat/spells.vim must expose the spell registry lookup.')
 call s:assert_file_contains(s:combat_spells_file, 'function! game#combat#spells#cast', 'combat/spells.vim must expose the spell dispatcher.')
 call s:assert_file_contains(s:combat_spells_file, "get(a:ctx, 'opts', {})", 'combat/spells.vim should honor injected spell rolls when provided.')
 call s:assert_file_contains(s:enemies_file, 'function! game#enemies#pool', 'enemies.vim must expose the canonical enemy pool helper.')
 call s:assert_file_contains(s:enemies_file, 'function! game#enemies#select', 'enemies.vim must expose a canonical enemy selection helper.')
+call s:assert_file_contains(s:enemies_file, 'game#match#one(', 'enemies.vim should route archetype lookup through the shared matcher.')
 call s:assert_file_contains(s:procgen_file, 'game#enemies#pool(', 'procgen.vim should source encounter pools from enemies.vim.')
 call s:assert_file_not_contains(s:procgen_file, 'function! s:enemy_pool', 'procgen.vim should not keep a duplicate enemy-pool definition.')
 call s:assert_file_contains(s:player_file, 'game#enemies#select(', 'player.vim should source dynamic rest spawns from the canonical enemy catalog.')
 call s:assert_file_contains(s:oracle_file, 'game#enemies#select(', 'oracle.vim should source Entering the Red spawns from the canonical enemy catalog.')
+call s:assert_file_contains(s:player_file, 'game#match#one(', 'player.vim should route item-name lookup through the shared matcher.')
+call s:assert_file_contains(s:economy_file, 'game#match#one(', 'economy.vim should route ware and inventory lookup through the shared matcher.')
+call s:assert_file_contains(s:party_file, 'game#match#one(', 'party.vim should route companion lookup through the shared matcher.')
+call s:assert_file_contains(s:interact_file, 'game#match#one(', 'interact.vim should route object lookup through the shared matcher.')
 call s:assert_file_contains(s:tuning_file, 'function! game#tuning#get', 'tuning.vim must expose the canonical tuning lookup.')
 call s:assert_file_contains(s:combat_file, 'game#tuning#get(', 'combat.vim should source combat balance numbers from tuning.vim.')
 call s:assert_file_contains(s:combat_spells_file, 'game#tuning#get(', 'combat/spells.vim should source spell balance numbers from tuning.vim.')
@@ -206,6 +215,11 @@ call s:assert_file_contains(s:interact_file, 'game#player#heal(', 'interact.vim 
 call s:assert_file_not_contains(s:combat_spells_file, 'player.hp = min([', 'combat/spells.vim should not inline HP clamp math.')
 call s:assert_file_not_contains(s:economy_file, 'player.hp = min([', 'economy.vim should not inline HP clamp math.')
 call s:assert_file_not_contains(s:interact_file, 'player.hp = min([', 'interact.vim should not inline HP clamp math.')
+call s:assert_file_not_contains(s:combat_spells_file, "=~# '^' .", 'combat/spells.vim should not keep ad hoc prefix-matching logic.')
+call s:assert_file_not_contains(s:economy_file, "=~# '^' .", 'economy.vim should not keep ad hoc prefix-matching logic.')
+call s:assert_file_not_contains(s:party_file, "=~# '^' .", 'party.vim should not keep ad hoc prefix-matching logic.')
+call s:assert_file_not_contains(s:player_file, "=~# '^' .", 'player.vim should not keep ad hoc prefix-matching logic.')
+call s:assert_file_not_contains(s:interact_file, "=~# '^' .", 'interact.vim should not keep ad hoc prefix-matching logic.')
 
 call s:assert_file_contains(s:reducer_file, 'function! game#reducer#reduce', 'reducer.vim must define the root reducer.')
 call s:assert_file_contains(s:reducer_file, "l:type ==# 'explore/lookRequested'", 'reducer.vim must route event actions by type.')
@@ -292,6 +306,44 @@ let s:heal_state = game#core#init()
 let s:heal_state.player.hp = s:heal_state.player.max_hp - 5
 let s:heal_state = game#player#heal(s:heal_state, 20)
 call s:assert_true(s:heal_state.player.hp == s:heal_state.player.max_hp, 'game#player#heal should clamp restored HP to max HP.')
+
+let s:match_exact = game#match#one(['Shadowstep Mastery', 'Shatterstrike Slam'], 'Shadowstep Mastery')
+call s:assert_true(s:match_exact.found && s:match_exact.value ==# 'Shadowstep Mastery', 'Shared matcher should prefer exact matches.')
+let s:match_prefix = game#match#one(['Shadowstep Mastery', 'Shatterstrike Slam'], 'shatt')
+call s:assert_true(s:match_prefix.found && s:match_prefix.value ==# 'Shatterstrike Slam', 'Shared matcher should allow unique prefixes.')
+let s:match_ambiguous = game#match#one(['Shadowstep Mastery', 'Shatterstrike Slam'], 'sh')
+call s:assert_true(!s:match_ambiguous.found && s:match_ambiguous.ambiguous && len(s:match_ambiguous.matches) == 2, 'Shared matcher should surface ambiguous prefixes explicitly.')
+call s:assert_true(get(game#enemies#archetype('Sentinel of Terror'), 'signature', '') ==# 'Dark Crystal Shielding', 'Enemy archetype lookup should still support alias names through the shared matcher.')
+
+let s:buy_match_state = game#core#init()
+let s:buy_match_state.player.trade = 100
+let s:buy_match_state = game#core#process(s:buy_match_state, 'buy sh')
+call s:assert_contains(s:buy_match_state.log, "TRADE_ERR: 'sh' matches multiple wares: Shatterstrike Slam, Shadowstep Mastery.")
+
+let s:use_match_state = game#core#init()
+let s:use_match_state.player.inv += ['Pollen Vial', 'Pollen Satchel']
+let s:use_match_state = game#player#cmd_use(s:use_match_state, 'pollen')
+call s:assert_contains(s:use_match_state.log, "ITEM_ERR: 'pollen' matches multiple items: Pollen Vial, Pollen Satchel.")
+
+let s:cast_match_state = game#core#init()
+let s:cast_match_state.player.spells += ['Shatterstrike Slam', 'Shadowstep Mastery']
+let s:cast_match_state.rooms[s:cast_match_state.loc].entities = [{'name': 'Spell Dummy', 'str': 5, 'agi': 5, 'arc': 5}]
+let s:cast_match_state = game#combat#cmd_cast(s:cast_match_state, 'sh')
+call s:assert_contains(s:cast_match_state.log, "SPELL_ERR: 'sh' matches multiple known spells: Shatterstrike Slam, Shadowstep Mastery.")
+
+let s:party_match_state = game#core#init()
+let s:party_match_state = game#party#add_companion(s:party_match_state, game#party#create('Ranger Halver', 5, 5, 3))
+let s:party_match_state = game#party#add_companion(s:party_match_state, game#party#create('Ranger Harlan', 5, 5, 3))
+let s:party_match_state = game#core#process(s:party_match_state, 'party fade ranger h')
+call s:assert_contains(s:party_match_state.log, 'LOG_ERR: Companion reference "ranger h" matches multiple companions: Ranger Halver, Ranger Harlan.')
+
+let s:interact_match_state = game#core#init()
+let s:interact_match_state.rooms[s:interact_match_state.loc].objects = [
+      \ {'name': 'Veiled Gate', 'desc': 'A gate.', 'effect': 'portal_jump'},
+      \ {'name': 'Veiled Gate Console', 'desc': 'A console.', 'effect': 'unlock_exit'}
+      \ ]
+let s:interact_match_state = game#core#process(s:interact_match_state, 'interact veiled g')
+call s:assert_contains(s:interact_match_state.log, "LOG_ERR: 'veiled g' matches multiple objects here: Veiled Gate, Veiled Gate Console.")
 
 let s:attack_win_state = game#core#init()
 let s:attack_win_state.rooms[s:attack_win_state.loc] = {

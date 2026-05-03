@@ -11,6 +11,9 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
   endif
 
   let l:match = s:match_object(l:room.objects, a:object_name)
+  if get(l:match, 'ambiguous', 0)
+    return game#core#add_log(a:state, "LOG_ERR: '" . a:object_name . "' matches multiple objects here: " . join(l:match.matches, ', ') . '.')
+  endif
   if !l:match.found
     return game#core#add_log(a:state, "LOG_ERR: You don't see a '" . a:object_name . "' here.")
   endif
@@ -157,15 +160,10 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
 endfunction
 
 function! s:match_object(objects, object_name) abort
-  let l:idx = 0
-  for l:obj in a:objects
-    let l:name = type(l:obj) == v:t_dict ? get(l:obj, 'name', '') : l:obj
-    if tolower(l:name) ==# tolower(a:object_name) || tolower(l:name) =~# '^' . tolower(a:object_name)
-      return {'found': 1, 'object': l:obj, 'index': l:idx}
-    endif
-    let l:idx += 1
-  endfor
-  return {'found': 0, 'object': {}, 'index': -1}
+  let l:names = map(copy(a:objects), "type(v:val) == v:t_dict ? get(v:val, 'name', '') : v:val")
+  let l:match = game#match#one(l:names, a:object_name)
+  let l:match.object = get(l:match, 'found', 0) ? a:objects[l:match.index] : {}
+  return l:match
 endfunction
 
 function! s:check_climax_unveil(state, log_lines) abort

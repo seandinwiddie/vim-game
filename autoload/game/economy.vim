@@ -59,10 +59,14 @@ function! game#economy#cmd_buy(state, item_name) abort
     return game#core#add_log(a:state, 'TRADE_ERR: Use "buy [ware]" to acquire an item, spell, or upgrade.')
   endif
 
-  let l:ware = s:find_ware(a:item_name)
-  if empty(l:ware)
+  let l:ware_match = s:find_ware(a:item_name)
+  if get(l:ware_match, 'ambiguous', 0)
+    return game#core#add_log(a:state, "TRADE_ERR: '" . a:item_name . "' matches multiple wares: " . join(l:ware_match.matches, ', ') . '.')
+  endif
+  if !get(l:ware_match, 'found', 0)
     return game#core#add_log(a:state, "TRADE_ERR: Unknown ware '" . a:item_name . "'.")
   endif
+  let l:ware = l:ware_match.ware
   if s:is_owned(a:state, l:ware)
     return game#core#add_log(a:state, 'TRADE_ERR: ' . l:ware.name . ' is already integrated into your loadout.')
   endif
@@ -108,11 +112,15 @@ function! game#economy#cmd_sell(state, item_name) abort
     return game#core#add_log(a:state, 'TRADE_ERR: Use "sell [relic]" to liquidate scavenged wares.')
   endif
 
-  let l:idx = s:inventory_index(a:state.player.inv, a:item_name)
-  if l:idx == -1
+  let l:item_match = s:inventory_match(a:state.player.inv, a:item_name)
+  if get(l:item_match, 'ambiguous', 0)
+    return game#core#add_log(a:state, "TRADE_ERR: '" . a:item_name . "' matches multiple inventory items: " . join(l:item_match.matches, ', ') . '.')
+  endif
+  if !get(l:item_match, 'found', 0)
     return game#core#add_log(a:state, "TRADE_ERR: '" . a:item_name . "' is not in your inventory.")
   endif
-
+  let l:idx = l:item_match.index
+  
   let l:item = a:state.player.inv[l:idx]
   if s:is_protected_item(l:item)
     return game#core#add_log(a:state, 'TRADE_ERR: ' . l:item . ' is locked to mission-critical use and cannot be sold.')
@@ -179,13 +187,10 @@ function! s:catalog() abort
 endfunction
 
 function! s:find_ware(item_name) abort
-  let l:needle = tolower(a:item_name)
-  for l:ware in s:catalog()
-    if tolower(l:ware.name) ==# l:needle || tolower(l:ware.name) =~# '^' . l:needle
-      return l:ware
-    endif
-  endfor
-  return {}
+  let l:catalog = s:catalog()
+  let l:match = game#match#one(map(copy(l:catalog), 'v:val.name'), a:item_name)
+  let l:match.ware = get(l:match, 'found', 0) ? l:catalog[l:match.index] : {}
+  return l:match
 endfunction
 
 function! s:ware_status(state, ware) abort
@@ -208,14 +213,8 @@ function! s:is_owned(state, ware) abort
   return 0
 endfunction
 
-function! s:inventory_index(inv, item_name) abort
-  let l:needle = tolower(a:item_name)
-  for l:i in range(len(a:inv))
-    if tolower(a:inv[l:i]) ==# l:needle || tolower(a:inv[l:i]) =~# '^' . l:needle
-      return l:i
-    endif
-  endfor
-  return -1
+function! s:inventory_match(inv, item_name) abort
+  return game#match#one(a:inv, a:item_name)
 endfunction
 
 function! s:is_protected_item(item_name) abort

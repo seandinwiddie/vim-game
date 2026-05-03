@@ -10,18 +10,15 @@ function! game#player#cmd_use(state, item) abort
     return game#core#add_log(a:state, "LOG_ERR: Specify an item to use (e.g. 'use Pollen Vial').")
   endif
   
-  let l:idx = -1
-  for i in range(len(a:state.player.inv))
-    if tolower(a:state.player.inv[i]) ==# tolower(a:item) || tolower(a:state.player.inv[i]) =~# '^' . tolower(a:item)
-      let l:idx = i
-      break
-    endif
-  endfor
-  
-  if l:idx == -1
+  let l:match = game#match#one(a:state.player.inv, a:item)
+  if get(l:match, 'ambiguous', 0)
+    return game#core#add_log(a:state, "ITEM_ERR: '" . a:item . "' matches multiple items: " . join(l:match.matches, ', ') . '.')
+  endif
+  if !get(l:match, 'found', 0)
     return game#core#add_log(a:state, "ITEM_ERR: You do not possess '" . a:item . "'.")
   endif
   
+  let l:idx = l:match.index
   let l:matched_item = a:state.player.inv[l:idx]
   let l:next_state = deepcopy(a:state)
   

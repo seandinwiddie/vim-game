@@ -102,10 +102,14 @@ function! game#combat#cmd_cast(state, spell_name, ...) abort
     return game#core#add_log(a:state, "LOG_ERR: Specify a spell to cast (e.g. 'cast Ethereal Dagger Assault').")
   endif
   
-  let l:matched_spell = game#combat#spells#match_known(a:state.player.spells, a:spell_name)
-  if empty(l:matched_spell)
+  let l:spell_match = game#combat#spells#match(a:state.player.spells, a:spell_name)
+  if get(l:spell_match, 'ambiguous', 0)
+    return game#core#add_log(a:state, "SPELL_ERR: '" . a:spell_name . "' matches multiple known spells: " . join(l:spell_match.matches, ', ') . '.')
+  endif
+  if !get(l:spell_match, 'found', 0)
     return game#core#add_log(a:state, "SPELL_ERR: You do not know the spell '" . a:spell_name . "'.")
   endif
+  let l:matched_spell = l:spell_match.value
 
   let l:spell = game#combat#spells#get(l:matched_spell)
   if empty(l:spell)
