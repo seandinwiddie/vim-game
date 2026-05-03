@@ -299,5 +299,21 @@ call s:assert_true(index(s:state.player.spells, 'Stellar Burst Barrage') != -1, 
 " Enemy archetype flavor lines should be available for combat narration.
 let s:flavor = game#enemies#flavor_lines('Obsidian Warden')
 call s:assert_true(!empty(s:flavor), 'Combat flavor lookup should return signature data for Obsidian Warden.')
+
+" Roving recruitment flow.
+let s:state.rooms['test_recruit'] = {
+      \ 'name': 'ᚲ ETHEREAL_MARSHLANDS ᚲ',
+      \ 'desc': 'Murky marshes filled with strangers.',
+      \ 'exits': {'north': s:state.loc},
+      \ 'entities': [],
+      \ 'services': [],
+      \ 'objects': [{'name': 'Stranded Ranger', 'desc': 'A fellow recon operative.', 'effect': 'recruit_ranger'}]
+      \ }
+let s:state.rooms[s:state.loc].exits['south'] = 'test_recruit'
+let s:before_companions = len(get(s:state.player, 'companions', []))
+let s:state = game#core#process(s:state, 'go south')
+let s:state = game#core#process(s:state, 'interact Stranded Ranger')
+let s:after_companions = len(get(s:state.player, 'companions', []))
+call s:assert_true(s:after_companions == s:before_companions + 1, 'Recruiting a Stranded Ranger should add a new companion to the party.')
 call writefile(['--- CLIMAX OK ---'] + s:flavor, 'test_output.txt', 'a')
 qa!

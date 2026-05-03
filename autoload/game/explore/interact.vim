@@ -95,6 +95,16 @@ function! game#explore#interact#cmd_interact(state, object_name) abort
     let l:next_state = l:quest_progress.state
     let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Purify the Eldritch Altars', 'A corrupted altar was purified in ' . l:next_state.rooms[a:state.loc].name . '.')
     let l:log_lines += l:quest_progress.log
+  elseif l:effect ==# 'recruit_ranger'
+    let l:consume_object = 1
+    let l:val = str2nr(split(reltimestr(reltime()), '\.')[1])
+    let l:names = ['Ranger Halver', 'Ranger Sigrun', 'Ranger Mostwick', 'Ranger Velint', 'Ranger Astric']
+    let l:companion = game#party#create(l:names[l:val % len(l:names)], 5, 5, 3)
+    let l:next_state = game#party#add_companion(l:next_state, l:companion)
+    let l:next_state = game#party#sync_scene(l:next_state)
+    let l:next_state = game#story#threads#record_npc_for_thread(l:next_state, 'Find Missing Rangers', l:companion.name)
+    let l:next_state = game#story#record_fact_for_thread(l:next_state, 'Find Missing Rangers', l:companion.name . ' rallied to the unit out of ' . l:next_state.rooms[a:state.loc].name . '.')
+    call add(l:log_lines, 'PARTY UPDATE: ' . l:companion.name . ' joins your unit, swelling Group Dynamics.')
   elseif l:effect ==# 'field_cache'
     let l:consume_object = 1
     let l:next_state.player.hp = min([l:next_state.player.max_hp, l:next_state.player.hp + 20])

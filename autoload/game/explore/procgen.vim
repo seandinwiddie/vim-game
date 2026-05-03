@@ -84,7 +84,25 @@ function! game#explore#procgen#generate_room(seed, entrance_dir, entrance_id, st
     endif
   endfor
 
+  call s:apply_friendly_spawn(l:room, a:seed)
   return l:room
+endfunction
+
+function! s:apply_friendly_spawn(room, seed) abort
+  let l:friendly_roll = (a:seed / 11) % 100
+  if l:friendly_roll >= 88
+    call add(a:room.objects, {
+          \ 'name': 'Stranded Ranger',
+          \ 'desc': 'A fellow recon operative emerges from cover, signal-token raised. They will fold into your unit if helped.',
+          \ 'effect': 'recruit_ranger'
+          \ })
+  elseif l:friendly_roll >= 78
+    call add(a:room.services, 'trade')
+    call add(a:room.objects, {
+          \ 'name': 'Nomadic Merchant',
+          \ 'desc': 'A traveling Gloamstrider has set up a barter cache here, hauling wares between the murky reaches.'
+          \ })
+  endif
 endfunction
 
 function! game#explore#procgen#generate_portal_room(seed, entrance_id, state) abort

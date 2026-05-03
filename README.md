@@ -65,6 +65,7 @@ This project follows functional programming principles:
 - **Economy Loop**: Trade cache, wares, salvage, and persistent upgrades now turn recovered relics into concrete progression.
 - **Climax Boss**: An Abyssal Throne is procedurally bound to the Merchandise Store Room once the three core quests resolve, anchoring the Voidmaw Abyssalgeist as a multi-phase climactic encounter that ends the vignette.
 - **Enemy Archetype Lore**: Combat output now narrates each archetype's signature spell from the Qua'dar appendix (e.g., Storm Titans flash `Thunderous Slam`, Voidwraiths haunt with `Spectral Grasp`).
+- **Roving Allies**: Procedural rooms occasionally surface a `Stranded Ranger` (interact to recruit) or a `Nomadic Merchant` (whose presence opens the shop in the wild) so the Familiar's fresh-recruit and traveling-trader rhythms appear during exploration.
 
 ## License
 All rights reserved. © 2026 ForbocAI. See [LICENSE](./LICENSE) for full details.

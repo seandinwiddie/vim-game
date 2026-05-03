@@ -56,6 +56,7 @@
 - **Enemy Archetype Flavor**: Each Qua'dar appendix archetype (Obsidian Wardens, Doomguards, Voidwraiths, Storm Titans, Magma Leviathan, Abyssal Overfiend, etc.) now contributes a signature spell and lore flavor line to the combat log so encounters echo the source notes.
 - **Boss Phase Telemetry**: Boss entities carry phase metadata (`phases`, `phases_done`, `phase_label`); combat surfaces phase progress in the duel log and the defeat handler routes boss kills into the Overfiend epilogue helper.
 - **Expanded Merchant Catalog**: The merchandise store now stocks `Stellar Burst Barrage`, `Astral Lance Thrust`, `Shadowstep Mastery`, and `Dimensional Weave Shield` so the Tapestry / Starweaver loadouts from the appendix become reachable in play.
+- **Roving Allies**: Procedurally generated rooms can now spawn a `Stranded Ranger` (interact to recruit them into the party) or a `Nomadic Merchant` (which adds a `trade` service to the room so the shop opens in the wild). This realizes the Familiar's "fresh recruits get sent here" rhythm and the appendix's wandering Gloamstrider merchants.
 
 ## ᚦ WORLD & LORE (QUADAR TOWER)
 - **Character**: Kamenal, Level 12 Rogue/Ranger (Starting state from `quadar_familiar.md`).
