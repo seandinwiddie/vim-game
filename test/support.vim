@@ -24,6 +24,19 @@ function! QuadarTest_AssertContains(lines, needle) abort
   call QuadarTest_AssertTrue(stridx(join(a:lines, "\n"), a:needle) >= 0, 'Missing expected text: ' . a:needle)
 endfunction
 
+function! QuadarTest_AssertSnapshot(name, value) abort
+  let l:path = 'test/snapshots/' . a:name . '.json'
+  let l:lines = s:snapshot_lines(s:normalize_snapshot(a:value), 0)
+  if QuadarTest_ShouldUpdateSnapshots()
+    call mkdir(fnamemodify(l:path, ':h'), 'p')
+    call writefile(l:lines, l:path)
+  endif
+  call QuadarTest_AssertTrue(filereadable(l:path), 'Missing snapshot file: ' . l:path)
+  call QuadarTest_AssertTrue(
+        \ join(readfile(l:path), "\n") ==# join(l:lines, "\n"),
+        \ 'Snapshot mismatch: ' . l:path . '. Run "make update-snapshots" to accept intentional changes.')
+endfunction
+
 function! QuadarTest_AssertFileContains(path, needle, message) abort
   call QuadarTest_AssertTrue(filereadable(a:path), 'Missing required file: ' . a:path)
   call QuadarTest_AssertTrue(stridx(join(readfile(a:path), "\n"), a:needle) >= 0, a:message)
@@ -52,6 +65,11 @@ endfunction
 
 function! QuadarTest_StoreNotifications() abort
   return get(g:, 'quadar_test_store_notifications', 0)
+endfunction
+
+function! QuadarTest_ShouldUpdateSnapshots() abort
+  return get(g:, 'quadar_test_update_snapshots', 0)
+        \ || (exists('$QUADAR_UPDATE_SNAPSHOTS') && $QUADAR_UPDATE_SNAPSHOTS ==# '1')
 endfunction
 
 function! QuadarTest_Path(key) abort
@@ -189,4 +207,68 @@ function! QuadarTest_CampaignState() abort
   let l:state = game#core#process(l:state, 'profile')
   let l:state = game#core#process(l:state, 'notes')
   return l:state
+endfunction
+
+function! s:normalize_snapshot(value) abort
+  if type(a:value) == v:t_dict
+    let l:normalized = {}
+    for l:key in sort(keys(a:value))
+      let l:normalized[l:key] = s:normalize_snapshot(a:value[l:key])
+    endfor
+    return l:normalized
+  endif
+
+  if type(a:value) == v:t_list
+    let l:normalized = []
+    for l:item in a:value
+      call add(l:normalized, s:normalize_snapshot(l:item))
+    endfor
+    return l:normalized
+  endif
+
+  return a:value
+endfunction
+
+function! s:snapshot_lines(value, indent) abort
+  let l:padding = repeat(' ', a:indent)
+
+  if type(a:value) == v:t_dict
+    let l:keys = sort(keys(a:value))
+    if empty(l:keys)
+      return [l:padding . '{}']
+    endif
+
+    let l:lines = [l:padding . '{']
+    for l:i in range(len(l:keys))
+      let l:key = l:keys[l:i]
+      let l:value_lines = s:snapshot_lines(a:value[l:key], a:indent + 2)
+      let l:first_line = remove(l:value_lines, 0)
+      call add(l:lines, repeat(' ', a:indent + 2) . json_encode(l:key) . ': ' . strpart(l:first_line, a:indent + 2))
+      call extend(l:lines, l:value_lines)
+      if l:i < len(l:keys) - 1
+        let l:lines[-1] .= ','
+      endif
+    endfor
+    call add(l:lines, l:padding . '}')
+    return l:lines
+  endif
+
+  if type(a:value) == v:t_list
+    if empty(a:value)
+      return [l:padding . '[]']
+    endif
+
+    let l:lines = [l:padding . '[']
+    for l:i in range(len(a:value))
+      let l:value_lines = s:snapshot_lines(a:value[l:i], a:indent + 2)
+      call extend(l:lines, l:value_lines)
+      if l:i < len(a:value) - 1
+        let l:lines[-1] .= ','
+      endif
+    endfor
+    call add(l:lines, l:padding . ']')
+    return l:lines
+  endif
+
+  return [l:padding . json_encode(a:value)]
 endfunction

@@ -134,7 +134,7 @@ items that would unblock the most other items if tackled now.
     error with a disambiguation list. Centralize in `game#match#one(needles,
     query)`.
 
-- [ ] **Snapshot tests instead of substring asserts.**
+- [x] **Snapshot tests instead of substring asserts.**
   - **Why:** `test.vim` does many `assert_contains(rendered, 'Arc: CH1
     CLIMAX')` against rendered output. Brittle to copy edits — change a
     header label, ten asserts break.

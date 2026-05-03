@@ -1,0 +1,312 @@
+{
+  "render": [
+    "ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ",
+    "== QUA'DAR NEURAL LINK ==",
+    "Stage: TO KNOWLEDGE | Surge Count: 0",
+    "Scene #1: ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+    "Arc: CH1 EXPOSITION",
+    "Accord: 0 focus / 0 banned / 0 assumptions",
+    "Focus: Find Missing Rangers",
+    "Objectives: 1 active / 0 complete",
+    "Notes: 1 scenes / 0 NPCs",
+    "Party: 0 active / 0 faded / 0 elsewhere | Group: +0",
+    "Trade Cache: 12 | Guard: 0 | Mark: none",
+    "DIRECTIVE: Use \"help\" any time to review the command surface.",
+    "--- ACTIVE THREADS ---",
+    "1. Find Missing Rangers",
+    "",
+    "NEURAL_LINK_ESTABLISHED",
+    "SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ",
+    "You materialize in the Merchandise Store Room.",
+    "--- COMMAND REFERENCE ---",
+    "help :: show the current command reference. | aliases: commands, ?",
+    "undo :: revert the last dispatched turn. | aliases: u",
+    "look :: scan the current room, exits, entities, and interactables. | aliases: l",
+    "go [dir] :: travel to a connected room. | aliases: n, s, e, w",
+    "ask [question] :: consult the Loom of Fate.",
+    "stage [knowledge|conflict|endings] :: shift the oracle stage.",
+    "shop :: inspect available wares. | aliases: wares, trade, t",
+    "buy [ware] :: purchase an item, spell, or upgrade.",
+    "sell [relic] :: liquidate scavenged loot.",
+    "attack :: attack the current hostile target. | aliases: fight, c",
+    "cast [spell] :: cast a known spell. | aliases: m",
+    "interact [object] :: examine or activate an environmental object.",
+    "use [item] :: use an inventory item. | aliases: consume",
+    "inventory :: show carried relics and consumables. | aliases: i",
+    "profile :: show player stats, spells, upgrades, and companions. | aliases: p",
+    "rest :: recover HP and advance tension. | aliases: r",
+    "save :: write a backup save to ~/.quadar_save.json.",
+    "load :: restore the latest backup save.",
+    "quests :: show active quest progress and focus. | aliases: objectives, o",
+    "notes :: show scene, thread, and NPC notes. | aliases: journal, facts, j",
+    "scene :: inspect the current scene card. | aliases: sc",
+    "frame [thread#] [stage] :: set the active scene thread and stage.",
+    "framework [show|theme|hook|phase|next] :: inspect or adjust the vignette framework. | aliases: arc",
+    "minds [show|focus|ban|note|rm] :: inspect or update the Meeting of Minds accord. | aliases: meeting, accord",
+    "party [show|fade|send|rally] :: inspect or reposition companions. | aliases: companions",
+    "npc [list|add|rm] :: manage scene-present NPCs.",
+    "thread [list|add|mod|split|replace|rm] :: inspect or revise the thread ledger.",
+    "aside [thread#] [fact] :: record a sidebar fact on another thread.",
+    "fade [summary] :: close the current scene with an outcome.",
+    "montage [summary] :: fast-forward through intervening action.",
+    "-------------------------"
+  ],
+  "state": {
+    "flags": {
+      "terminal_briefed": 0
+    },
+    "framework": {
+      "chapter": 1,
+      "hook": "Kamenal needs a live witness who knows what the tower is doing to the recruits.",
+      "name": "Vignette",
+      "phase": "exposition",
+      "theme": "Recover the missing rangers from Qua'dar Tower."
+    },
+    "guard": 0,
+    "hint": "DIRECTIVE: Use \"help\" any time to review the command surface.",
+    "loc": "nexus",
+    "log": [
+      "NEURAL_LINK_ESTABLISHED",
+      "SYSTEM_OVERRIDE: INITIATING RECONNAISSANCE PROTOCOL ᚠ",
+      "You materialize in the Merchandise Store Room.",
+      "--- COMMAND REFERENCE ---",
+      "help :: show the current command reference. | aliases: commands, ?",
+      "undo :: revert the last dispatched turn. | aliases: u",
+      "look :: scan the current room, exits, entities, and interactables. | aliases: l",
+      "go [dir] :: travel to a connected room. | aliases: n, s, e, w",
+      "ask [question] :: consult the Loom of Fate.",
+      "stage [knowledge|conflict|endings] :: shift the oracle stage.",
+      "shop :: inspect available wares. | aliases: wares, trade, t",
+      "buy [ware] :: purchase an item, spell, or upgrade.",
+      "sell [relic] :: liquidate scavenged loot.",
+      "attack :: attack the current hostile target. | aliases: fight, c",
+      "cast [spell] :: cast a known spell. | aliases: m",
+      "interact [object] :: examine or activate an environmental object.",
+      "use [item] :: use an inventory item. | aliases: consume",
+      "inventory :: show carried relics and consumables. | aliases: i",
+      "profile :: show player stats, spells, upgrades, and companions. | aliases: p",
+      "rest :: recover HP and advance tension. | aliases: r",
+      "save :: write a backup save to ~/.quadar_save.json.",
+      "load :: restore the latest backup save.",
+      "quests :: show active quest progress and focus. | aliases: objectives, o",
+      "notes :: show scene, thread, and NPC notes. | aliases: journal, facts, j",
+      "scene :: inspect the current scene card. | aliases: sc",
+      "frame [thread#] [stage] :: set the active scene thread and stage.",
+      "framework [show|theme|hook|phase|next] :: inspect or adjust the vignette framework. | aliases: arc",
+      "minds [show|focus|ban|note|rm] :: inspect or update the Meeting of Minds accord. | aliases: meeting, accord",
+      "party [show|fade|send|rally] :: inspect or reposition companions. | aliases: companions",
+      "npc [list|add|rm] :: manage scene-present NPCs.",
+      "thread [list|add|mod|split|replace|rm] :: inspect or revise the thread ledger.",
+      "aside [thread#] [fact] :: record a sidebar fact on another thread.",
+      "fade [summary] :: close the current scene with an outcome.",
+      "montage [summary] :: fast-forward through intervening action.",
+      "-------------------------"
+    ],
+    "log_cursor": 0,
+    "mark": "",
+    "meeting": {
+      "assumptions": [],
+      "banned": [],
+      "focuses": []
+    },
+    "notes": {
+      "npc_cards": [],
+      "scene_cards": [
+        {
+          "closings": [],
+          "focus": "Find Missing Rangers",
+          "framework_chapter": 1,
+          "framework_phase": "exposition",
+          "loc": "nexus",
+          "npcs": [],
+          "openings": [],
+          "stage": "knowledge",
+          "title": "ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+          "visits": 1
+        }
+      ],
+      "thread_cards": [
+        {
+          "aliases": [],
+          "facts": [
+            "Kamenal begins in the Merchandise Store Room under orders to recover missing rangers."
+          ],
+          "name": "Find Missing Rangers",
+          "npcs": [],
+          "replaced_by": "",
+          "replaced_from": "",
+          "scenes": [
+            "ᚠ MERCHANDISE_STORE_ROOM ᚠ"
+          ],
+          "split_from": "",
+          "split_into": [],
+          "stage": "knowledge",
+          "status": "open"
+        }
+      ]
+    },
+    "player": {
+      "agi": 8,
+      "arc": 4,
+      "class": "Rogue/Ranger",
+      "companions": [],
+      "hp": 150,
+      "inv": [
+        "Basic Dagger",
+        "Scout Gear"
+      ],
+      "level": 12,
+      "max_hp": 150,
+      "name": "Kamenal",
+      "spells": [
+        "Ethereal Dagger Assault",
+        "Cloak of Shadows"
+      ],
+      "str": 5,
+      "trade": 12,
+      "upgrades": []
+    },
+    "progress": {
+      "rooms_explored": 1,
+      "steps": 0
+    },
+    "quests": [
+      {
+        "goal": 2,
+        "id": "rescue-rangers",
+        "objective": "Locate stranded ranger operatives and open a route back through Quadar Tower.",
+        "progress": 0,
+        "reward_item": "Ranger Field Kit",
+        "reward_spell": "Resurgence Ritual",
+        "status": "active",
+        "target_hint": "Search newly opened sectors for bound recruits, distress beacons, and field caches.",
+        "thread": "Find Missing Rangers",
+        "title": "Rescue the Missing Rangers"
+      }
+    ],
+    "rng_seed": 424242,
+    "rooms": {
+      "abyssal_void": {
+        "desc": "The void that invaded once-holy grounds. The sacredness of the Ethereal Towerlands has given way to the blackness of heavenly damnation.",
+        "entities": [
+          {
+            "agi": 3,
+            "arc": 3,
+            "name": "Doomguard",
+            "str": 8
+          }
+        ],
+        "exits": {
+          "east": "unexplored",
+          "north": "unexplored",
+          "south": "marshes",
+          "west": "unexplored"
+        },
+        "name": "ᛟ ABYSSAL_VOID ᛟ",
+        "objects": [
+          {
+            "desc": "A swirling vortex of dark energy that warps time, tension, and direction.",
+            "effect": "surge_rift",
+            "name": "Void Rift"
+          }
+        ],
+        "services": []
+      },
+      "hallway": {
+        "desc": "A narrow passage of obsidian stone, crystallized in extraterrestrial resonance. The air hums with chthonic frequencies pulsating from the core.",
+        "entities": [
+          {
+            "agi": 7,
+            "arc": 4,
+            "name": "Ashwalker",
+            "str": 4
+          }
+        ],
+        "exits": {
+          "east": "unexplored",
+          "north": "spire_base",
+          "south": "nexus"
+        },
+        "name": "ᚢ UMBRAL_REACH_CORRIDOR ᚢ",
+        "objects": [],
+        "services": []
+      },
+      "marshes": {
+        "desc": "Once lush landscapes now enveloped by poisonous Abyssal Murk. Great furrowing depths of endless ooze and medieval torture.",
+        "entities": [
+          {
+            "agi": 7,
+            "arc": 4,
+            "name": "Ashwalker Junkie",
+            "str": 4
+          }
+        ],
+        "exits": {
+          "east": "unexplored",
+          "north": "abyssal_void",
+          "south": "unexplored",
+          "west": "spire_base"
+        },
+        "name": "ᚨ ETHEREAL_MARSHES ᚨ",
+        "objects": [],
+        "services": []
+      },
+      "nexus": {
+        "desc": "A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.",
+        "entities": [],
+        "exits": {
+          "north": "hallway",
+          "west": "unexplored"
+        },
+        "name": "ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+        "objects": [
+          {
+            "desc": "A flickering terminal detailing recent shipments, missing operatives, and scavenged codices.",
+            "effect": "briefing",
+            "name": "Arcane Terminal"
+          }
+        ],
+        "services": [
+          "trade"
+        ]
+      },
+      "spire_base": {
+        "desc": "The indomitable tower stands as a testament to long-ago awakening. Colossal structure vibrating with low magic of corrupt watchers. Neon blurs in the Abyssal Murk.",
+        "entities": [
+          {
+            "agi": 2,
+            "arc": 6,
+            "name": "Obsidian Warden",
+            "str": 7
+          }
+        ],
+        "exits": {
+          "east": "marshes",
+          "north": "unexplored",
+          "south": "hallway",
+          "west": "unexplored"
+        },
+        "name": "ᚦ BASTION_OF_THE_SPIRE ᚦ",
+        "objects": [
+          {
+            "desc": "A heavy stone mechanism covered in sigils and linked to hidden passages in the tower shell.",
+            "effect": "unlock_exit",
+            "name": "Chthonic Lever"
+          }
+        ],
+        "services": []
+      }
+    },
+    "scene": {
+      "focus": 1,
+      "index": 1,
+      "location": "nexus"
+    },
+    "stage": "knowledge",
+    "surge": 0,
+    "threads": [
+      "Find Missing Rangers"
+    ],
+    "view": "game"
+  }
+}

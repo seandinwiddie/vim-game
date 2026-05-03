@@ -1,0 +1,809 @@
+{
+  "render": [
+    "ᚠ ᛫ ᛟ ᛫ ᚱ ᛫ ᛒ ᛫ ᛟ ᛫ ᚲ",
+    "== QUA'DAR NEURAL LINK ==",
+    "Stage: TO KNOWLEDGE | Surge Count: 2",
+    "Scene #2: ᚲ MYSTERIOUS_PORTAL ᚲ",
+    "Arc: CH1 CLIMAX",
+    "Accord: 1 focus / 1 banned / 1 assumptions",
+    "Focus: decode the return codex relay",
+    "Objectives: 2 active / 1 complete",
+    "Notes: 7 scenes / 5 NPCs",
+    "Party: 1 active / 0 faded / 0 elsewhere | Group: +3",
+    "Trade Cache: 36 | Guard: 14 | Mark: none",
+    "DIRECTIVE: Keep only the right companions in the main scene; fade or send the rest elsewhere.",
+    "--- ACTIVE THREADS ---",
+    "1. Find Missing Rangers",
+    "2. decode the return codex relay",
+    "3. secure the tower shell extraction route",
+    "4. track the tower shell recon cell",
+    "",
+    "NEURAL_TRACKING: Shifting coordinates to south",
+    "---",
+    "ᚲ MYSTERIOUS_PORTAL ᚲ",
+    "A thin alien threshold trembles here.",
+    "INTERACTIVE OBJECTS:",
+    "  > [?] Veiled Gate",
+    "ᚱ ENTRANCES: east",
+    "[Threat Tier: 1 | HP: 150/150]",
+    "--",
+    "INTERACT: You examine the Veiled Gate.",
+    "A veiled gate shivering with impossible geometry.",
+    "VEILED_GATE: The threshold parts and reveals a path into the alien dark.",
+    "PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ MYSTERIOUS_PORTAL ᚲ",
+    "SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.",
+    "---",
+    "ᚲ MYSTERIOUS_PORTAL ᚲ",
+    "A thin alien threshold shivering with arcane fields and extradimensional static.",
+    "INTERACTIVE OBJECTS:",
+    "  > [?] Return Gate",
+    "DETECTED ENTITIES:",
+    "  > [!!] Storm Titan",
+    "ᚱ ENTRANCES: north, south",
+    "[Threat Tier: 4 | HP: 150/150]",
+    "--",
+    "--- SECURED RELICS ---",
+    "Trade Cache: 36 | Guard: 14 | Mark: none",
+    " [ᛟ] Basic Dagger",
+    " [ᛟ] Scout Gear",
+    " [ᛟ] Ranger Signal Token",
+    " [ᛟ] Lost Tomes",
+    " [ᛟ] Signal Codex",
+    " [ᛟ] Corrupt Watcher Core",
+    "----------------------",
+    "--- PLAYER PROFILE ---",
+    "Name:  Kamenal",
+    "Class: Rogue/Ranger",
+    "Level: 12",
+    "HP:    150 / 150",
+    "STR: 5 | AGI: 9 | ARC: 4",
+    "Trade: 36 | Guard: 14",
+    "Mark: none",
+    "Party Dynamics: +3",
+    "Spells:",
+    " - Ethereal Dagger Assault",
+    " - Cloak of Shadows",
+    " - Dark Crystal Shielding",
+    " - Hunter's Mark",
+    " - Explosive Barrage",
+    " - Shatterstrike Slam",
+    "Upgrades:",
+    " + Zinc Weave Cloak",
+    "Companions (Party):",
+    " * Ranger Operative [ACTIVE] [STR:5 AGI:5 ARC:3]",
+    "----------------------",
+    "--- FIELD NOTES ---",
+    "Notes: 7 scenes / 5 NPCs",
+    "Focus Thread Card: decode the return codex relay",
+    "  Stage: TO KNOWLEDGE",
+    "  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ",
+    "  NPCs: Bound Ranger | Ranger Operative",
+    "  Facts:",
+    "   - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.",
+    "   - Framework phase shifted to CLIMAX in chapter 1.",
+    "   - Fade Out: ashwalker resistance confirms the spire approach is still contested",
+    "   - Replaces Recover the Lost Tomes after scene fallout.",
+    "   - LORE: The Loom of Fate weaves with strands of pure dark matter from the Dimensional Nexus.",
+    "   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ.",
+    "--- MEETING OF MINDS ---",
+    "Accord: 1 focus / 1 banned / 1 assumptions",
+    "Focus Themes: survivor rescue and uncanny revelation",
+    "Banned Themes: gratuitous cruelty toward rescued rangers",
+    "Assumptions: defeats should become costly consequences instead of abrupt death",
+    "-------------------------",
+    "--- THREAD LEDGER ---",
+    " 1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell | NPCs: iron broker, Bound Ranger, Ranger Operative",
+    " 2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes | NPCs: Bound Ranger, Ranger Operative",
+    " 3. secure the tower shell extraction route [OPEN] | aliases: Purify the Eldritch Altars",
+    " 4. track the tower shell recon cell [OPEN] | split from: Find Missing Rangers | NPCs: iron broker, Bound Ranger, Ranger Operative",
+    " - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay | NPCs: Bound Ranger, Ranger Operative",
+    " - Purify the Eldritch Altars [OPEN]",
+    "---------------------",
+    "Scene Cards:",
+    " * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 RISING ACTION | focus: Recover the Lost Tomes | npcs: iron broker, Bound Ranger, Ranger Operative",
+    " * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: Recover the Lost Tomes | npcs: Ranger Operative",
+    " * ᚲ TOXIC_WASTES ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+    " * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+    " * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+    " * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+    " * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+    "Known NPCs:",
+    " * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+    " * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+    " * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ",
+    " * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ",
+    " * Storm Titan | scenes: ᚲ MYSTERIOUS_PORTAL ᚲ",
+    "-------------------",
+    "--- PARTY TACTICS ---",
+    "Party: 1 active / 0 faded / 0 elsewhere | Group: +3",
+    " * Ranger Operative [ACTIVE] | present in the main scene",
+    "---------------------"
+  ],
+  "state": {
+    "flags": {
+      "terminal_briefed": 1
+    },
+    "framework": {
+      "chapter": 1,
+      "hook": "meet the architect behind the disappearances",
+      "name": "Vignette",
+      "phase": "climax",
+      "theme": "learn why the tower is hollowing out recruits"
+    },
+    "guard": 14,
+    "hint": "DIRECTIVE: Keep only the right companions in the main scene; fade or send the rest elsewhere.",
+    "loc": "portal_room_2043135228",
+    "log": [
+      "NEURAL_TRACKING: Shifting coordinates to south",
+      "---",
+      "ᚲ MYSTERIOUS_PORTAL ᚲ",
+      "A thin alien threshold trembles here.",
+      "INTERACTIVE OBJECTS:",
+      "  > [?] Veiled Gate",
+      "ᚱ ENTRANCES: east",
+      "[Threat Tier: 1 | HP: 150/150]",
+      "--",
+      "INTERACT: You examine the Veiled Gate.",
+      "A veiled gate shivering with impossible geometry.",
+      "VEILED_GATE: The threshold parts and reveals a path into the alien dark.",
+      "PORTAL TRANSIT: ᚲ MYSTERIOUS_PORTAL ᚲ -> ᚲ MYSTERIOUS_PORTAL ᚲ",
+      "SPATIAL ANOMALY: The crossing distorts the Surge Count by +2.",
+      "---",
+      "ᚲ MYSTERIOUS_PORTAL ᚲ",
+      "A thin alien threshold shivering with arcane fields and extradimensional static.",
+      "INTERACTIVE OBJECTS:",
+      "  > [?] Return Gate",
+      "DETECTED ENTITIES:",
+      "  > [!!] Storm Titan",
+      "ᚱ ENTRANCES: north, south",
+      "[Threat Tier: 4 | HP: 150/150]",
+      "--",
+      "--- SECURED RELICS ---",
+      "Trade Cache: 36 | Guard: 14 | Mark: none",
+      " [ᛟ] Basic Dagger",
+      " [ᛟ] Scout Gear",
+      " [ᛟ] Ranger Signal Token",
+      " [ᛟ] Lost Tomes",
+      " [ᛟ] Signal Codex",
+      " [ᛟ] Corrupt Watcher Core",
+      "----------------------",
+      "--- PLAYER PROFILE ---",
+      "Name:  Kamenal",
+      "Class: Rogue/Ranger",
+      "Level: 12",
+      "HP:    150 / 150",
+      "STR: 5 | AGI: 9 | ARC: 4",
+      "Trade: 36 | Guard: 14",
+      "Mark: none",
+      "Party Dynamics: +3",
+      "Spells:",
+      " - Ethereal Dagger Assault",
+      " - Cloak of Shadows",
+      " - Dark Crystal Shielding",
+      " - Hunter's Mark",
+      " - Explosive Barrage",
+      " - Shatterstrike Slam",
+      "Upgrades:",
+      " + Zinc Weave Cloak",
+      "Companions (Party):",
+      " * Ranger Operative [ACTIVE] [STR:5 AGI:5 ARC:3]",
+      "----------------------",
+      "--- FIELD NOTES ---",
+      "Notes: 7 scenes / 5 NPCs",
+      "Focus Thread Card: decode the return codex relay",
+      "  Stage: TO KNOWLEDGE",
+      "  Scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ | ᚲ TOXIC_WASTES ᚲ | ᚲ HAUNTED_CHAPEL ᚲ | ᚲ MILITARY_FACILITY ᚲ | ᚲ MYSTERIOUS_PORTAL ᚲ",
+      "  NPCs: Bound Ranger | Ranger Operative",
+      "  Facts:",
+      "   - A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.",
+      "   - Framework phase shifted to CLIMAX in chapter 1.",
+      "   - Fade Out: ashwalker resistance confirms the spire approach is still contested",
+      "   - Replaces Recover the Lost Tomes after scene fallout.",
+      "   - LORE: The Loom of Fate weaves with strands of pure dark matter from the Dimensional Nexus.",
+      "   - Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ.",
+      "--- MEETING OF MINDS ---",
+      "Accord: 1 focus / 1 banned / 1 assumptions",
+      "Focus Themes: survivor rescue and uncanny revelation",
+      "Banned Themes: gratuitous cruelty toward rescued rangers",
+      "Assumptions: defeats should become costly consequences instead of abrupt death",
+      "-------------------------",
+      "--- THREAD LEDGER ---",
+      " 1. Find Missing Rangers [OPEN] | splits: track the tower shell recon cell | NPCs: iron broker, Bound Ranger, Ranger Operative",
+      " 2. decode the return codex relay [OPEN] | replaces: Recover the Lost Tomes | NPCs: Bound Ranger, Ranger Operative",
+      " 3. secure the tower shell extraction route [OPEN] | aliases: Purify the Eldritch Altars",
+      " 4. track the tower shell recon cell [OPEN] | split from: Find Missing Rangers | NPCs: iron broker, Bound Ranger, Ranger Operative",
+      " - Recover the Lost Tomes [REPLACED] | replaced by: decode the return codex relay | NPCs: Bound Ranger, Ranger Operative",
+      " - Purify the Eldritch Altars [OPEN]",
+      "---------------------",
+      "Scene Cards:",
+      " * ᚠ MERCHANDISE_STORE_ROOM ᚠ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 RISING ACTION | focus: Recover the Lost Tomes | npcs: iron broker, Bound Ranger, Ranger Operative",
+      " * ᚢ UMBRAL_REACH_CORRIDOR ᚢ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: Recover the Lost Tomes | npcs: Ranger Operative",
+      " * ᚲ TOXIC_WASTES ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+      " * ᚲ HAUNTED_CHAPEL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+      " * ᚲ MILITARY_FACILITY ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+      " * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+      " * ᚲ MYSTERIOUS_PORTAL ᚲ | visits: 1 | stage: TO KNOWLEDGE | arc: CH1 CLIMAX | focus: decode the return codex relay | npcs: Ranger Operative",
+      "Known NPCs:",
+      " * iron broker | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+      " * Bound Ranger | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+      " * Ranger Operative | scenes: ᚠ MERCHANDISE_STORE_ROOM ᚠ, ᚢ UMBRAL_REACH_CORRIDOR ᚢ, ᚲ TOXIC_WASTES ᚲ, ᚲ HAUNTED_CHAPEL ᚲ, ᚲ MILITARY_FACILITY ᚲ, ᚲ MYSTERIOUS_PORTAL ᚲ",
+      " * Ashwalker | scenes: ᚢ UMBRAL_REACH_CORRIDOR ᚢ",
+      " * Storm Titan | scenes: ᚲ MYSTERIOUS_PORTAL ᚲ",
+      "-------------------",
+      "--- PARTY TACTICS ---",
+      "Party: 1 active / 0 faded / 0 elsewhere | Group: +3",
+      " * Ranger Operative [ACTIVE] | present in the main scene",
+      "---------------------"
+    ],
+    "log_cursor": 0,
+    "mark": "",
+    "meeting": {
+      "assumptions": [
+        "defeats should become costly consequences instead of abrupt death"
+      ],
+      "banned": [
+        "gratuitous cruelty toward rescued rangers"
+      ],
+      "focuses": [
+        "survivor rescue and uncanny revelation"
+      ]
+    },
+    "notes": {
+      "npc_cards": [
+        {
+          "name": "iron broker",
+          "scenes": [
+            "ᚠ MERCHANDISE_STORE_ROOM ᚠ"
+          ]
+        },
+        {
+          "name": "Bound Ranger",
+          "scenes": [
+            "ᚠ MERCHANDISE_STORE_ROOM ᚠ"
+          ]
+        },
+        {
+          "name": "Ranger Operative",
+          "scenes": [
+            "ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+            "ᚢ UMBRAL_REACH_CORRIDOR ᚢ",
+            "ᚲ TOXIC_WASTES ᚲ",
+            "ᚲ HAUNTED_CHAPEL ᚲ",
+            "ᚲ MILITARY_FACILITY ᚲ",
+            "ᚲ MYSTERIOUS_PORTAL ᚲ"
+          ]
+        },
+        {
+          "name": "Ashwalker",
+          "scenes": [
+            "ᚢ UMBRAL_REACH_CORRIDOR ᚢ"
+          ]
+        },
+        {
+          "name": "Storm Titan",
+          "scenes": [
+            "ᚲ MYSTERIOUS_PORTAL ᚲ"
+          ]
+        }
+      ],
+      "scene_cards": [
+        {
+          "closings": [],
+          "focus": "Recover the Lost Tomes",
+          "framework_chapter": 1,
+          "framework_phase": "rising",
+          "loc": "nexus",
+          "npcs": [
+            "iron broker",
+            "Bound Ranger",
+            "Ranger Operative"
+          ],
+          "openings": [
+            "Scene framed around Find Missing Rangers at TO CONFLICT during EXPOSITION.",
+            "Scene framed around Recover the Lost Tomes at TO KNOWLEDGE during RISING ACTION."
+          ],
+          "stage": "knowledge",
+          "title": "ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+          "visits": 1
+        },
+        {
+          "closings": [
+            "ashwalker resistance confirms the spire approach is still contested"
+          ],
+          "focus": "Recover the Lost Tomes",
+          "framework_chapter": 1,
+          "framework_phase": "climax",
+          "loc": "hallway",
+          "npcs": [
+            "Ranger Operative"
+          ],
+          "openings": [],
+          "stage": "knowledge",
+          "title": "ᚢ UMBRAL_REACH_CORRIDOR ᚢ",
+          "visits": 1
+        },
+        {
+          "closings": [],
+          "focus": "decode the return codex relay",
+          "framework_chapter": 1,
+          "framework_phase": "climax",
+          "loc": "test_wastes",
+          "npcs": [
+            "Ranger Operative"
+          ],
+          "openings": [],
+          "stage": "knowledge",
+          "title": "ᚲ TOXIC_WASTES ᚲ",
+          "visits": 1
+        },
+        {
+          "closings": [],
+          "focus": "decode the return codex relay",
+          "framework_chapter": 1,
+          "framework_phase": "climax",
+          "loc": "test_chapel",
+          "npcs": [
+            "Ranger Operative"
+          ],
+          "openings": [],
+          "stage": "knowledge",
+          "title": "ᚲ HAUNTED_CHAPEL ᚲ",
+          "visits": 1
+        },
+        {
+          "closings": [],
+          "focus": "decode the return codex relay",
+          "framework_chapter": 1,
+          "framework_phase": "climax",
+          "loc": "test_mil",
+          "npcs": [
+            "Ranger Operative"
+          ],
+          "openings": [],
+          "stage": "knowledge",
+          "title": "ᚲ MILITARY_FACILITY ᚲ",
+          "visits": 1
+        },
+        {
+          "closings": [],
+          "focus": "decode the return codex relay",
+          "framework_chapter": 1,
+          "framework_phase": "climax",
+          "loc": "test_portal",
+          "npcs": [
+            "Ranger Operative"
+          ],
+          "openings": [],
+          "stage": "knowledge",
+          "title": "ᚲ MYSTERIOUS_PORTAL ᚲ",
+          "visits": 1
+        },
+        {
+          "closings": [],
+          "focus": "decode the return codex relay",
+          "framework_chapter": 1,
+          "framework_phase": "climax",
+          "loc": "portal_room_2043135228",
+          "npcs": [
+            "Ranger Operative"
+          ],
+          "openings": [],
+          "stage": "knowledge",
+          "title": "ᚲ MYSTERIOUS_PORTAL ᚲ",
+          "visits": 1
+        }
+      ],
+      "thread_cards": [
+        {
+          "aliases": [],
+          "facts": [
+            "iron broker is present in the current scene.",
+            "Terminal telemetry confirms the missing rangers are still alive beyond the tower shell.",
+            "Elsewhere: another recon team was seen near the tower shell",
+            "A bound ranger was extracted alive from ᚠ MERCHANDISE_STORE_ROOM ᚠ.",
+            "Ranger Operative is operating elsewhere while the main scene continues.",
+            "Thread split into track the tower shell recon cell."
+          ],
+          "name": "Find Missing Rangers",
+          "npcs": [
+            "iron broker",
+            "Bound Ranger",
+            "Ranger Operative"
+          ],
+          "replaced_by": "",
+          "replaced_from": "",
+          "scenes": [
+            "ᚠ MERCHANDISE_STORE_ROOM ᚠ"
+          ],
+          "split_from": "",
+          "split_into": [
+            "track the tower shell recon cell"
+          ],
+          "stage": "knowledge",
+          "status": "open"
+        },
+        {
+          "aliases": [],
+          "facts": [
+            "Ranger Operative peeled away from the main scene to operate elsewhere.",
+            "Ranger Operative rallied back into the main scene.",
+            "A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.",
+            "Framework phase shifted to CLIMAX in chapter 1.",
+            "Fade Out: ashwalker resistance confirms the spire approach is still contested",
+            "Thread replaced by decode the return codex relay."
+          ],
+          "name": "Recover the Lost Tomes",
+          "npcs": [
+            "Bound Ranger",
+            "Ranger Operative"
+          ],
+          "replaced_by": "decode the return codex relay",
+          "replaced_from": "",
+          "scenes": [
+            "ᚢ UMBRAL_REACH_CORRIDOR ᚢ"
+          ],
+          "split_from": "",
+          "split_into": [],
+          "stage": "knowledge",
+          "status": "replaced"
+        },
+        {
+          "aliases": [
+            "Purify the Eldritch Altars"
+          ],
+          "facts": [
+            "Demonic taint in the chapels is fueling the tower; the altars must be cleansed.",
+            "Thread modified from Purify the Eldritch Altars."
+          ],
+          "name": "secure the tower shell extraction route",
+          "npcs": [],
+          "replaced_by": "",
+          "replaced_from": "",
+          "scenes": [],
+          "split_from": "",
+          "split_into": [],
+          "stage": "knowledge",
+          "status": "open"
+        },
+        {
+          "aliases": [],
+          "facts": [
+            "iron broker is present in the current scene.",
+            "Terminal telemetry confirms the missing rangers are still alive beyond the tower shell.",
+            "Elsewhere: another recon team was seen near the tower shell",
+            "A bound ranger was extracted alive from ᚠ MERCHANDISE_STORE_ROOM ᚠ.",
+            "Ranger Operative is operating elsewhere while the main scene continues.",
+            "Split from Find Missing Rangers after scene fallout."
+          ],
+          "name": "track the tower shell recon cell",
+          "npcs": [
+            "iron broker",
+            "Bound Ranger",
+            "Ranger Operative"
+          ],
+          "replaced_by": "",
+          "replaced_from": "",
+          "scenes": [
+            "ᚠ MERCHANDISE_STORE_ROOM ᚠ"
+          ],
+          "split_from": "Find Missing Rangers",
+          "split_into": [],
+          "stage": "knowledge",
+          "status": "open"
+        },
+        {
+          "aliases": [],
+          "facts": [
+            "A sealed reliquary yielded codices and return sigils in ᚠ MERCHANDISE_STORE_ROOM ᚠ.",
+            "Framework phase shifted to CLIMAX in chapter 1.",
+            "Fade Out: ashwalker resistance confirms the spire approach is still contested",
+            "Replaces Recover the Lost Tomes after scene fallout.",
+            "LORE: The Loom of Fate weaves with strands of pure dark matter from the Dimensional Nexus.",
+            "Portal transit carried the scene from ᚲ MYSTERIOUS_PORTAL ᚲ into ᚲ MYSTERIOUS_PORTAL ᚲ."
+          ],
+          "name": "decode the return codex relay",
+          "npcs": [
+            "Bound Ranger",
+            "Ranger Operative"
+          ],
+          "replaced_by": "",
+          "replaced_from": "Recover the Lost Tomes",
+          "scenes": [
+            "ᚢ UMBRAL_REACH_CORRIDOR ᚢ",
+            "ᚲ TOXIC_WASTES ᚲ",
+            "ᚲ HAUNTED_CHAPEL ᚲ",
+            "ᚲ MILITARY_FACILITY ᚲ",
+            "ᚲ MYSTERIOUS_PORTAL ᚲ"
+          ],
+          "split_from": "",
+          "split_into": [],
+          "stage": "knowledge",
+          "status": "open"
+        },
+        {
+          "aliases": [],
+          "facts": [
+            "A corrupted altar was purified in ᚲ HAUNTED_CHAPEL ᚲ."
+          ],
+          "name": "Purify the Eldritch Altars",
+          "npcs": [],
+          "replaced_by": "",
+          "replaced_from": "",
+          "scenes": [],
+          "split_from": "",
+          "split_into": [],
+          "stage": "knowledge",
+          "status": "open"
+        }
+      ]
+    },
+    "player": {
+      "agi": 9,
+      "arc": 4,
+      "class": "Rogue/Ranger",
+      "companions": [
+        {
+          "agi": 5,
+          "arc": 3,
+          "assignment": "",
+          "name": "Ranger Operative",
+          "status": "active",
+          "str": 5
+        }
+      ],
+      "hp": 150,
+      "inv": [
+        "Basic Dagger",
+        "Scout Gear",
+        "Ranger Signal Token",
+        "Lost Tomes",
+        "Signal Codex",
+        "Corrupt Watcher Core"
+      ],
+      "level": 12,
+      "max_hp": 150,
+      "name": "Kamenal",
+      "spells": [
+        "Ethereal Dagger Assault",
+        "Cloak of Shadows",
+        "Dark Crystal Shielding",
+        "Hunter's Mark",
+        "Explosive Barrage",
+        "Shatterstrike Slam"
+      ],
+      "str": 5,
+      "trade": 36,
+      "upgrades": [
+        "Zinc Weave Cloak"
+      ]
+    },
+    "progress": {
+      "rooms_explored": 2,
+      "steps": 6
+    },
+    "quests": [
+      {
+        "goal": 2,
+        "id": "rescue-rangers",
+        "objective": "Locate stranded ranger operatives and open a route back through Quadar Tower.",
+        "progress": 1,
+        "reward_item": "Ranger Field Kit",
+        "reward_spell": "Resurgence Ritual",
+        "status": "active",
+        "target_hint": "Search newly opened sectors for bound recruits, distress beacons, and field caches.",
+        "thread": "Find Missing Rangers",
+        "title": "Rescue the Missing Rangers"
+      },
+      {
+        "goal": 1,
+        "id": "recover-lost-tomes",
+        "objective": "Find an intact reliquary and recover the codices used to send captives home.",
+        "progress": 1,
+        "reward_item": "Signal Codex",
+        "reward_spell": "Dark Crystal Shielding",
+        "status": "complete",
+        "target_hint": "Search consoles, reliquaries, and archive caches in newly generated sectors.",
+        "thread": "Recover the Lost Tomes",
+        "title": "Recover the Lost Tomes"
+      },
+      {
+        "goal": 2,
+        "id": "purify-altars",
+        "objective": "Sanctify corrupted altars found in accursed chapels and temples to weaken the abyss.",
+        "progress": 1,
+        "reward_item": "Eldritch Medallion",
+        "reward_spell": "Resurgence Ritual",
+        "status": "active",
+        "target_hint": "Search for Corrupted Altars in Haunted Chapels or Rune Temples.",
+        "thread": "secure the tower shell extraction route",
+        "title": "Purify the Eldritch Altars"
+      }
+    ],
+    "rng_seed": 2043135228,
+    "rooms": {
+      "abyssal_void": {
+        "desc": "The void that invaded once-holy grounds. The sacredness of the Ethereal Towerlands has given way to the blackness of heavenly damnation.",
+        "entities": [
+          {
+            "agi": 3,
+            "arc": 3,
+            "name": "Doomguard",
+            "str": 8
+          }
+        ],
+        "exits": {
+          "east": "unexplored",
+          "north": "unexplored",
+          "south": "marshes",
+          "west": "unexplored"
+        },
+        "name": "ᛟ ABYSSAL_VOID ᛟ",
+        "objects": [
+          {
+            "desc": "A swirling vortex of dark energy that warps time, tension, and direction.",
+            "effect": "surge_rift",
+            "name": "Void Rift"
+          }
+        ],
+        "services": []
+      },
+      "hallway": {
+        "desc": "A narrow passage of obsidian stone, crystallized in extraterrestrial resonance. The air hums with chthonic frequencies pulsating from the core.",
+        "entities": [],
+        "exits": {
+          "east": "test_wastes",
+          "north": "spire_base",
+          "south": "nexus"
+        },
+        "name": "ᚢ UMBRAL_REACH_CORRIDOR ᚢ",
+        "objects": [],
+        "services": []
+      },
+      "marshes": {
+        "desc": "Once lush landscapes now enveloped by poisonous Abyssal Murk. Great furrowing depths of endless ooze and medieval torture.",
+        "entities": [
+          {
+            "agi": 7,
+            "arc": 4,
+            "name": "Ashwalker Junkie",
+            "str": 4
+          }
+        ],
+        "exits": {
+          "east": "unexplored",
+          "north": "abyssal_void",
+          "south": "unexplored",
+          "west": "spire_base"
+        },
+        "name": "ᚨ ETHEREAL_MARSHES ᚨ",
+        "objects": [],
+        "services": []
+      },
+      "nexus": {
+        "desc": "A bunker-like emporium, a maggot pile within the starry settlement of Quadar Tower. Shadows dance with the echoes of ancient electronic goth logic. You preside over this emporium, brokering eldritch artifacts.",
+        "entities": [],
+        "exits": {
+          "north": "hallway",
+          "west": "unexplored"
+        },
+        "name": "ᚠ MERCHANDISE_STORE_ROOM ᚠ",
+        "objects": [],
+        "services": [
+          "trade"
+        ]
+      },
+      "portal_room_2043135228": {
+        "desc": "A thin alien threshold shivering with arcane fields and extradimensional static.",
+        "difficulty": 4,
+        "entities": [
+          {
+            "agi": 3,
+            "arc": 8,
+            "name": "Storm Titan",
+            "str": 10
+          }
+        ],
+        "exits": {
+          "north": "unexplored",
+          "south": "test_portal"
+        },
+        "name": "ᚲ MYSTERIOUS_PORTAL ᚲ",
+        "objects": [
+          {
+            "desc": "A trembling aperture that still remembers the route back to Qua'dar.",
+            "effect": "portal_jump",
+            "name": "Return Gate",
+            "target_room": "test_portal"
+          }
+        ],
+        "services": []
+      },
+      "spire_base": {
+        "desc": "The indomitable tower stands as a testament to long-ago awakening. Colossal structure vibrating with low magic of corrupt watchers. Neon blurs in the Abyssal Murk.",
+        "entities": [
+          {
+            "agi": 2,
+            "arc": 6,
+            "name": "Obsidian Warden",
+            "str": 7
+          }
+        ],
+        "exits": {
+          "east": "marshes",
+          "north": "unexplored",
+          "south": "hallway",
+          "west": "unexplored"
+        },
+        "name": "ᚦ BASTION_OF_THE_SPIRE ᚦ",
+        "objects": [
+          {
+            "desc": "A heavy stone mechanism covered in sigils and linked to hidden passages in the tower shell.",
+            "effect": "unlock_exit",
+            "name": "Chthonic Lever"
+          }
+        ],
+        "services": []
+      },
+      "test_chapel": {
+        "desc": "An accursed chapel.",
+        "entities": [],
+        "exits": {
+          "north": "test_wastes",
+          "west": "test_mil"
+        },
+        "name": "ᚲ HAUNTED_CHAPEL ᚲ",
+        "objects": []
+      },
+      "test_mil": {
+        "desc": "Ancient military bastion.",
+        "entities": [],
+        "exits": {
+          "north": "test_chapel",
+          "south": "test_portal"
+        },
+        "name": "ᚲ MILITARY_FACILITY ᚲ",
+        "objects": []
+      },
+      "test_portal": {
+        "desc": "A thin alien threshold trembles here.",
+        "entities": [],
+        "exits": {
+          "east": "test_mil"
+        },
+        "name": "ᚲ MYSTERIOUS_PORTAL ᚲ",
+        "objects": [
+          {
+            "desc": "A veiled gate shivering with impossible geometry.",
+            "effect": "portal_jump",
+            "name": "Veiled Gate",
+            "target_room": "portal_room_2043135228"
+          }
+        ]
+      },
+      "test_wastes": {
+        "desc": "A ghastly mire of desolation.",
+        "entities": [],
+        "exits": {
+          "south": "test_chapel",
+          "west": "hallway"
+        },
+        "name": "ᚲ TOXIC_WASTES ᚲ",
+        "objects": []
+      }
+    },
+    "scene": {
+      "focus": 2,
+      "index": 2,
+      "location": "portal_room_2043135228"
+    },
+    "stage": "knowledge",
+    "surge": 2,
+    "threads": [
+      "Find Missing Rangers",
+      "decode the return codex relay",
+      "secure the tower shell extraction route",
+      "track the tower shell recon cell"
+    ],
+    "view": "game"
+  }
+}
